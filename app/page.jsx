@@ -1,12 +1,11 @@
-
-import {Heading} from "../components/Heading"
+import {Task} from "../components/Task"
 
 
 export default function Page() {
   return (
     <>
-      <Heading text ="headings" />
-      <p>Hello world</p>
+      <Task text="Buy bread" description="go shopping" />
+      <Task />
     </>
   );
 }
