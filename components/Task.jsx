@@ -1,3 +1,7 @@
 export function Task() {
-  return <div></div>;
+  return (
+    <div className="task">
+      <p></p>
+    </div>
+  );
 }
