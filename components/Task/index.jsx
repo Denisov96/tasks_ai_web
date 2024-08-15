@@ -1,18 +1,21 @@
 "use client";
 import { useState } from "react";
-import styles from "./styles.module.css";
+import styles from "./styles.module.css"; 
 
-export function Task(props) {
-  const [completed, setCompleted] = useState("");
+export function Task({ text }) {
+  const [completed, setCompleted] = useState(false);
 
   function handleClick() {
-    setCompleted("completed");
+    setCompleted(!completed); 
   }
 
   return (
     <div onClick={handleClick} className={styles.taskCard}>
-      <p>{props.text}</p>
-      <p>{completed}</p>
+      <div className={`${styles.button} ${completed ? styles.completed : ''}`}>
+        {completed && <span className={styles.checkmark}>✔</span>}
+      </div>
+      <span className={styles.text}>{text}</span>
     </div>
   );
 }
+
