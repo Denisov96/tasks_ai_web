@@ -7,6 +7,7 @@ export default function Page() {
     <>
       <Heading text ="headings" />
       <p>Hello gitpong</p>
+      <p>Hello gitpong 2</p>
     </>
   );
 }
