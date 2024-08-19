@@ -6,7 +6,7 @@ export default function Page() {
   return (
     <>
       <Heading text ="headings" />
-      <p>Hello world</p>
+      <p>Hello gitpong</p>
     </>
   );
 }
