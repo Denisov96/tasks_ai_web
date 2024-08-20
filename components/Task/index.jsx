@@ -6,7 +6,7 @@ export function Task({ text }) {
   const [completed, setCompleted] = useState(false);
 
   function handleClick() {
-    setCompleted(!completed);
+    setCompleted((completed) => !completed)
   }
 
   return (
