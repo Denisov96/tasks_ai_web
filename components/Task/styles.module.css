@@ -38,3 +38,11 @@
 .text {
   font-size: 16px;
 }
+
+.taskCard {
+  cursor: grab;
+}
+
+.dragging {
+  opacity: 0.5;
+}
