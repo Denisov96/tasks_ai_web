@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import styles from "./styles.module.css";
