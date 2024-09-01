@@ -31,6 +31,11 @@
   flex-grow: 1;
 }
 
+.completedText {
+  text-decoration: line-through; 
+  color: #888; 
+}
+
 .button {
   width: 20px;
   height: 20px;

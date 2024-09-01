@@ -9,18 +9,18 @@ export function Task({
   id,
   text,
   index,
-  moveTask,
-  completeTask,
-  revertTask,
-  isCompleted
+  onMove,
+  onComplete,
+  onRevert,
+  onIsCompleted,
 }) {
-  const [completed, setCompleted] = useState(isCompleted);
+  const [completed, setCompleted] = useState(onIsCompleted);
 
   const [, ref] = useDrop({
     accept: ItemType,
     hover(item) {
       if (item.index !== index) {
-        moveTask(item.index, index);
+        onMove(item.index, index);
         item.index = index;
       }
     },
@@ -36,10 +36,10 @@ export function Task({
 
   const handleClick = () => {
     if (completed) {
-      revertTask(index);
+      onRevert(index);
     } else {
       setCompleted(true);
-      completeTask(index);
+      onComplete(index);
     }
   };
 
@@ -47,7 +47,6 @@ export function Task({
     <div
       ref={(node) => drag(ref(node))}
       className={`${styles.taskCard} ${isDragging ? styles.dragging : ""}`}
-      style={{ textDecoration: completed ? 'line-through' : 'none', color: completed ? '#888' : 'inherit' }}
     >
       <div className={styles.dragHandle}>
         <span className={styles.dots}>⋮</span>
@@ -58,7 +57,11 @@ export function Task({
       >
         {completed && <span className={styles.checkbox}>✔</span>}
       </button>
-      <span className={styles.text}>{text}</span>
+      <span
+        className={`${styles.text} ${completed ? styles.completedText : ""}`}
+      >
+        {text}
+      </span>
     </div>
   );
 }

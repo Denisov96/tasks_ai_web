@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Task } from "../components/Task";
+import styles from "../styles.module.css"
 
 export default function Page() {
   const [tasks, setTasks] = useState([
@@ -20,43 +21,46 @@ export default function Page() {
 
   const completeTask = (index) => {
     const taskToComplete = tasks[index];
-    setTasks(tasks.filter((_, i) => i !== index)); 
-    setCompletedTasks([...completedTasks, { ...taskToComplete, completed: true }]); 
+    setTasks(tasks.filter((_, i) => i !== index));
+    setCompletedTasks([
+      ...completedTasks,
+      { ...taskToComplete, completed: true },
+    ]);
   };
 
   const revertTask = (index) => {
     const taskToRevert = completedTasks[index];
-    setCompletedTasks(completedTasks.filter((_, i) => i !== index)); 
-    setTasks([...tasks, { ...taskToRevert, completed: false }]); 
+    setCompletedTasks(completedTasks.filter((_, i) => i !== index));
+    setTasks([...tasks, { ...taskToRevert, completed: false }]);
   };
 
   return (
     <>
-      <h3>Active Tasks</h3>
+      <h3 className={styles.h3}>What I want to do</h3>
       {tasks.map((task, index) => (
         <Task
           key={task.id}
           id={task.id}
           text={task.text}
           index={index}
-          moveTask={moveTask}
-          completeTask={completeTask}
-          revertTask={() => {}}
-          isCompleted={false}
+          onMove={moveTask}
+          onComplete={completeTask}
+          onRevert={() => {}}
+          onIsCompleted={false}
         />
       ))}
 
-      <h3>Completed Tasks</h3>
+      <h3 className={styles.h3}>What I have done</h3>
       {completedTasks.map((task, index) => (
         <Task
           key={task.id}
           id={task.id}
           text={task.text}
           index={index}
-          moveTask={() => {}}
-          completeTask={() => {}}
-          revertTask={revertTask}
-          isCompleted={true}
+          onMove={() => {}}
+          onComplete={() => {}}
+          onRevert={revertTask}
+          onIsCompleted={true}
         />
       ))}
     </>
