@@ -12,9 +12,9 @@ export function Task({
   onMove,
   onComplete,
   onRevert,
-  onCompleted,
+  isCompleted,
 }) {
-  const [completed, setCompleted] = useState(onCompleted);
+  const [completed, setCompleted] = useState(isCompleted);
 
   const [, ref] = useDrop({
     accept: ItemType,

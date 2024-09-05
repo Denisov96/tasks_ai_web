@@ -46,7 +46,7 @@ export default function Page() {
           onMove={moveTask}
           onComplete={completeTask}
           onRevert={() => {}}
-          onCompleted={false}
+          isCompleted={false}
         />
       ))}
 
@@ -60,7 +60,7 @@ export default function Page() {
           onMove={() => {}}
           onComplete={() => {}}
           onRevert={revertTask}
-          onCompleted={true}
+          isCompleted={true}
         />
       ))}
     </>
