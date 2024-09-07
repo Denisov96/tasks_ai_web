@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Task } from "../components/Task";
-import styles from "../styles.module.css"
+import styles from "../styles.module.css";
 
 export default function Page() {
   const [tasks, setTasks] = useState([
@@ -37,32 +37,36 @@ export default function Page() {
   return (
     <>
       <h3 className={styles.h3}>What I want to do</h3>
-      {tasks.map((task, index) => (
-        <Task
-          key={task.id}
-          id={task.id}
-          text={task.text}
-          index={index}
-          onMove={moveTask}
-          onComplete={completeTask}
-          onRevert={() => {}}
-          isCompleted={false}
-        />
-      ))}
+      <div className={styles.taskListContainer}>
+        {tasks.map((task, index) => (
+          <Task
+            key={task.id}
+            id={task.id}
+            text={task.text}
+            index={index}
+            onMove={moveTask}
+            onComplete={completeTask}
+            onRevert={() => {}}
+            isCompleted={false}
+          />
+        ))}
+      </div>
 
       <h3 className={styles.h3}>What I have done</h3>
-      {completedTasks.map((task, index) => (
-        <Task
-          key={task.id}
-          id={task.id}
-          text={task.text}
-          index={index}
-          onMove={() => {}}
-          onComplete={() => {}}
-          onRevert={revertTask}
-          isCompleted={true}
-        />
-      ))}
+      <div className={styles.taskListContainer}>
+        {completedTasks.map((task, index) => (
+          <Task
+            key={task.id}
+            id={task.id}
+            text={task.text}
+            index={index}
+            onMove={() => {}}
+            onComplete={() => {}}
+            onRevert={revertTask}
+            isCompleted={true}
+          />
+        ))}
+      </div>
     </>
   );
 }
