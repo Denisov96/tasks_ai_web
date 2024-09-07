@@ -1,20 +1,67 @@
 "use client";
 import { useState } from "react";
+import { useDrag, useDrop } from "react-dnd";
 import styles from "./styles.module.css";
 
-export function Task({ text }) {
-  const [completed, setCompleted] = useState(false);
+const ItemType = "TASK";
 
-  function handleClick() {
-    setCompleted((completed) => !completed)
-  }
+export function Task({
+  id,
+  text,
+  index,
+  onMove,
+  onComplete,
+  onRevert,
+  isCompleted,
+}) {
+  const [completed, setCompleted] = useState(isCompleted);
+
+  const [, ref] = useDrop({
+    accept: ItemType,
+    hover(item) {
+      if (item.index !== index) {
+        onMove(item.index, index);
+        item.index = index;
+      }
+    },
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    type: ItemType,
+    item: { id, index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const handleClick = () => {
+    if (completed) {
+      onRevert(index);
+    } else {
+      setCompleted(true);
+      onComplete(index);
+    }
+  };
 
   return (
-    <div onClick={handleClick} className={styles.taskCard}>
-      <div className={`${styles.button} ${completed ? styles.completed : ""}`}>
-        {completed && <span className={styles.checkbox}>✔</span>}
+    <div
+      ref={(node) => drag(ref(node))}
+      className={`${styles.taskCard} ${isDragging ? styles.dragging : ""}`}
+    >
+      <div className={styles.dragHandle}>
+        <span className={styles.dots}>⋮</span>
       </div>
-      <span className={styles.text}>{text}</span>
+      <button
+        onClick={handleClick}
+        className={`${styles.button} ${completed ? styles.completed : ""}`}
+      >
+        {completed && <span className={styles.checkbox}>✔</span>}
+      </button>
+      <span
+        className={`${styles.text} ${completed ? styles.completedText : ""}`}
+      >
+        {text}
+      </span>
     </div>
   );
 }
