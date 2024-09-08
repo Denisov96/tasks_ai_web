@@ -8,6 +8,10 @@
   margin-bottom: 8px;
   font-family: "Sometype Mono", monospace;
   position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: 50px;
+  box-sizing: border-box;
 }
 
 .dragHandle {
@@ -29,11 +33,14 @@
   font-size: 16px;
   font-family: "Sometype Mono", monospace;
   flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .completedText {
-  text-decoration: line-through; 
-  color: #888; 
+  text-decoration: line-through;
+  color: #888;
 }
 
 .button {
