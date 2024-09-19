@@ -74,35 +74,3 @@
   opacity: 0.5;
 }
 
-.inputContainer {
-  display: flex;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.inputContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-}
-
-.inputContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-}
-
-.input {
-  padding: 16px 20px;
-  border: 2px solid black;
-  border-radius: 12px;
-  font-size: 20px;
-  margin-right: 12px;
-  flex-grow: 1;
-  width: 100%;
-  max-width: 500px;
-  font-family: "Sometype Mono", monospace;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-}
