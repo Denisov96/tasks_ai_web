@@ -11,6 +11,7 @@ export default function Page() {
     { id: 4, text: "Cook a dinner" },
   ]);
   const [completedTasks, setCompletedTasks] = useState([]);
+  const [newTaskText, setNewTaskText] = useState("");
 
   const moveTask = (fromIndex, toIndex) => {
     const updatedTasks = [...tasks];
@@ -34,8 +35,29 @@ export default function Page() {
     setTasks([...tasks, { ...taskToRevert, completed: false }]);
   };
 
+  const addNewTask = () => {
+    if (newTaskText.trim() === "") return;
+    const newTask = { id: Date.now(), text: newTaskText };
+    setTasks([...tasks, newTask]);
+    setNewTaskText("");
+  };
+
   return (
     <div className={styles.pageContainer}>
+      {}
+      <div className={styles.inputContainer}>
+        <input
+          type="text"
+          value={newTaskText}
+          onChange={(e) => setNewTaskText(e.target.value)}
+          placeholder="Enter a new task..."
+          className={styles.input}
+        />
+        <button onClick={addNewTask} className={styles.addButton}>
+          Add Task
+        </button>
+      </div>
+
       <h3 className={styles.h3}>What I want to do</h3>
 
       {tasks.map((task, index) => (
