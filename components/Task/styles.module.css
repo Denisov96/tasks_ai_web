@@ -6,7 +6,6 @@
   padding: 8px 16px;
   cursor: pointer;
   margin-bottom: 8px;
-  font-family: "Sometype Mono", monospace;
   position: relative;
   width: 100%;
   max-width: 400px;
@@ -31,7 +30,6 @@
 
 .text {
   font-size: 16px;
-  font-family: "Sometype Mono", monospace;
   flex-grow: 1;
   overflow: hidden;
   text-overflow: ellipsis;
