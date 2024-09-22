@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Task } from "../components/Task";
-import { TaskInput } from "../components/TaskInput"; 
+import { TaskInput } from "../components/TaskInput";
 import styles from "../styles.module.css";
 
 export default function Page() {
@@ -42,7 +42,6 @@ export default function Page() {
 
   return (
     <div className={styles.pageContainer}>
-      {}
       <TaskInput onAddTask={addNewTask} />
 
       <h3 className={styles.h3}>What I want to do</h3>

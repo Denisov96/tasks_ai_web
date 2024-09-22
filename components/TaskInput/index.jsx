@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import styles from "../TaskInput/styles.module.css";
+import styles from "./styles.module.css";
 
 export function TaskInput({ onAddTask }) {
   const [newTaskText, setNewTaskText] = useState("");
