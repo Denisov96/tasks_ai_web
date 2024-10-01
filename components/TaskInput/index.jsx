@@ -11,18 +11,25 @@ export function TaskInput({ onAddTask }) {
     setNewTaskText("");
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleAddTask();
+    }
+  };
+
   return (
     <div className={styles.inputContainer}>
       <input
         type="text"
         value={newTaskText}
         onChange={(e) => setNewTaskText(e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder="Enter a new task.."
         className={styles.input}
       />
-      <button onClick={handleAddTask} className={styles.addButton}>
-      Add Task
-      </button>
     </div>
   );
 }
+
+    
+  

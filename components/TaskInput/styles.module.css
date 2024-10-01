@@ -13,15 +13,6 @@
   max-width: 400px;
   height: 50px;
   box-sizing: border-box;
+  font-family: "Sometype_Mono", monospace;
 }
 
-.addButton {
-  padding: 8px 16px;
-  background-color: #4caf50;
-  color: white;
-  border-radius: 16px;
-  cursor: pointer;
-  font-size: 16px;
-  white-space: nowrap;
-  border: none;
-}
