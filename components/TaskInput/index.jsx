@@ -19,17 +19,15 @@ export function TaskInput({ onAddTask }) {
 
   return (
     <div className={styles.inputContainer}>
+      <img src="/images/logo.png" alt="Logo" className={styles.image} />
       <input
         type="text"
         value={newTaskText}
         onChange={(e) => setNewTaskText(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Enter a new task.."
+        placeholder="Enter a new task..."
         className={styles.input}
       />
     </div>
   );
 }
-
-    
-  
