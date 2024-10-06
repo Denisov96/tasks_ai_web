@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 import styles from "./styles.module.css";
 
 export function TaskInput({ onAddTask }) {
@@ -18,8 +19,14 @@ export function TaskInput({ onAddTask }) {
   };
 
   return (
-    <div className={styles.inputContainer}>
-      <img src="/images/logo.png" alt="Logo" className={styles.image} />
+    <>
+      <Image 
+        src="/images/logo.png" 
+        alt="Logo" 
+        width={150} 
+        height={150} 
+        className={styles.image} 
+      />
       <input
         type="text"
         value={newTaskText}
@@ -28,6 +35,8 @@ export function TaskInput({ onAddTask }) {
         placeholder="Enter a new task..."
         className={styles.input}
       />
-    </div>
+    </>
   );
 }
+
+
