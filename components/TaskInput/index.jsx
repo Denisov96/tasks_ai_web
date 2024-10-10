@@ -23,8 +23,8 @@ export function TaskInput({ onAddTask }) {
       <Image 
         src="/images/logo.png" 
         alt="Logo" 
-        width={150} 
-        height={150} 
+        width={80} 
+        height={80} 
         className={styles.image} 
       />
       <input
