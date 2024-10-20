@@ -44,7 +44,7 @@ export default function Page() {
     <div className={styles.pageContainer}>
       <TaskInput onAddTask={addNewTask} />
 
-      <h3 className={styles.h3}>What I want to do</h3>
+      <h3 className={styles.h3}></h3>
 
       {tasks.map((task, index) => (
         <Task
@@ -59,7 +59,7 @@ export default function Page() {
         />
       ))}
 
-      <h3 className={styles.h3}>What I have done</h3>
+      <h3 className={styles.h3}></h3>
 
       {completedTasks.map((task, index) => (
         <Task
