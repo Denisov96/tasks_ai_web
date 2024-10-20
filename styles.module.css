@@ -1,8 +1,4 @@
-.h3 {
-  color: black;
-  text-align: center;
-  position: relative;
-}
+
 .pageContainer {
   display: flex;
   flex-direction: column;
