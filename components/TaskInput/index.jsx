@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import Image from "next/image";
 import styles from "./styles.module.css";
@@ -35,8 +34,7 @@ export function TaskInput({ onAddTask }) {
         placeholder="Enter a new task..."
         className={styles.input}
       />
+      
     </>
   );
 }
-
-
