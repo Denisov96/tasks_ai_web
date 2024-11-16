@@ -30,10 +30,22 @@ export default function Page() {
     setTasks([...tasks, { ...taskToRevert, completed: false }]);
   };
 
-  const addNewTask = (newTaskText) => {
-    const newTask = { id: Date.now(), text: newTaskText };
-    setTasks([...tasks, newTask]);
+  const addNewTask = async (newTaskText) => {
+    const response = await fetch("http://localhost:3000/api/tasks", {
+      method: "POST",
+      body: newTaskText,
+    });
+    if (!response.ok) {
+      console.error(
+        `Cannot create new task. Response status ${response.status}`
+      );
+      return;
+    }
+    const task = await response.json();
+    setTasks((prevTasks) => [task.data[task.data.length - 1], ...prevTasks]);
   };
+  
+  
 
   useEffect(() => {
     async function getTasks() {
@@ -43,7 +55,7 @@ export default function Page() {
         return;
       }
       const responseObject = await response.json();
-      console.log(responseObject.data)
+
       setTasks(responseObject.data);
     }
     getTasks();
