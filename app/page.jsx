@@ -41,11 +41,9 @@ export default function Page() {
       );
       return;
     }
-    const task = await response.json();
-    setTasks((prevTasks) => [task.data[task.data.length - 1], ...prevTasks]);
+    const responseObject = await response.json();
+    setTasks(responseObject.data);
   };
-  
-  
 
   useEffect(() => {
     async function getTasks() {
