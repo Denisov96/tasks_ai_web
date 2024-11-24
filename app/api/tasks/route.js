@@ -2,30 +2,31 @@ export const dynamic = "force-dynamic";
 
 import { prisma } from "../../../prisma/db";
 
-export async function GET() {
-  const tasks = await prisma.task.findMany({
+async function getAllTasks() {
+  return await prisma.task.findMany({
     orderBy: {
-      createdAt: 'desc', 
+      createdAt: "desc",
     },
   });
+}
 
+export async function GET() {
   return Response.json({
     message: "That's all your tasks",
-    data: tasks,
+    data: await getAllTasks(),
     error: null,
   });
 }
 
 export async function POST(request) {
   const data = await request.text();
+  
   await prisma.task.create({
     data: { text: data },
   });
 
-  const allTasks = await prisma.task.findMany();
-
   return Response.json({
-    data: allTasks,
+    data: await getAllTasks(),
     error: null,
     message: "New task was created",
   });
