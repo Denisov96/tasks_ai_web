@@ -1,0 +1,15 @@
+model Task {
+  id        Int      @id @default(autoincrement())
+  text      String   
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}

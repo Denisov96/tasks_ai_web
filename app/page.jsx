@@ -1,16 +1,11 @@
 "use client";
-import { useState } from "react";
 import { Task } from "../components/Task";
 import { TaskInput } from "../components/TaskInput";
 import styles from "../styles.module.css";
+import { useState, useEffect } from "react";
 
 export default function Page() {
-  const [tasks, setTasks] = useState([
-    { id: 1, text: "Buy Milk" },
-    { id: 2, text: "Repair the door" },
-    { id: 3, text: "Throw garbage" },
-    { id: 4, text: "Cook a dinner" },
-  ]);
+  const [tasks, setTasks] = useState([]);
   const [completedTasks, setCompletedTasks] = useState([]);
 
   const moveTask = (fromIndex, toIndex) => {
@@ -35,10 +30,37 @@ export default function Page() {
     setTasks([...tasks, { ...taskToRevert, completed: false }]);
   };
 
-  const addNewTask = (newTaskText) => {
-    const newTask = { id: Date.now(), text: newTaskText };
-    setTasks([...tasks, newTask]);
+  const addNewTask = async (newTaskText) => {
+    const response = await fetch("http://localhost:3000/api/tasks", {
+      method: "POST",
+      body: newTaskText,
+    });
+    
+    if (!response.ok) {
+      console.error(
+        `Cannot create new task. Response status ${response.status}`
+      );
+      return;
+    }
+
+    const responseObject = await response.json();
+
+    setTasks(responseObject.data);
   };
+
+  useEffect(() => {
+    async function getTasks() {
+      const response = await fetch("http://localhost:3000/api/tasks");
+      if (!response.ok) {
+        console.error(`Cannot fetch tasks. Response status ${response.status}`);
+        return;
+      }
+      const responseObject = await response.json();
+
+      setTasks(responseObject.data);
+    }
+    getTasks();
+  }, []);
 
   return (
     <div className={styles.pageContainer}>
