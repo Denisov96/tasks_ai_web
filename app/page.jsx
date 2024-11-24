@@ -35,13 +35,16 @@ export default function Page() {
       method: "POST",
       body: newTaskText,
     });
+    
     if (!response.ok) {
       console.error(
         `Cannot create new task. Response status ${response.status}`
       );
       return;
     }
+
     const responseObject = await response.json();
+
     setTasks(responseObject.data);
   };
 
