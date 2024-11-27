@@ -1,21 +1,10 @@
 "use client";
-import { useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import styles from "./styles.module.css";
 
 const ItemType = "TASK";
 
-export function Task({
-  id,
-  text,
-  index,
-  onMove,
-  onComplete,
-  onRevert,
-  isCompleted,
-}) {
-  const [completed, setCompleted] = useState(isCompleted);
-
+export function Task({ id, text, index, onMove, onClick, completed }) {
   const [, ref] = useDrop({
     accept: ItemType,
     hover(item) {
@@ -34,15 +23,6 @@ export function Task({
     }),
   });
 
-  const handleClick = () => {
-    if (completed) {
-      onRevert(id);
-    } else {
-      setCompleted(true);
-      onComplete(id);
-    }
-  };
-
   return (
     <div
       ref={(node) => drag(ref(node))}
@@ -52,7 +32,7 @@ export function Task({
         <span className={styles.dots}>⋮</span>
       </div>
       <button
-        onClick={handleClick}
+        onClick={() => onClick({ id, completed: !completed })}
         className={`${styles.button} ${completed ? styles.completed : ""}`}
       >
         {completed && <span className={styles.checkbox}>✔</span>}
