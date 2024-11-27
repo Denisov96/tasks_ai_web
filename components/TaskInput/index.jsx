@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Image from "next/image";
 import styles from "./styles.module.css";
 
 export function TaskInput({ onAddTask }) {
@@ -18,23 +17,14 @@ export function TaskInput({ onAddTask }) {
   };
 
   return (
-    <>
-      <Image 
-        src="/images/logo.png" 
-        alt="Logo" 
-        width={80} 
-        height={80} 
-        className={styles.image} 
-      />
-      <input
-        type="text"
-        value={newTaskText}
-        onChange={(e) => setNewTaskText(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Enter a new task..."
-        className={styles.input}
-      />
-      
-    </>
+    <input
+      type="text"
+      autoFocus
+      value={newTaskText}
+      onChange={(e) => setNewTaskText(e.target.value)}
+      onKeyDown={handleKeyDown}
+      placeholder="Enter a new task..."
+      className={styles.input}
+    />
   );
 }

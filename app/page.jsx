@@ -1,4 +1,5 @@
 "use client";
+import { Logo } from "../components/Logo";
 import { Task } from "../components/Task";
 import { TaskInput } from "../components/TaskInput";
 import styles from "../styles.module.css";
@@ -64,6 +65,7 @@ export default function Page() {
 
   return (
     <div className={styles.pageContainer}>
+      <Logo />
       <TaskInput onAddTask={addNewTask} />
 
       <h3 className={styles.h3}></h3>
