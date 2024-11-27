@@ -36,10 +36,10 @@ export function Task({
 
   const handleClick = () => {
     if (completed) {
-      onRevert(index);
+      onRevert(id);
     } else {
       setCompleted(true);
-      onComplete(index);
+      onComplete(id);
     }
   };
 
