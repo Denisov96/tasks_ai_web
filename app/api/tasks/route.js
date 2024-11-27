@@ -1,14 +1,7 @@
 export const dynamic = "force-dynamic";
 
+import { getAllTasks } from "../../../lib/db";
 import { prisma } from "../../../prisma/db";
-
-async function getAllTasks() {
-  return await prisma.task.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-}
 
 export async function GET() {
   return Response.json({
