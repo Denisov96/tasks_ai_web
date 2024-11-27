@@ -31,24 +31,6 @@ export default function Page() {
     setTasks([...tasks, { ...taskToRevert, completed: false }]);
   };
 
-  const addNewTask = async (newTaskText) => {
-    const response = await fetch("http://localhost:3000/api/tasks", {
-      method: "POST",
-      body: newTaskText,
-    });
-    
-    if (!response.ok) {
-      console.error(
-        `Cannot create new task. Response status ${response.status}`
-      );
-      return;
-    }
-
-    const responseObject = await response.json();
-
-    setTasks(responseObject.data);
-  };
-
   useEffect(() => {
     async function getTasks() {
       const response = await fetch("http://localhost:3000/api/tasks");
@@ -66,7 +48,8 @@ export default function Page() {
   return (
     <div className={styles.pageContainer}>
       <Logo />
-      <TaskInput onAddTask={addNewTask} />
+
+      <TaskInput onAddTask={(newTasks) => setTasks(newTasks)} />
 
       <h3 className={styles.h3}></h3>
 
