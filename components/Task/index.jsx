@@ -14,6 +14,7 @@ export function Task({ id, text, index, onMove, onClick, completed }) {
       }
     },
   });
+
   const [{ isDragging }, drag] = useDrag({
     type: ItemType,
     item: { id, index },
