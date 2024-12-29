@@ -6,6 +6,7 @@ export function TaskInput({ onAddTask }) {
 
   async function handleAddTask() {
     if (newTaskText.trim() === "") return;
+
     const response = await fetch("http://localhost:3000/api/tasks", {
       method: "POST",
       body: newTaskText,
@@ -23,7 +24,7 @@ export function TaskInput({ onAddTask }) {
     onAddTask(responseObject.data);
 
     setNewTaskText("");
-  };
+  }
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -33,13 +34,13 @@ export function TaskInput({ onAddTask }) {
 
   return (
     <input
-    type="text"
-    autoFocus
-    value={newTaskText}
-    onChange={(e) => setNewTaskText(e.target.value)}
-    onKeyDown={handleKeyDown}
-    placeholder="Enter a new task..."
-    className={styles.input}
-  />
+      type="text"
+      autoFocus
+      value={newTaskText}
+      onChange={(e) => setNewTaskText(e.target.value)}
+      onKeyDown={handleKeyDown}
+      placeholder="Enter a new task..."
+      className={styles.input}
+    />
   );
 }

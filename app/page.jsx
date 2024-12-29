@@ -16,6 +16,7 @@ export default function Page() {
         return;
       }
       const responseObject = await response.json();
+
       setTasks(responseObject.data);
     }
     getTasks();
@@ -24,8 +25,11 @@ export default function Page() {
   return (
     <div className={styles.pageContainer}>
       <Logo />
+
       <TaskInput onAddTask={(newTasks) => setTasks(newTasks)} />
+
       <hr />
+
       <TaskList tasks={tasks} onChange={(newTasks) => setTasks(newTasks)} />
     </div>
   );

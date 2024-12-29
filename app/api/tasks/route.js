@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
-import { prisma } from "../../../prisma/db";
 import { getAllTasks } from "../../../lib/db";
+import { prisma } from "../../../prisma/db";
 
 export async function GET() {
   return Response.json({
@@ -10,15 +10,20 @@ export async function GET() {
     error: null,
   });
 }
+
 export async function POST(request) {
   const data = await request.text();
   
   await prisma.task.create({
     data: { text: data },
   });
+
   return Response.json({
     data: await getAllTasks(),
     error: null,
     message: "New task was created",
   });
 }
+
+
+
