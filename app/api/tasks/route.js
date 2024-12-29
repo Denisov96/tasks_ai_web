@@ -1,14 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { prisma } from "../../../prisma/db";
-
-async function getAllTasks() {
-  return await prisma.task.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-}
+import { getAllTasks } from "../../../lib/db";
 
 export async function GET() {
   return Response.json({
@@ -17,14 +10,12 @@ export async function GET() {
     error: null,
   });
 }
-
 export async function POST(request) {
   const data = await request.text();
   
   await prisma.task.create({
     data: { text: data },
   });
-
   return Response.json({
     data: await getAllTasks(),
     error: null,

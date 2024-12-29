@@ -1,52 +1,12 @@
 "use client";
-import { Task } from "../components/Task";
+import { Logo } from "../components/Logo";
 import { TaskInput } from "../components/TaskInput";
+import { TaskList } from "../components/TaskList";
 import styles from "../styles.module.css";
 import { useState, useEffect } from "react";
 
 export default function Page() {
   const [tasks, setTasks] = useState([]);
-  const [completedTasks, setCompletedTasks] = useState([]);
-
-  const moveTask = (fromIndex, toIndex) => {
-    const updatedTasks = [...tasks];
-    const [movedTask] = updatedTasks.splice(fromIndex, 1);
-    updatedTasks.splice(toIndex, 0, movedTask);
-    setTasks(updatedTasks);
-  };
-
-  const completeTask = (index) => {
-    const taskToComplete = tasks[index];
-    setTasks(tasks.filter((_, i) => i !== index));
-    setCompletedTasks([
-      ...completedTasks,
-      { ...taskToComplete, completed: true },
-    ]);
-  };
-
-  const revertTask = (index) => {
-    const taskToRevert = completedTasks[index];
-    setCompletedTasks(completedTasks.filter((_, i) => i !== index));
-    setTasks([...tasks, { ...taskToRevert, completed: false }]);
-  };
-
-  const addNewTask = async (newTaskText) => {
-    const response = await fetch("http://localhost:3000/api/tasks", {
-      method: "POST",
-      body: newTaskText,
-    });
-    
-    if (!response.ok) {
-      console.error(
-        `Cannot create new task. Response status ${response.status}`
-      );
-      return;
-    }
-
-    const responseObject = await response.json();
-
-    setTasks(responseObject.data);
-  };
 
   useEffect(() => {
     async function getTasks() {
@@ -56,7 +16,6 @@ export default function Page() {
         return;
       }
       const responseObject = await response.json();
-
       setTasks(responseObject.data);
     }
     getTasks();
@@ -64,37 +23,10 @@ export default function Page() {
 
   return (
     <div className={styles.pageContainer}>
-      <TaskInput onAddTask={addNewTask} />
-
-      <h3 className={styles.h3}></h3>
-
-      {tasks.map((task, index) => (
-        <Task
-          key={task.id}
-          id={task.id}
-          text={task.text}
-          index={index}
-          onMove={moveTask}
-          onComplete={completeTask}
-          onRevert={() => {}}
-          isCompleted={false}
-        />
-      ))}
-
-      <h3 className={styles.h3}></h3>
-
-      {completedTasks.map((task, index) => (
-        <Task
-          key={task.id}
-          id={task.id}
-          text={task.text}
-          index={index}
-          onMove={() => {}}
-          onComplete={() => {}}
-          onRevert={revertTask}
-          isCompleted={true}
-        />
-      ))}
+      <Logo />
+      <TaskInput onAddTask={(newTasks) => setTasks(newTasks)} />
+      <hr />
+      <TaskList tasks={tasks} onChange={(newTasks) => setTasks(newTasks)} />
     </div>
   );
 }

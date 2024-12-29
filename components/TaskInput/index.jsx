@@ -1,13 +1,27 @@
 import { useState } from "react";
-import Image from "next/image";
 import styles from "./styles.module.css";
 
 export function TaskInput({ onAddTask }) {
   const [newTaskText, setNewTaskText] = useState("");
 
-  const handleAddTask = () => {
+  async function handleAddTask() {
     if (newTaskText.trim() === "") return;
-    onAddTask(newTaskText);
+    const response = await fetch("http://localhost:3000/api/tasks", {
+      method: "POST",
+      body: newTaskText,
+    });
+
+    if (!response.ok) {
+      console.error(
+        `Cannot create new task. Response status ${response.status}`
+      );
+      return;
+    }
+
+    const responseObject = await response.json();
+
+    onAddTask(responseObject.data);
+
     setNewTaskText("");
   };
 
@@ -18,23 +32,14 @@ export function TaskInput({ onAddTask }) {
   };
 
   return (
-    <>
-      <Image 
-        src="/images/logo.png" 
-        alt="Logo" 
-        width={80} 
-        height={80} 
-        className={styles.image} 
-      />
-      <input
-        type="text"
-        value={newTaskText}
-        onChange={(e) => setNewTaskText(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Enter a new task..."
-        className={styles.input}
-      />
-      
-    </>
+    <input
+    type="text"
+    autoFocus
+    value={newTaskText}
+    onChange={(e) => setNewTaskText(e.target.value)}
+    onKeyDown={handleKeyDown}
+    placeholder="Enter a new task..."
+    className={styles.input}
+  />
   );
 }
