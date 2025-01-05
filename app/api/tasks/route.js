@@ -13,7 +13,7 @@ export async function GET() {
 
 export async function POST(request) {
   const data = await request.text();
-  
+
   await prisma.task.create({
     data: { text: data },
   });
@@ -25,5 +25,24 @@ export async function POST(request) {
   });
 }
 
+export async function PUT(request) {
+  try {
+    const { id, completed } = await request.json();
 
+    if (!id || typeof completed !== "boolean") {
+      return Response.json({}, { status: 400 });
+    }
+
+    await prisma.task.update({
+      where: { id },
+      data: { completed },
+    });
+
+    return Response.json({
+      data: await getAllTasks(),
+    });
+  } catch {
+    return Response.json({}, { status: 500 });
+  }
+}
 
