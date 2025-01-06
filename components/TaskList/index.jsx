@@ -19,13 +19,32 @@ export function TaskList({ tasks, onChange }) {
     onChange(updatedTasks);
   };
 
-  const toggleTaskCompleted = (id, completed) => {
+  const toggleTaskCompleted = async (id, completed) => {
     const updatedTasks = tasks.map((task) => {
       if (id !== task.id) return task;
       return { ...task, completed };
     });
 
     onChange(updatedTasks);
+
+    try {
+      const response = await fetch("http://localhost:3000/api/tasks", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, completed }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to update task with id: ${id}`);
+      }
+
+      const responseObject = await response.json();
+      onChange(responseObject.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
