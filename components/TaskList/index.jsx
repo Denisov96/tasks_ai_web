@@ -4,7 +4,7 @@ import { Task } from "../Task";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { booleanSort } from "../../lib/utils";
-import styles from "../TaskList/styles.module.css";
+import styles from "./styles.module.css";
 
 export function TaskList({ tasks, onChange }) {
   const sortedTasks = useMemo(() => {
@@ -49,9 +49,9 @@ export function TaskList({ tasks, onChange }) {
   };
 
   const deleteTasks = async () => {
-    const updatedTasks = tasks.filter((task) => !task.completed);
-    onChange(updatedTasks);
-
+    const completedTasks = tasks.filter((task) => task.completed);
+    const activeTasks = tasks.filter((task) => !task.completed);
+  
     try {
       const response = await fetch("http://localhost:3000/api/tasks", {
         method: "DELETE",
@@ -59,20 +59,22 @@ export function TaskList({ tasks, onChange }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ids: tasks.filter((task) => task.completed).map((task) => task.id),
+          ids: completedTasks.map((task) => task.id),
         }),
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to delete tasks");
       }
-
+  
       const responseObject = await response.json();
       onChange(responseObject.data);
     } catch (error) {
       console.error(error);
+      alert("Failed to delete completed tasks. Please try again.");
     }
   };
+  
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -92,7 +94,7 @@ export function TaskList({ tasks, onChange }) {
         onClick={deleteTasks}
         disabled={tasks.every((task) => !task.completed)}
       >
-        Delete completed
+        Delete completed tasks
       </button>
     </DndProvider>
   );
