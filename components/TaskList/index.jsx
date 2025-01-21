@@ -49,9 +49,6 @@ export function TaskList({ tasks, onChange }) {
   };
 
   const deleteTasks = async () => {
-    const completedTasks = tasks.filter((task) => task.completed);
-    const activeTasks = tasks.filter((task) => !task.completed);
-  
     try {
       const response = await fetch("http://localhost:3000/api/tasks", {
         method: "DELETE",
@@ -59,14 +56,13 @@ export function TaskList({ tasks, onChange }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ids: completedTasks.map((task) => task.id),
+          ids: tasks.filter((task) => task.completed).map((task) => task.id),
         }),
       });
-  
+
       if (!response.ok) {
         throw new Error("Failed to delete tasks");
       }
-  
       const responseObject = await response.json();
       onChange(responseObject.data);
     } catch (error) {
@@ -74,7 +70,6 @@ export function TaskList({ tasks, onChange }) {
       alert("Failed to delete completed tasks. Please try again.");
     }
   };
-  
 
   return (
     <DndProvider backend={HTML5Backend}>
