@@ -6,7 +6,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { booleanSort } from "../../lib/utils";
 import styles from "./styles.module.css";
 
-export function TaskList({ tasks, onChange }) {
+export function TaskList({ tasks, onChange, onEdit }) { 
   const sortedTasks = useMemo(() => {
     return tasks.toSorted((prev, curr) =>
       booleanSort(prev.completed, curr.completed)
@@ -82,6 +82,7 @@ export function TaskList({ tasks, onChange }) {
           completed={task.completed}
           onMove={moveTask}
           onClick={({ id, completed }) => toggleTaskCompleted(id, completed)}
+          onEdit={onEdit} 
         />
       ))}
       <button

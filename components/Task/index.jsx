@@ -4,7 +4,7 @@ import styles from "./styles.module.css";
 
 const ItemType = "TASK";
 
-export function Task({ id, text, index, onMove, onClick, completed }) {
+export function Task({ id, text, index, onMove, onClick, completed, onEdit }) {
   const [, ref] = useDrop({
     accept: ItemType,
     hover(item) {
@@ -39,6 +39,7 @@ export function Task({ id, text, index, onMove, onClick, completed }) {
       </button>
       <span
         className={`${styles.text} ${completed ? styles.completedText : ""}`}
+        onClick={() => onEdit(id, text)} 
       >
         {text}
       </span>

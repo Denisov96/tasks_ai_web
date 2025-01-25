@@ -1,8 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./styles.module.css";
 
-export function TaskInput({ onAddTask }) {
+export function TaskInput({ onAddTask, onSave, editTask }) {
   const [newTaskText, setNewTaskText] = useState("");
+
+  useEffect(() => {
+    if (editTask) {
+      setNewTaskText(editTask.text);
+    }
+  }, [editTask]);
 
   async function handleAddTask() {
     if (newTaskText.trim() === "") return;
@@ -22,13 +28,24 @@ export function TaskInput({ onAddTask }) {
     const responseObject = await response.json();
 
     onAddTask(responseObject.data);
-
     setNewTaskText("");
   }
 
+  const handleSaveTask = () => {
+    if (newTaskText.trim() === "") return;
+
+    onSave(newTaskText);
+
+    setNewTaskText("");
+  };
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      handleAddTask();
+      if (editTask) {
+        handleSaveTask();
+      } else {
+        handleAddTask();
+      }
     }
   };
 
