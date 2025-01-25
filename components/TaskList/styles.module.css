@@ -1,0 +1,20 @@
+.deleteButton {
+  background-color: var(--bg-warning-light);
+  color: var(--text-inverted);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.deleteButton:hover {
+  background-color: var(--bg-warning);
+  transform: scale(1.05);
+}
+
+.deleteButton:disabled {
+  background-color: var(--bg-neutral);
+}

@@ -25,10 +25,10 @@ export function Task({ id, text, index, onMove, onClick, completed }) {
 
   return (
     <div
-      ref={(node) => drag(ref(node))}
+      ref={ref}
       className={`${styles.taskCard} ${isDragging ? styles.dragging : ""}`}
     >
-      <div className={styles.dragHandle}>
+      <div ref={drag} className={styles.dragHandle}>
         <span className={styles.dots}>⋮</span>
       </div>
       <button

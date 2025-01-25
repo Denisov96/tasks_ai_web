@@ -46,3 +46,19 @@ export async function PUT(request) {
   }
 }
 
+export async function DELETE(request) {
+  try {
+    const { ids } = await request.json();
+
+    if (!Array.isArray(ids)) 
+      return new Response(null, { status: 400 });
+
+    await prisma.task.deleteMany({ where: { id: { in: ids } } });
+
+    const data = await getAllTasks();
+    return new Response(JSON.stringify({ data }), { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return new Response(null, { status: 500 });
+  }
+}
