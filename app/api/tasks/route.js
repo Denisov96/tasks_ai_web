@@ -29,7 +29,7 @@ export async function PUT(request) {
   try {
     const { id, completed, text } = await request.json();
 
-    if (!id || (typeof completed !== "boolean" && !text)) {
+    if (!id || (completed === undefined && !text)) {
       return Response.json({}, { status: 400 });
     }
 

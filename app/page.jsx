@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState, useEffect } from "react";
 import { Logo } from "../components/Logo";
 import { TaskInput } from "../components/TaskInput";
@@ -7,7 +7,7 @@ import styles from "../styles.module.css";
 
 export default function Page() {
   const [tasks, setTasks] = useState([]);
-  const [editTask, setEditTask] = useState(null); 
+  const [editTask, setEditTask] = useState(null);
 
   useEffect(() => {
     async function getTasks() {
@@ -23,7 +23,7 @@ export default function Page() {
   }, []);
 
   const handleEditTask = (id, text) => {
-    setEditTask({ id, text }); 
+    setEditTask({ id, text });
   };
 
   const handleSaveTask = async (newText) => {
@@ -44,8 +44,8 @@ export default function Page() {
     }
 
     const responseObject = await response.json();
-    setTasks(responseObject.data); 
-    setEditTask(null); 
+    setTasks(responseObject.data);
+    setEditTask(null);
   };
 
   return (
@@ -54,8 +54,9 @@ export default function Page() {
 
       <TaskInput
         onAddTask={(newTasks) => setTasks(newTasks)}
-        onSave={handleSaveTask} 
-        editTask={editTask} 
+        onSave={handleSaveTask}
+        editTask={editTask}
+        setEditTask={setEditTask} 
       />
 
       <hr />
@@ -63,9 +64,8 @@ export default function Page() {
       <TaskList
         tasks={tasks}
         onChange={(newTasks) => setTasks(newTasks)}
-        onEdit={handleEditTask} 
+        onEdit={handleEditTask}
       />
     </div>
   );
 }
-
