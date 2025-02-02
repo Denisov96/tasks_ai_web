@@ -39,7 +39,7 @@ export function Task({ id, text, index, onMove, onClick, completed, onEdit }) {
       </button>
       <span
         className={`${styles.text} ${completed ? styles.completedText : ""}`}
-        onClick={() => onEdit(id, text)} 
+        onClick={() => onEdit({ id, text, completed })}
       >
         {text}
       </span>
