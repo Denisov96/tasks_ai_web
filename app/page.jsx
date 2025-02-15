@@ -4,59 +4,39 @@ import { Logo } from "../components/Logo";
 import { TaskInput } from "../components/TaskInput";
 import { TaskList } from "../components/TaskList";
 import styles from "../styles.module.css";
+import { getTasks, updateTask, createTask } from "../lib/requests";
 
 export default function Page() {
   const [tasks, setTasks] = useState([]);
-  const [editTask, setEditTask] = useState(null);
+  const [taskToEdit, setTaskToEdit] = useState(null);
 
   useEffect(() => {
-    async function getTasks() {
-      const response = await fetch("http://localhost:3000/api/tasks");
-      if (!response.ok) {
-        console.error(`Cannot fetch tasks. Response status ${response.status}`);
-        return;
-      }
-      const responseObject = await response.json();
-      setTasks(responseObject.data);
+    async function fetchAndSetTasks() {
+      const tasks = await getTasks();
+      setTasks(tasks);
     }
-    getTasks();
+    fetchAndSetTasks();
   }, []);
 
-  const handleEditTask = (id, text) => {
-    setEditTask({ id, text });
-  };
+  async function handleSubmit() {
+    if (taskToEdit.text.trim() === "") return;
 
-  const handleSaveTask = async (newText) => {
-    if (!editTask || newText.trim() === "") return;
+    const newTasks = taskToEdit.id
+    ? await updateTask(taskToEdit)
+    : await createTask(taskToEdit.text);
 
-    const response = await fetch("http://localhost:3000/api/tasks", {
-      method: "PUT",
-      body: JSON.stringify({
-        id: editTask.id,
-        text: newText,
-        completed: editTask.completed,
-      }),
-    });
-
-    if (!response.ok) {
-      console.error(`Cannot update task. Response status ${response.status}`);
-      return;
-    }
-
-    const responseObject = await response.json();
-    setTasks(responseObject.data);
-    setEditTask(null);
-  };
+    setTasks(newTasks);
+    setTaskToEdit(null);
+  }
 
   return (
     <div className={styles.pageContainer}>
       <Logo />
 
       <TaskInput
-        onAddTask={(newTasks) => setTasks(newTasks)}
-        onSave={handleSaveTask}
-        editTask={editTask}
-        setEditTask={setEditTask} 
+        value={taskToEdit?.text}
+        onSubmit={handleSubmit}
+        onChange={(value) => setTaskToEdit({ ...taskToEdit, text: value })}
       />
 
       <hr />
@@ -64,7 +44,9 @@ export default function Page() {
       <TaskList
         tasks={tasks}
         onChange={(newTasks) => setTasks(newTasks)}
-        onEdit={handleEditTask}
+        onEdit={(task) => {
+          setTaskToEdit(task);
+        }}
       />
     </div>
   );
