@@ -27,15 +27,15 @@ export async function POST(request) {
 
 export async function PUT(request) {
   try {
-    const { id, completed } = await request.json();
+    const { id, completed, text } = await request.json();
 
-    if (!id || typeof completed !== "boolean") {
+    if (!id || (completed === undefined && !text)) {
       return Response.json({}, { status: 400 });
     }
 
     await prisma.task.update({
       where: { id },
-      data: { completed },
+      data: { completed, text },
     });
 
     return Response.json({
@@ -45,6 +45,7 @@ export async function PUT(request) {
     return Response.json({}, { status: 500 });
   }
 }
+
 
 export async function DELETE(request) {
   try {
