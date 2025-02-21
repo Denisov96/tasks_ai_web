@@ -1,12 +1,12 @@
-"use client";
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { Task } from "../Task";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { booleanSort } from "../../lib/utils";
 import styles from "./styles.module.css";
 
-export function TaskList({ tasks, onChange, onEdit }) { 
+export function TaskList({ tasks = [], onChange, onEdit }) {
+  const [visibleTasks, setVisibleTasks] = useState([]);
   const sortedTasks = useMemo(() => {
     return tasks.toSorted((prev, curr) =>
       booleanSort(prev.completed, curr.completed)
@@ -48,50 +48,37 @@ export function TaskList({ tasks, onChange, onEdit }) {
     }
   };
 
-  const deleteTasks = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/api/tasks", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ids: tasks.filter((task) => task.completed).map((task) => task.id),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete tasks");
-      }
-      const responseObject = await response.json();
-      onChange(responseObject.data);
-    } catch (error) {
-      console.error(error);
-      alert("Failed to delete completed tasks. Please try again.");
-    }
-  };
+  useEffect(() => {
+    setVisibleTasks([]);
+    sortedTasks.forEach((task, index) => {
+      setTimeout(() => {
+        setVisibleTasks((prev) => {
+          if (!prev.some((t) => t.id === task.id)) {
+            return [...prev, task];
+          }
+          return prev;
+        });
+      }, 100 * index);
+    });
+  }, [sortedTasks]);
 
   return (
     <DndProvider backend={HTML5Backend}>
-      {sortedTasks.map((task, index) => (
-        <Task
-          key={task.id}
-          id={task.id}
-          text={task.text}
-          index={index}
-          completed={task.completed}
-          onMove={moveTask}
-          onClick={({ id, completed }) => toggleTaskCompleted(id, completed)}
-          onEdit={onEdit} 
-        />
-      ))}
-      <button
-        className={styles.deleteButton}
-        onClick={deleteTasks}
-        disabled={tasks.every((task) => !task.completed)}
-      >
-        Delete completed tasks
-      </button>
+      <div className={styles.taskListContainer}>
+        {visibleTasks.map((task, index) => (
+          <Task
+            key={task.id}
+            id={task.id}
+            text={task.text}
+            index={index}
+            completed={task.completed}
+            onMove={moveTask}
+            onClick={({ id, completed }) => toggleTaskCompleted(id, completed)}
+            onEdit={onEdit}
+            className={styles.fadeIn}
+          />
+        ))}
+      </div>
     </DndProvider>
   );
 }
