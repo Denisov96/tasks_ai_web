@@ -7,11 +7,7 @@ export function TaskInput({
   tasks = [],
   deleteTasks,
 }) {
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      onSubmit();
-    }
-  };
+  const hasCompletedTasks = tasks.some((task) => task.completed);
 
   return (
     <div className={styles.inputContainer}>
@@ -20,19 +16,20 @@ export function TaskInput({
         autoFocus
         value={value ? value : ""}
         onChange={(e) => onChange(e.target.value)}
-        onKeyDown={handleKeyDown}
+        onKeyDown={(e) => e.key === "Enter" && onSubmit()}
         placeholder="Enter a new task..."
         className={styles.input}
       />
-      <button className={styles.addButton} onClick={onSubmit}>
+      <button
+        className={`${styles.button} ${styles.addButton}`}
+        onClick={onSubmit}
+      >
         +
       </button>
       <button
-        className={styles.deleteButton}
+        className={`${styles.button} ${styles.deleteButton}`}
         onClick={deleteTasks}
-        disabled={
-          !Array.isArray(tasks) || tasks.every((task) => !task.completed)
-        }
+        disabled={!hasCompletedTasks}
       >
         🗑️
       </button>
