@@ -1,4 +1,5 @@
 import styles from "./styles.module.css";
+import { TrashIcon, PlusIcon } from "../Icons/icons"
 
 export function TaskInput({
   onSubmit,
@@ -24,14 +25,14 @@ export function TaskInput({
         className={`${styles.button} ${styles.addButton}`}
         onClick={onSubmit}
       >
-        +
+        <PlusIcon />
       </button>
       <button
         className={`${styles.button} ${styles.deleteButton}`}
         onClick={deleteTasks}
         disabled={!hasCompletedTasks}
       >
-        🗑️
+        <TrashIcon />
       </button>
     </div>
   );

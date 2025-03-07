@@ -1,8 +1,9 @@
 .taskListContainer {
-    background-color: #efefef; 
-    padding: 20px;
-    padding-bottom: 100px; 
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-  }
+  padding: 20px;
+  padding-bottom: 100px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: transparent;
+  border-radius: var(--radius);
+}

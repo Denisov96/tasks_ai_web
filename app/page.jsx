@@ -5,6 +5,7 @@ import { TaskInput } from "../components/TaskInput";
 import { TaskList } from "../components/TaskList";
 import styles from "../styles.module.css";
 import { getTasks, updateTask, createTask } from "../lib/requests";
+import { RocketIcon } from "../components/Icons/icons"; 
 
 export default function Page() {
   const [tasks, setTasks] = useState([]);
@@ -51,15 +52,16 @@ export default function Page() {
       alert("Failed to delete completed tasks. Please try again.");
     }
   }
-
   return (
     <div className={styles.pageContainer}>
-      <Logo />
-      {tasks.length === 0 && (
-        <p className={styles.placeholderText}>
-          Add your first task for today! 🚀
-        </p>
-      )}
+    <Logo />
+    {tasks.length === 0 && (
+      <p className={styles.placeholderText}>
+        Add your first task for today! <RocketIcon />
+      </p>
+    )}
+
+
       <TaskList
         tasks={tasks}
         onChange={(newTasks) => setTasks(newTasks)}
