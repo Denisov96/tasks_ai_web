@@ -1,12 +1,75 @@
+.inputContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  background-color: var(--background);
+  border-top: none;
+  box-shadow: none;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
 .input {
   width: 100%;
   max-width: 400px;
   padding: 8px 16px;
-  border: 1px solid #dbdbdb;
-  border-radius: 16px;
-  font-size: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
   height: 50px;
   box-sizing: border-box;
-  background-color: white;
-  margin-bottom: 8px;
+  background-color: var(--background);
+  outline: none;
+  flex-grow: 1;
+  transition: border-color 0.3s ease;
 }
+
+.button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  color: white;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button:hover {
+  transform: scale(1.1);
+}
+
+.addButton {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.addButton:hover {
+  background-color: var(--primary);
+}
+
+.deleteButton {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.deleteButton:hover {
+  background-color: var(--secondary);
+}
+
+.deleteButton:disabled {
+  background-color: var(--muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: scale(1);
+}
+

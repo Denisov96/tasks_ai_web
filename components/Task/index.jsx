@@ -4,8 +4,17 @@ import styles from "./styles.module.css";
 
 const ItemType = "TASK";
 
-export function Task({ id, text, index, onMove, onClick, completed, onEdit }) {
-  const [, ref] = useDrop({
+export function Task({
+  id,
+  text,
+  index,
+  onMove,
+  onClick,
+  completed,
+  onEdit,
+  className,
+}) {
+  const [, drop] = useDrop({
     accept: ItemType,
     hover(item) {
       if (item.index !== index) {
@@ -25,8 +34,10 @@ export function Task({ id, text, index, onMove, onClick, completed, onEdit }) {
 
   return (
     <div
-      ref={ref}
-      className={`${styles.taskCard} ${isDragging ? styles.dragging : ""}`}
+      ref={(node) => drop(drag(node))} 
+      className={`${styles.taskCard} ${
+        isDragging ? styles.dragging : ""
+      } ${className}`}
     >
       <div ref={drag} className={styles.dragHandle}>
         <span className={styles.dots}>⋮</span>

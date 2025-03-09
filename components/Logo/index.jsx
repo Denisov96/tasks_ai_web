@@ -1,14 +1,11 @@
-import Image from "next/image";
 import styles from "./styles.module.css";
 
 export function Logo() {
   return (
-    <Image
-      src="/images/logo.png"
-      alt="Logo"
-      width={80}
-      height={80}
-      className={styles.image}
-    />
+    <div className={styles.logo}>
+      <span className={styles.logoSymbol}>//</span>
+      <span className={styles.logoText}>task</span>
+      <span className={styles.logoAccent}>.ai</span>
+    </div>
   );
 }
