@@ -18,7 +18,7 @@ export function LoginView(props) {
 
     const currentUser = await response.json();
 
-    props.onSuccess(currentUser);
+    props.onSuccess(currentUser.data);
   }
 
   return (

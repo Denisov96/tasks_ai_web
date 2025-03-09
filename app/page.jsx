@@ -8,5 +8,5 @@ export default function Page() {
 
   if (!currentUser) return <LoginView onSuccess={(user) => setCurrentUser(user)}  />;
 
-  return <TasksView />;
+  return <TasksView currentUser={currentUser} />;
 }

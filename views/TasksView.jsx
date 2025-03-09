@@ -7,13 +7,13 @@ import { TaskList } from "../components/TaskList";
 import styles from "../styles.module.css";
 import { getTasks, updateTask, createTask } from "../lib/requests";
 
-export function TaskView() {
+export function TasksView(props) {
   const [tasks, setTasks] = useState([]);
   const [taskToEdit, setTaskToEdit] = useState(null);
 
   useEffect(() => {
     async function fetchAndSetTasks() {
-      const tasks = await getTasks();
+      const tasks = await getTasks(props.currentUser.id);
       setTasks(tasks);
     }
     fetchAndSetTasks();
