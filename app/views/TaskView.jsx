@@ -1,19 +1,18 @@
 "use client";
-
 import { useState, useEffect } from "react";
-import { Logo } from "../components/Logo";
-import { TaskInput } from "../components/TaskInput";
-import { TaskList } from "../components/TaskList";
-import styles from "../styles.module.css";
-import { getTasks, updateTask, createTask } from "../lib/requests";
+import { Logo } from "../../components/Logo";
+import { TaskInput } from "../../components/TaskInput";
+import { TaskList } from "../../components/TaskList";
+import styles from "../../styles.module.css";
+import { getTasks, updateTask, createTask } from "../../lib/requests";
 
-export function TaskView() {
+export function TasksView(props) {
   const [tasks, setTasks] = useState([]);
   const [taskToEdit, setTaskToEdit] = useState(null);
 
   useEffect(() => {
     async function fetchAndSetTasks() {
-      const tasks = await getTasks();
+      const tasks = await getTasks(props.currentUser.id);
       setTasks(tasks);
     }
     fetchAndSetTasks();
@@ -23,8 +22,8 @@ export function TaskView() {
     if (taskToEdit.text.trim() === "") return;
 
     const newTasks = taskToEdit.id
-    ? await updateTask(taskToEdit)
-    : await createTask(taskToEdit.text);
+      ? await updateTask(taskToEdit)
+      : await createTask(taskToEdit.text);
 
     setTasks(newTasks);
     setTaskToEdit(null);

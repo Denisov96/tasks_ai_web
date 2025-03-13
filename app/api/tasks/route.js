@@ -1,12 +1,13 @@
 export const dynamic = "force-dynamic";
 
-import { getAllTasks } from "../../../lib/db";
+import { getAllTasks, getTasks } from "../../../lib/db";
 import { prisma } from "../../../prisma/db";
 
-export async function GET() {
+export async function GET(request) {
+  const userId = parseInt(request.headers.get("userid"));
   return Response.json({
     message: "That's all your tasks",
-    data: await getAllTasks(),
+    data: await getTasks(userId),
     error: null,
   });
 }
@@ -46,13 +47,11 @@ export async function PUT(request) {
   }
 }
 
-
 export async function DELETE(request) {
   try {
     const { ids } = await request.json();
 
-    if (!Array.isArray(ids)) 
-      return new Response(null, { status: 400 });
+    if (!Array.isArray(ids)) return new Response(null, { status: 400 });
 
     await prisma.task.deleteMany({ where: { id: { in: ids } } });
 

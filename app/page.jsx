@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
-import { LoginView } from "../views/LoginView";
-import { TasksView } from "../views/TasksView";
+import { LoginView } from "./views/LoginView";
+import { TasksView } from "./views/TaskView";
 
 export default function Page() {
   const [currentUser, setCurrentUser] = useState();
+
   if (!currentUser)
     return <LoginView onSuccess={(user) => setCurrentUser(user)} />;
-
-  return <TasksView />;
+  return <TasksView currentUser={currentUser} />;
 }
