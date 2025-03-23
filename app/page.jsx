@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import { LoginView } from "./views/LoginView";
-import { TasksView } from "./views/TaskView";
+import { LoginView } from "../views/LoginView";
+import { TasksView } from "../views/TaskView";
 
 export default function Page() {
   const [currentUser, setCurrentUser] = useState();

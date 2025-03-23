@@ -1,3 +1,12 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
 model Task {
   id        Int      @id @default(autoincrement())
   text      String
@@ -12,13 +21,4 @@ model User {
   name      String
   tasks     Task[]
   createdAt DateTime @default(now())
-}
-
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
 }
