@@ -13,16 +13,17 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
+  const userId = parseInt(request.headers.get("userid"));
   const data = await request.text();
 
   await prisma.task.create({
-    data: { text: data },
+    data: { text: data, userId },
   });
 
   return Response.json({
-    data: await getAllTasks(),
-    error: null,
     message: "New task was created",
+    data: await getTasks(userId),
+    error: null,
   });
 }
 
