@@ -56,16 +56,25 @@ export async function PUT(request) {
 
 export async function DELETE(request) {
   try {
+    const userIdHeader = request.headers.get("userid");
+    const userId = userIdHeader ? parseInt(userIdHeader, 10) : null;
+
     const { ids } = await request.json();
 
     if (!Array.isArray(ids)) return new Response(null, { status: 400 });
 
-    await prisma.task.deleteMany({ where: { id: { in: ids } } });
+    await prisma.task.deleteMany({
+      where: {
+        id: { in: ids },
+        userId, 
+      },
+    });
 
-    const data = await getAllTasks();
+    const data = await getTasks(userId);
     return new Response(JSON.stringify({ data }), { status: 200 });
   } catch (error) {
     console.error(error);
     return new Response(null, { status: 500 });
   }
 }
+
