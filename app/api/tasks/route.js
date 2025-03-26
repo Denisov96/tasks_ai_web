@@ -29,6 +29,9 @@ export async function POST(request) {
 
 export async function PUT(request) {
   try {
+    const userIdHeader = request.headers.get("userid");
+    const userId = userIdHeader ? parseInt(userIdHeader, 10) : null;
+
     const { id, completed, text } = await request.json();
 
     if (!id || (completed === undefined && !text)) {
@@ -36,17 +39,20 @@ export async function PUT(request) {
     }
 
     await prisma.task.update({
-      where: { id },
+      where: { id, userId }, 
       data: { completed, text },
     });
 
     return Response.json({
-      data: await getAllTasks(),
+      message: "Task was updated",
+      data: await getTasks(userId),
+      error: null,
     });
-  } catch {
+  } catch (error) {
     return Response.json({}, { status: 500 });
   }
 }
+
 
 export async function DELETE(request) {
   try {
