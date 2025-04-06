@@ -136,39 +136,42 @@ export async function DELETE(request) {
       return Response.json({ error: "Invalid User ID" }, { status: 400 });
     }
 
-    const { ids } = await request.json();
+    const { id, ids } = await request.json();
 
-    if (!Array.isArray(ids) || ids.length === 0) {
+    if (!id && !ids) {
       return Response.json(
-        { error: "Array of task IDs is required" },
+        { error: "Task ID or array of IDs is required" },
         { status: 400 }
       );
     }
 
-    const existingTasks = await prisma.task.findMany({
-      where: {
-        id: { in: ids },
-        userId,
-      },
-    });
+    if (id) {
+      const task = await prisma.task.findUnique({
+        where: { id },
+      });
 
-    if (existingTasks.length !== ids.length) {
-      return Response.json(
-        { error: "Some tasks not found or access denied" },
-        { status: 404 }
-      );
+      if (!task || task.userId !== userId) {
+        return Response.json(
+          { error: "Task not found or access denied" },
+          { status: 404 }
+        );
+      }
+
+      await prisma.task.delete({
+        where: { id },
+      });
+    } else if (ids && Array.isArray(ids)) {
+      await prisma.task.deleteMany({
+        where: {
+          id: { in: ids },
+          userId,
+        },
+      });
     }
 
-    await prisma.task.deleteMany({
-      where: {
-        id: { in: ids },
-        userId,
-      },
-    });
-
     return Response.json({
-      message: "Tasks deleted successfully",
-      data: await getTasks(userId),
+      message: "Task(s) deleted successfully",
+      data: await getTasks(userId),  
       error: null,
     });
   } catch (error) {

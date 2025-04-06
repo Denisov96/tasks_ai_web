@@ -4,7 +4,7 @@ import { Logo } from "../components/Logo";
 import { TaskInput } from "../components/TaskInput";
 import { TaskList } from "../components/TaskList";
 import styles from "../styles.module.css";
-import { getTasks, updateTask, createTask } from "../lib/requests";
+import { getTasks, updateTask, createTask, deleteTask } from "../lib/requests";
 
 export function TasksView(props) {
   const [tasks, setTasks] = useState([]);
@@ -23,6 +23,15 @@ export function TasksView(props) {
     fetchAndSetTasks();
   }, [props.currentUser.id]);
 
+  async function handleDeleteTasks(ids) {
+    try {
+      const updatedTasks = await deleteTask(null, props.currentUser.id, ids);
+      setTasks(updatedTasks);
+    } catch (error) {
+      console.error("Error deleting tasks", error);
+    }
+  }
+
   async function handleSubmit() {
     if (!taskToEdit || !taskToEdit.text || taskToEdit.text.trim() === "") {
       return;
@@ -30,7 +39,7 @@ export function TasksView(props) {
 
     try {
       const newTasks = taskToEdit.id
-        ? await updateTask(taskToEdit)
+        ? await updateTask(taskToEdit, props.currentUser.id)
         : await createTask(taskToEdit.text, props.currentUser.id);
       setTasks(newTasks || []);
       setTaskToEdit(null);
@@ -52,12 +61,17 @@ export function TasksView(props) {
             setTaskToEdit({ text: value });
           }
         }}
+        tasks={tasks}
+        deleteTasks={handleDeleteTasks}
+        userId={props.currentUser.id}
+        onChangeTasks={setTasks}
       />
       <hr />
       <TaskList
         tasks={tasks}
         onChange={setTasks}
         onEdit={(task) => setTaskToEdit(task)}
+        userId={props.currentUser.id}
       />
     </div>
   );

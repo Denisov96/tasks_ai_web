@@ -3,9 +3,10 @@ import { Task } from "../Task";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { booleanSort } from "../../lib/utils";
+import { updateTask } from "../../lib/requests";
 import styles from "./styles.module.css";
 
-export function TaskList({ tasks = [], onChange, onEdit }) {
+export function TaskList({ tasks = [], onChange, onEdit, userId }) {
   const sortedTasks = useMemo(() => {
     return tasks.toSorted((prev, curr) =>
       booleanSort(prev.completed, curr.completed)
@@ -28,20 +29,8 @@ export function TaskList({ tasks = [], onChange, onEdit }) {
     onChange(updatedTasks);
 
     try {
-      const response = await fetch("http://localhost:3000/api/tasks", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id, completed }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to update task with id: ${id}`);
-      }
-
-      const responseObject = await response.json();
-      onChange(responseObject.data);
+      const updated = await updateTask({ id, completed }, userId);
+      onChange(updated);
     } catch (error) {
       console.error(error);
     }

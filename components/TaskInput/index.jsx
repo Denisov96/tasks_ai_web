@@ -1,5 +1,5 @@
+import { TrashIcon, PlusIcon } from "../Icons/icons";
 import styles from "./styles.module.css";
-import { TrashIcon, PlusIcon } from "../Icons/icons"
 
 export function TaskInput({
   onSubmit,
@@ -7,15 +7,39 @@ export function TaskInput({
   onChange,
   tasks = [],
   deleteTasks,
+  userId,
+  onChangeTasks,
 }) {
   const hasCompletedTasks = tasks.some((task) => task.completed);
+
+  const deleteCompletedTasks = async () => {
+    const completedIds = tasks.filter((t) => t.completed).map((t) => t.id);
+
+    try {
+      const response = await fetch("http://localhost:3000/api/tasks", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          userid: userId.toString(),
+        },
+        body: JSON.stringify({ ids: completedIds }),
+      });
+
+      if (!response.ok) throw new Error("Failed to delete completed tasks");
+      
+      const { data } = await response.json();
+      onChangeTasks && onChangeTasks(data); 
+    } catch (error) {
+      console.error("Delete error:", error);
+    }
+  };
 
   return (
     <div className={styles.inputContainer}>
       <input
         type="text"
         autoFocus
-        value={value ? value : ""}
+        value={value || ""}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && onSubmit()}
         placeholder="Enter a new task..."
@@ -29,7 +53,7 @@ export function TaskInput({
       </button>
       <button
         className={`${styles.button} ${styles.deleteButton}`}
-        onClick={deleteTasks}
+        onClick={deleteCompletedTasks}
         disabled={!hasCompletedTasks}
       >
         <TrashIcon />
