@@ -1,5 +1,6 @@
 import { TrashIcon, PlusIcon } from "../Icons/icons";
 import styles from "./styles.module.css";
+import { deleteTask } from "../../lib/requests";
 
 export function TaskInput({
   onSubmit,
@@ -13,36 +14,19 @@ export function TaskInput({
 
   const deleteCompletedTasks = async () => {
     const completedIds = tasks.filter((t) => t.completed).map((t) => t.id);
-  
+
     if (!completedIds.length) {
       console.warn("No completed tasks to delete.");
       return;
     }
-  
-    const url = `http://localhost:3000/api/users/${userId}/tasks`;
-    console.log("Sending DELETE request to:", url, "with IDs:", completedIds);
-  
+
     try {
-      const response = await fetch(url, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ ids: completedIds }),
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || "Failed to delete completed tasks");
-      }
-  
-      const { data } = await response.json();
-      onChangeTasks && onChangeTasks(data);
+      const updatedTasks = await deleteTask(userId, { ids: completedIds });
+      onChangeTasks && onChangeTasks(updatedTasks);
     } catch (error) {
       console.error("Delete error:", error.message);
     }
   };
-  
 
   return (
     <div className={styles.inputContainer}>
