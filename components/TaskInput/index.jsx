@@ -6,7 +6,6 @@ export function TaskInput({
   value,
   onChange,
   tasks = [],
-  deleteTasks,
   userId,
   onChangeTasks,
 }) {
@@ -14,25 +13,36 @@ export function TaskInput({
 
   const deleteCompletedTasks = async () => {
     const completedIds = tasks.filter((t) => t.completed).map((t) => t.id);
-
+  
+    if (!completedIds.length) {
+      console.warn("No completed tasks to delete.");
+      return;
+    }
+  
+    const url = `http://localhost:3000/api/users/${userId}/tasks`;
+    console.log("Sending DELETE request to:", url, "with IDs:", completedIds);
+  
     try {
-      const response = await fetch("http://localhost:3000/api/tasks", {
+      const response = await fetch(url, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          userid: userId.toString(),
         },
         body: JSON.stringify({ ids: completedIds }),
       });
-
-      if (!response.ok) throw new Error("Failed to delete completed tasks");
-      
+  
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || "Failed to delete completed tasks");
+      }
+  
       const { data } = await response.json();
-      onChangeTasks && onChangeTasks(data); 
+      onChangeTasks && onChangeTasks(data);
     } catch (error) {
-      console.error("Delete error:", error);
+      console.error("Delete error:", error.message);
     }
   };
+  
 
   return (
     <div className={styles.inputContainer}>

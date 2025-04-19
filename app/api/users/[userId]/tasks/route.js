@@ -81,19 +81,25 @@ export async function DELETE(request, { params }) {
     const errorResponse = validateUserId(userId);
     if (errorResponse) return errorResponse;
 
-    const { id, ids } = await request.json();
+    const body = await request.text();
+    console.log("DELETE request body:", body);
+
+    const { id, ids } = JSON.parse(body);
     if (!id && !ids?.length) {
       return Response.json({ error: "ID(s) required" }, { status: 400 });
     }
 
     if (id) {
-      await prisma.task.delete({ where: { id } });
+      await prisma.task.delete({ where: { id: Number(id) } });
     } else {
-      await prisma.task.deleteMany({ where: { id: { in: ids }, userId } });
+      await prisma.task.deleteMany({
+        where: { id: { in: ids.map(Number) }, userId }
+      });
     }
 
     return Response.json({ data: await fetchTasks(userId) });
   } catch (error) {
+    console.error("DELETE error:", error);
     return Response.json({ error: "Server Error" }, { status: 500 });
   }
 }
