@@ -1,6 +1,6 @@
 import { TrashIcon, PlusIcon } from "../Icons/icons";
 import styles from "./styles.module.css";
-import { deleteTask } from "../../lib/requests";
+import { deleteTask, getTasks } from "../../lib/requests";
 
 export function TaskInput({
   onSubmit,
@@ -21,7 +21,11 @@ export function TaskInput({
     }
 
     try {
-      const updatedTasks = await deleteTask(userId, { ids: completedIds });
+      for (const taskId of completedIds) {
+        await deleteTask(taskId, userId);
+      }
+
+      const updatedTasks = await getTasks(userId);
       onChangeTasks && onChangeTasks(updatedTasks);
     } catch (error) {
       console.error("Delete error:", error.message);

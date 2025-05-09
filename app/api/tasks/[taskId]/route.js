@@ -1,5 +1,5 @@
 export const dynamic = "force-dynamic";
-import { prisma } from "../../../../../prisma/db";
+import { prisma } from "../../../../prisma/db";
 import { headers } from "next/headers";
 
 function validateUserId(userId) {
@@ -9,7 +9,7 @@ function validateUserId(userId) {
   return null;
 }
 
-async function fetchTasks(userId) {
+async function getTasks(userId) {
   return await prisma.task.findMany({
     where: { userId },
     orderBy: { createdAt: "desc" },
@@ -44,7 +44,7 @@ export async function PUT(request) {
       data: updateData,
     });
 
-    const tasks = await fetchTasks(userId);
+    const tasks = await getTasks(userId);
     return Response.json({ data: tasks });
   } catch (error) {
     console.error("PUT error:", error);
@@ -73,7 +73,7 @@ export async function DELETE(request) {
 
     await prisma.task.delete({ where: { id: taskId } });
 
-    const tasks = await fetchTasks(userId);
+    const tasks = await getTasks(userId);
     return Response.json({ data: tasks });
   } catch (error) {
     console.error("DELETE error:", error);

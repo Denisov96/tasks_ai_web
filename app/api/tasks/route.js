@@ -1,5 +1,5 @@
 export const dynamic = "force-dynamic";
-import { prisma } from "../../../../../prisma/db";
+import { prisma } from "../../../prisma/db";
 import { headers } from "next/headers";
 
 function validateUserId(userId) {
