@@ -1,20 +1,8 @@
 export const dynamic = "force-dynamic";
 import { prisma } from "../../../../prisma/db";
 import { headers } from "next/headers";
-
-function validateUserId(userId) {
-  if (isNaN(userId)) {
-    return Response.json({ error: "Invalid User ID" }, { status: 400 });
-  }
-  return null;
-}
-
-async function getTasks(userId) {
-  return await prisma.task.findMany({
-    where: { userId },
-    orderBy: { createdAt: "desc" },
-  });
-}
+import { getTasks } from "../../../../lib/db";
+import { validateUserId } from "../../../../lib/requests";
 
 export async function PUT(request) {
   try {

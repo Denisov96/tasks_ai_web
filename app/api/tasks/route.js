@@ -1,20 +1,8 @@
 export const dynamic = "force-dynamic";
 import { prisma } from "../../../prisma/db";
 import { headers } from "next/headers";
-
-function validateUserId(userId) {
-  if (isNaN(userId)) {
-    return Response.json({ error: "Invalid User ID" }, { status: 400 });
-  }
-  return null;
-}
-
-async function fetchTasks(userId) {
-  return await prisma.task.findMany({
-    where: { userId },
-    orderBy: { createdAt: "desc" },
-  });
-}
+import { getTasks } from "../../../lib/db";
+import { validateUserId } from "../../../lib/requests";
 
 export async function GET() {
   try {
@@ -24,7 +12,7 @@ export async function GET() {
     const errorResponse = validateUserId(userId);
     if (errorResponse) return errorResponse;
 
-    const tasks = await fetchTasks(userId);
+    const tasks = await getTasks(userId);
     return Response.json({ data: tasks });
   } catch (error) {
     return Response.json({ error: "Server Error" }, { status: 500 });
@@ -37,6 +25,7 @@ export async function POST(request) {
     const userId = parseInt(headersList.get(`userId`));
 
     const errorResponse = validateUserId(userId);
+
     if (errorResponse) return errorResponse;
 
     const { text } = await request.json();
@@ -48,7 +37,7 @@ export async function POST(request) {
       data: { text: text.trim(), userId },
     });
 
-    return Response.json({ data: await fetchTasks(userId) });
+    return Response.json({ data: await getTasks(userId) });
   } catch (error) {
     return Response.json({ error: "Server Error" }, { status: 500 });
   }

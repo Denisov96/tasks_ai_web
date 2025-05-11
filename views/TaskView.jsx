@@ -4,7 +4,7 @@ import { Logo } from "../components/Logo";
 import { TaskInput } from "../components/TaskInput";
 import { TaskList } from "../components/TaskList";
 import styles from "../styles.module.css";
-import { getTasks, updateTask, createTask, deleteTask } from "../lib/requests";
+import { fetchTasks, updateTask, createTask, deleteTask } from "../lib/requests";
 
 export function TasksView(props) {
   const [tasks, setTasks] = useState([]);
@@ -13,7 +13,7 @@ export function TasksView(props) {
   useEffect(() => {
     async function fetchAndSetTasks() {
       try {
-        const tasks = await getTasks(props.currentUser.id);
+        const tasks = await fetchTasks(props.currentUser.id);
         setTasks(tasks || []);
       } catch (error) {
         console.error("Failed to fetch tasks:", error);
