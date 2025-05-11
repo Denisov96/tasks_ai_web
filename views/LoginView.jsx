@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
-import styles from "./styles.module.css"; 
+import styles from "./styles.module.css";
 
 export function LoginView(props) {
   const userNameInputRef = useRef();
+  const passwordInputRef = useRef();
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -13,9 +14,15 @@ export function LoginView(props) {
 
     try {
       const userName = userNameInputRef.current.value.trim();
-      
+      const password = passwordInputRef.current.value;
+
       if (!userName) {
         setError("Username is required");
+        return;
+      }
+
+      if (!password) {
+        setError("Password is required");
         return;
       }
 
@@ -24,7 +31,7 @@ export function LoginView(props) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username: userName }),
+        body: JSON.stringify({ username: userName, password: password }),
       });
 
       if (!response.ok) {
@@ -44,9 +51,9 @@ export function LoginView(props) {
   return (
     <div className={styles.loginContainer}>
       <h1 className={styles.loginTitle}>Sign in to your account</h1>
-      
+
       {error && <div className={styles.errorMessage}>{error}</div>}
-      
+
       <form className={styles.loginForm} onSubmit={handleSignIn}>
         <div className={styles.formGroup}>
           <label htmlFor="username" className={styles.formLabel}>
@@ -60,8 +67,20 @@ export function LoginView(props) {
             placeholder="Enter your username"
             disabled={isLoading}
           />
+
+          <label htmlFor="password" className={styles.formLabel}>
+            Password
+          </label>
+          <input
+            type="password"
+            id="password"
+            ref={passwordInputRef}
+            className={styles.formInput}
+            placeholder="Enter your password"
+            disabled={isLoading}
+          />
         </div>
-        
+
         <button
           type="submit"
           className={styles.loginButton}
@@ -70,7 +89,7 @@ export function LoginView(props) {
           {isLoading ? "Signing in..." : "Sign in"}
         </button>
       </form>
-      
+
       <div className={styles.loginFooter}>
         Don't have an account?{" "}
         <a href="#" className={styles.signupLink}>
