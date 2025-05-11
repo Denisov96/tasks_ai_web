@@ -1,21 +1,43 @@
+import { TrashIcon, PlusIcon } from "../Icons/icons";
 import styles from "./styles.module.css";
-import { TrashIcon, PlusIcon } from "../Icons/icons"
+import { deleteTask, fetchTasks } from "../../lib/requests";
 
 export function TaskInput({
   onSubmit,
   value,
   onChange,
   tasks = [],
-  deleteTasks,
+  userId,
+  onChangeTasks,
 }) {
   const hasCompletedTasks = tasks.some((task) => task.completed);
+
+  const deleteCompletedTasks = async () => {
+    const completedIds = tasks.filter((t) => t.completed).map((t) => t.id);
+
+    if (!completedIds.length) {
+      console.warn("No completed tasks to delete.");
+      return;
+    }
+
+    try {
+      for (const taskId of completedIds) {
+        await deleteTask(taskId, userId);
+      }
+
+      const updatedTasks = await fetchTasks(userId);
+      onChangeTasks && onChangeTasks(updatedTasks);
+    } catch (error) {
+      console.error("Delete error:", error.message);
+    }
+  };
 
   return (
     <div className={styles.inputContainer}>
       <input
         type="text"
         autoFocus
-        value={value ? value : ""}
+        value={value || ""}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && onSubmit()}
         placeholder="Enter a new task..."
@@ -29,7 +51,7 @@ export function TaskInput({
       </button>
       <button
         className={`${styles.button} ${styles.deleteButton}`}
-        onClick={deleteTasks}
+        onClick={deleteCompletedTasks}
         disabled={!hasCompletedTasks}
       >
         <TrashIcon />

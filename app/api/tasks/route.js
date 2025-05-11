@@ -1,65 +1,44 @@
 export const dynamic = "force-dynamic";
-
-import { getAllTasks } from "../../../lib/db";
 import { prisma } from "../../../prisma/db";
+import { headers } from "next/headers";
+import { getTasks } from "../../../lib/db";
+import { validateUserId } from "../../../lib/requests";
 
 export async function GET() {
-  return Response.json({
-    message: "That's all your tasks",
-    data: await getAllTasks(),
-    error: null,
-  });
-}
-
-export async function POST(request) {
-  const data = await request.text();
-
-  await prisma.task.create({
-    data: { text: data },
-  });
-
-  return Response.json({
-    data: await getAllTasks(),
-    error: null,
-    message: "New task was created",
-  });
-}
-
-export async function PUT(request) {
   try {
-    const { id, completed, text } = await request.json();
+    const headersList = headers();
+    const userId = parseInt(headersList.get(`userId`));
 
-    if (!id || (completed === undefined && !text)) {
-      return Response.json({}, { status: 400 });
-    }
+    const errorResponse = validateUserId(userId);
+    if (errorResponse) return errorResponse;
 
-    await prisma.task.update({
-      where: { id },
-      data: { completed, text },
-    });
-
-    return Response.json({
-      data: await getAllTasks(),
-    });
-  } catch {
-    return Response.json({}, { status: 500 });
+    const tasks = await getTasks(userId);
+    return Response.json({ data: tasks });
+  } catch (error) {
+    return Response.json({ error: "Server Error" }, { status: 500 });
   }
 }
 
-
-export async function DELETE(request) {
+export async function POST(request) {
   try {
-    const { ids } = await request.json();
+    const headersList = headers();
+    const userId = parseInt(headersList.get(`userId`));
 
-    if (!Array.isArray(ids)) 
-      return new Response(null, { status: 400 });
+    const errorResponse = validateUserId(userId);
 
-    await prisma.task.deleteMany({ where: { id: { in: ids } } });
+    if (errorResponse) return errorResponse;
 
-    const data = await getAllTasks();
-    return new Response(JSON.stringify({ data }), { status: 200 });
+    const { text } = await request.json();
+    if (!text?.trim()) {
+      return Response.json({ error: "Text is required" }, { status: 400 });
+    }
+
+    await prisma.task.create({
+      data: { text: text.trim(), userId },
+    });
+
+    return Response.json({ data: await getTasks(userId) });
   } catch (error) {
-    console.error(error);
-    return new Response(null, { status: 500 });
+    return Response.json({ error: "Server Error" }, { status: 500 });
   }
 }
