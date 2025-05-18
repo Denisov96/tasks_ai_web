@@ -8,18 +8,18 @@ async function hashPassword(password) {
 }
 
 export async function POST(request) {
-  const { username, password } = await request.json();
+  const { userName, password } = await request.json();
 
   let user = await prisma.user.findFirst({
     where: {
-      name: username,
+      name: userName,
     },
   });
 
   if (user === null) {
     user = await prisma.user.create({
       data: {
-        name: username,
+        name: userName,
         password: await hashPassword(password),
       },
     });
