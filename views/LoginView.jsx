@@ -32,7 +32,7 @@ export function LoginView(props) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username: userName, password: password})
+        body: JSON.stringify({ userName: userName, password: password})
       });
 
       if (!response.ok) {
