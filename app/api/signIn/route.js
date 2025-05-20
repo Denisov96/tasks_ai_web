@@ -1,26 +1,35 @@
 import { prisma } from "../../../prisma/db";
+import bcrypt from "bcrypt";
+
+export const dynamic = "force-dynamic";
 
 export async function POST(request) {
-  const userName = await request.text();
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return Response.json({ data: null, error: "Invalid JSON" }, { status: 400 });
+  }
 
-  let user = await prisma.user.findFirst({
-    where: {
-      name: userName,
-    },
-  });
+  const { username, password } = body;
+  if (!username || !password) {
+    return Response.json({ data: null, error: "Username and password are required" }, { status: 400 });
+  }
 
-  if (user === null) {
-    user = await prisma.user.create({
-      data: {
-        name: userName,
-      },
-    });
+  const user = await prisma.user.findFirst({ where: { name: username } });
+  if (!user) {
+    return Response.json({ data: null, error: "User not found" }, { status: 404 });
+  }
+
+  
+  const isValid = await bcrypt.compare(password, user.password);
+  if (!isValid) {
+    return Response.json({ data: null, error: "Incorrect password" }, { status: 401 });
   }
 
   return Response.json({
-    data: user,
+    data: { id: user.id, name: user.name },
     error: null,
     message: "Success",
   });
 }
-
