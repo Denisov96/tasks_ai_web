@@ -32,7 +32,7 @@ export async function POST(request) {
   if (existing) {
     return Response.json(
       { data: null, error: "User already exists" },
-      { status: 409 }
+      { status: 400 }
     );
   }
 
