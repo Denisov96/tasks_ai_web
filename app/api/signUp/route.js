@@ -8,30 +8,35 @@ export async function POST(request) {
   try {
     body = await request.json();
   } catch {
-    return Response.json(
-      { data: null, error: "Invalid JSON" },
+    return new Response(
+      JSON.stringify({ error: "Invalid JSON" }),
       { status: 400 }
     );
   }
 
   const { username, password, confirmPassword } = body;
+
   if (!username || !password || !confirmPassword) {
-    return Response.json(
-      { data: null, error: "All fields are required" },
-      { status: 400 }
-    );
-  }
-  if (password !== confirmPassword) {
-    return Response.json(
-      { data: null, error: "Passwords do not match" },
+    return new Response(
+      JSON.stringify({ error: "All fields are required" }),
       { status: 400 }
     );
   }
 
-  const existing = await prisma.user.findFirst({ where: { name: username } });
+  if (password !== confirmPassword) {
+    return new Response(
+      JSON.stringify({ error: "Passwords do not match" }),
+      { status: 400 }
+    );
+  }
+
+  const existing = await prisma.user.findFirst({
+    where: { name: username },
+  });
+
   if (existing) {
-    return Response.json(
-      { data: null, error: "User already exists" },
+    return new Response(
+      JSON.stringify({ error: "User already exists" }),
       { status: 400 }
     );
   }
@@ -42,9 +47,15 @@ export async function POST(request) {
     data: { name: username, password: hash },
   });
 
-  return Response.json({
-    data: { id: user.id, name: user.name },
-    error: null,
-    message: "User created successfully",
-  });
+  return new Response(
+    JSON.stringify({
+      data: { id: user.id, name: user.name },
+      message: "User created successfully",
+    }),
+    {
+      status: 201,
+      headers: { "Content-Type": "application/json" },
+    }
+  );
 }
+

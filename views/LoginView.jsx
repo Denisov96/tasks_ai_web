@@ -4,16 +4,11 @@ import { useRef, useState } from "react";
 import styles from "./styles.module.css";
 
 export function LoginView(props) {
-
   const userNameRef = useRef();
   const passwordRef = useRef();
   const confirmRef = useRef();
 
   const [isSignUp, setIsSignUp] = useState(false);
-
-  const userNameInputRef = useRef();
-  const passwordInputRef = useRef();
-
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -26,12 +21,12 @@ export function LoginView(props) {
     const password = passwordRef.current.value;
     const confirmPassword = isSignUp ? confirmRef.current.value : null;
 
-    
     if (!username || !password || (isSignUp && !confirmPassword)) {
       setError("All fields are required");
       setIsLoading(false);
       return;
     }
+
     if (isSignUp && password !== confirmPassword) {
       setError("Passwords do not match");
       setIsLoading(false);
@@ -39,7 +34,6 @@ export function LoginView(props) {
     }
 
     try {
-
       const endpoint = isSignUp ? "/api/signUp" : "/api/signIn";
       const body = isSignUp
         ? { username, password, confirmPassword }
@@ -49,28 +43,6 @@ export function LoginView(props) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
-
-      const userName = userNameInputRef.current.value.trim();
-
-      const password = passwordInputRef.current.value;
-      
-      if (!userName) {
-        setError("Username is required");
-        return;
-      }
-
-       if (!password) {
-        setError("Password is required");
-        return;
-      }
-
-      const response = await fetch("http://localhost:3000/api/signIn", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ userName: userName, password: password})
-
       });
 
       const result = await res.json();
@@ -96,7 +68,6 @@ export function LoginView(props) {
       {error && <div className={styles.errorMessage}>{error}</div>}
 
       <form className={styles.loginForm} onSubmit={handleSubmit}>
-        {}
         <div className={styles.formGroup}>
           <label htmlFor="username" className={styles.formLabel}>
             Username
@@ -109,21 +80,8 @@ export function LoginView(props) {
             placeholder="Enter your username"
             disabled={isLoading}
           />
-          
-          <label htmlFor="password" className={styles.formLabel}>
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            ref={passwordInputRef}
-            className={styles.formInput}
-            placeholder="Enter your password"
-            disabled={isLoading}
-          />
         </div>
 
-        {}
         <div className={styles.formGroup}>
           <label htmlFor="password" className={styles.formLabel}>
             Password
@@ -138,7 +96,6 @@ export function LoginView(props) {
           />
         </div>
 
-        {}
         {isSignUp && (
           <div className={styles.formGroup}>
             <label htmlFor="confirm" className={styles.formLabel}>
@@ -155,11 +112,7 @@ export function LoginView(props) {
           </div>
         )}
 
-        <button
-          type="submit"
-          className={styles.loginButton}
-          disabled={isLoading}
-        >
+        <button type="submit" className={styles.loginButton} disabled={isLoading}>
           {isLoading
             ? isSignUp
               ? "Signing up..."
