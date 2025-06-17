@@ -1,15 +1,19 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import styles from "./styles.module.css";
+import { UserContext } from "../layout"; 
+import { useRouter } from "next/navigation";
 
-export default function SignUpPage(props) {
+export default function SignUpPage() {
   const userNameRef = useRef();
   const passwordRef = useRef();
   const confirmRef = useRef();
 
+  const { setCurrentUser } = useContext(UserContext);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -36,16 +40,16 @@ export default function SignUpPage(props) {
       const res = await fetch("/api/signUp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, confirmPassword }),
+        body: JSON.stringify({ username, password, confirmPassword }), 
       });
 
       const result = await res.json();
 
-      if (!res.ok) {
-        throw new Error(result.error || "Something went wrong");
-      }
+      if (!res.ok) throw new Error(result.error || "Something went wrong");
 
-      props?.onSuccess?.(result.data);
+      setCurrentUser(result.data);
+
+      router.push("/tasks");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -102,10 +106,15 @@ export default function SignUpPage(props) {
           />
         </div>
 
-        <button type="submit" className={styles.loginButton} disabled={isLoading}>
+        <button
+          type="submit"
+          className={styles.loginButton}
+          disabled={isLoading}
+        >
           {isLoading ? "Signing up..." : "Sign up"}
         </button>
       </form>
     </div>
   );
 }
+

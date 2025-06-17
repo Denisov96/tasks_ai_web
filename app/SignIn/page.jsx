@@ -1,11 +1,15 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
+import { useRouter } from "next/navigation";
+import { UserContext } from "../layout";
 import styles from "./styles.module.css";
 
-export default function SignInPage(props) {
+export default function SignInPage() {
   const userNameRef = useRef();
   const passwordRef = useRef();
+  const { setCurrentUser } = useContext(UserContext);
+  const router = useRouter();
 
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +41,9 @@ export default function SignInPage(props) {
         throw new Error(result.error || "Something went wrong");
       }
 
-      props?.onSuccess?.(result.data);
+      setCurrentUser(result.data);
+
+      router.push("/tasks");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -80,10 +86,29 @@ export default function SignInPage(props) {
           />
         </div>
 
-        <button type="submit" className={styles.loginButton} disabled={isLoading}>
+        <button
+          type="submit"
+          className={styles.loginButton}
+          disabled={isLoading}
+        >
           {isLoading ? "Signing in..." : "Sign in"}
         </button>
       </form>
+
+      {}
+      <div className={styles.loginFooter}>
+        <p>
+          Don't have an account?{" "}
+          <button
+            type="button"
+            className={styles.signupLink}
+            onClick={() => router.push("/signup")}
+          >
+            Sign Up
+          </button>
+        </p>
+      </div>
     </div>
   );
 }
+
