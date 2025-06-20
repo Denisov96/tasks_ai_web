@@ -49,7 +49,7 @@ export default function SignUpPage() {
 
       setCurrentUser(result.data);
 
-      router.push("/tasks");
+      router.push("/sign-in");
     } catch (err) {
       setError(err.message);
     } finally {

@@ -2,10 +2,8 @@
 
 import { useContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { UserContext } from "../layout";
-import { TasksView } from "../../views/TaskView"; 
-
-
+import { UserContext } from "./layout";
+import { TasksView } from "../views/TaskView";
 
 export default function Page() {
   const router = useRouter();
@@ -13,7 +11,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!currentUser) {
-      router.replace("/signin");
+      router.replace("/sign-in");
     }
   }, [currentUser, router]);
 

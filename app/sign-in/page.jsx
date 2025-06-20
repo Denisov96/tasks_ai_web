@@ -4,6 +4,7 @@ import { useRef, useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { UserContext } from "../layout";
 import styles from "./styles.module.css";
+import Link from 'next/link';
 
 export default function SignInPage() {
   const userNameRef = useRef();
@@ -43,7 +44,7 @@ export default function SignInPage() {
 
       setCurrentUser(result.data);
 
-      router.push("/tasks");
+      router.push("/");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -95,20 +96,14 @@ export default function SignInPage() {
         </button>
       </form>
 
-      {}
       <div className={styles.loginFooter}>
         <p>
           Don't have an account?{" "}
-          <button
-            type="button"
-            className={styles.signupLink}
-            onClick={() => router.push("/signup")}
-          >
+          <Link className={styles.signupLink} href="/sign-up">
             Sign Up
-          </button>
+          </Link>
         </p>
       </div>
     </div>
   );
 }
-
