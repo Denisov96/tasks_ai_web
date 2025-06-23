@@ -1,17 +1,26 @@
-import React from "react";
+"use client";
+import React, { createContext, useState } from "react";
 import { Roboto } from "next/font/google";
 import "../vars.css";
 
+export const UserContext = createContext(null);
+
 const roboto = Roboto({
-  weight: ["400", "700"],
   subsets: ["latin", "cyrillic"],
+  weight: ["400", "700"],
   display: "swap",
 });
 
 export default function RootLayout({ children }) {
+  const [currentUser, setCurrentUser] = useState(null);
+
   return (
     <html lang="en" className={roboto.className}>
-      <body>{children}</body>
+      <body>
+        <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+          {children}
+        </UserContext.Provider>
+      </body>
     </html>
   );
 }

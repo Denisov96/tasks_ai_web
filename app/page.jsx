@@ -1,12 +1,21 @@
 "use client";
-import { useState } from "react";
-import { LoginView } from "../views/LoginView";
+
+import { useContext, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { UserContext } from "./layout";
 import { TasksView } from "../views/TaskView";
 
 export default function Page() {
-  const [currentUser, setCurrentUser] = useState();
+  const router = useRouter();
+  const { currentUser } = useContext(UserContext);
 
-  if (!currentUser)
-    return <LoginView onSuccess={(user) => setCurrentUser(user)} />;
+  useEffect(() => {
+    if (!currentUser) {
+      router.replace("/sign-in");
+    }
+  }, [currentUser, router]);
+
+  if (!currentUser) return null;
+
   return <TasksView currentUser={currentUser} />;
 }
