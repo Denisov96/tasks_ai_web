@@ -2,7 +2,7 @@
 
 import { useRef, useState, useContext } from "react";
 import styles from "./styles.module.css";
-import { UserContext } from "../layout"; 
+import { UserContext } from "../context/userContext"; 
 import { useRouter } from "next/navigation";
 
 export default function SignUpPage() {

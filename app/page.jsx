@@ -2,7 +2,7 @@
 
 import { useContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { UserContext } from "./layout";
+import { UserContext } from "../app/context/userContext";
 import { TasksView } from "../views/TaskView";
 
 export default function Page() {
