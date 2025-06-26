@@ -1,43 +1,13 @@
-"use client";
-import { useDrag, useDrop } from "react-dnd";
+import { useTaskDragDrop } from "../../hooks/useTaskDragDrop";
 import styles from "./styles.module.css";
 
-const ItemType = "TASK";
-
-export function Task({
-  id,
-  text,
-  index,
-  onMove,
-  onClick,
-  completed,
-  onEdit,
-  className,
-}) {
-  const [, drop] = useDrop({
-    accept: ItemType,
-    hover(item) {
-      if (item.index !== index) {
-        onMove(item.index, index);
-        item.index = index;
-      }
-    },
-  });
-
-  const [{ isDragging }, drag] = useDrag({
-    type: ItemType,
-    item: { id, index },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  });
+export function Task({ id, text, index, onMove, onClick, completed, onEdit, className }) {
+  const { drag, drop, isDragging } = useTaskDragDrop({ id, index, onMove });
 
   return (
     <div
-      ref={(node) => drop(drag(node))} 
-      className={`${styles.taskCard} ${
-        isDragging ? styles.dragging : ""
-      } ${className}`}
+      ref={(node) => drop(drag(node))}
+      className={`${styles.taskCard} ${isDragging ? styles.dragging : ""} ${className}`}
     >
       <div ref={drag} className={styles.dragHandle}>
         <span className={styles.dots}>⋮</span>
