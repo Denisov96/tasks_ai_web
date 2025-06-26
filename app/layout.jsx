@@ -1,6 +1,5 @@
 
 "use client";
-
 import { useState } from "react";
 import { Roboto } from "next/font/google";
 import "../vars.css";
@@ -25,3 +24,4 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+

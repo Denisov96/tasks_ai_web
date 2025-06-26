@@ -1,18 +1,17 @@
 "use client";
 
-import { useRef, useState, useContext } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { UserContext } from "../context/userContext";
+import { useUser } from "../hooks/useUser";
 
 export function useSignUp() {
   const userNameRef = useRef();
   const passwordRef = useRef();
   const confirmRef = useRef();
 
-  const { setCurrentUser } = useContext(UserContext);
+  const { setCurrentUser } = useUser();
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
   const router = useRouter();
 
   const handleSubmit = async (e) => {

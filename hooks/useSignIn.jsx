@@ -1,13 +1,15 @@
-import { useState, useRef, useContext } from "react";
+"use client";
+
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { UserContext } from "../context/userContext";
+import { useUser } from "../hooks/useUser";
 
 export function useSignIn() {
   const userNameRef = useRef();
   const passwordRef = useRef();
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { setCurrentUser } = useContext(UserContext);
+  const { setCurrentUser } = useUser();
   const router = useRouter();
 
   const handleSubmit = async (e) => {
