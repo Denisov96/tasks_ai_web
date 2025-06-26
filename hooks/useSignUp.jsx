@@ -2,7 +2,7 @@
 
 import { useRef, useState, useContext } from "react";
 import { useRouter } from "next/navigation";
-import { UserContext } from "../app/context/userContext";
+import { UserContext } from "../context/userContext";
 
 export function useSignUp() {
   const userNameRef = useRef();
