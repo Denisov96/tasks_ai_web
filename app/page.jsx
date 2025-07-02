@@ -1,13 +1,13 @@
 "use client";
 
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { UserContext } from "./layout";
+import { useUser } from "../hooks/useUser";
 import { TasksView } from "../views/TaskView";
 
 export default function Page() {
   const router = useRouter();
-  const { currentUser } = useContext(UserContext);
+  const { currentUser } = useUser();
 
   useEffect(() => {
     if (!currentUser) {

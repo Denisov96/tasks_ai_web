@@ -1,9 +1,9 @@
+
 "use client";
-import React, { createContext, useState } from "react";
+import { useState } from "react";
 import { Roboto } from "next/font/google";
 import "../vars.css";
-
-export const UserContext = createContext(null);
+import { UserContext } from "../context/userContext";
 
 const roboto = Roboto({
   subsets: ["latin", "cyrillic"],
@@ -24,3 +24,4 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
