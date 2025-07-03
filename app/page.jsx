@@ -2,20 +2,21 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useUser } from "../hooks/useUser";
+import { useAuth } from "../hooks/useAuth";
 import { TasksView } from "../views/TaskView";
 
 export default function Page() {
   const router = useRouter();
-  const { currentUser } = useUser();
+  const auth = useAuth();
 
   useEffect(() => {
-    if (!currentUser) {
+    if (auth === false) {
       router.replace("/sign-in");
     }
-  }, [currentUser, router]);
+  }, [auth, router]);
 
-  if (!currentUser) return null;
+  if (auth === null) return <p>Authenticated</p>;
+  if (auth === false) return null;
 
-  return <TasksView currentUser={currentUser} />;
+  return <TasksView currentUser={auth} />;
 }
