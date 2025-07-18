@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../hooks/useAuth";
 import { TasksView } from "../views/TaskView";
+import Spinner from "../components/Spinner";
 
 export default function Page() {
   const router = useRouter();
@@ -15,8 +16,7 @@ export default function Page() {
     }
   }, [auth, router]);
 
-  if (auth === null) return <p>Authenticated</p>;
-  if (auth === false) return null;
+  if (!auth) return auth === null ? <Spinner /> : null;
 
   return <TasksView currentUser={auth} />;
 }
