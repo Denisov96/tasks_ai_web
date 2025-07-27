@@ -41,7 +41,7 @@ export async function POST(request) {
     });
   }
 
-  const token = createAccessToken(user.name);
+  const token = createAccessToken(user.id);
 
   return new Response(
     JSON.stringify({
