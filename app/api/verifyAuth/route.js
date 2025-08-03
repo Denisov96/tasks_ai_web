@@ -21,9 +21,16 @@ export function GET() {
       status: 200,
     });
   } catch (err) {
+    if (err.name === "TokenExpiredError") {
+      return new Response(
+        JSON.stringify({ error: "Access token expired" }),
+        { status: 401 }
+      );
+    }
     return new Response(
       JSON.stringify({ error: "Invalid access token!" }),
       { status: 401 }
     );
   }
 }
+

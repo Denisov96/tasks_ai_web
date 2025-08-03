@@ -6,8 +6,11 @@ export function Task({ id, text, index, onMove, onClick, completed, onEdit, clas
 
   return (
     <div
-      ref={(node) => drop(drag(node))}
-      className={`${styles.taskCard} ${isDragging ? styles.dragging : ""} ${className}`}
+      ref={(node) => {
+        drag(node);
+        drop(node);
+      }}
+      className={`${styles.taskCard} ${isDragging ? styles.dragging : ""} ${className || ""}`}
     >
       <div ref={drag} className={styles.dragHandle}>
         <span className={styles.dots}>⋮</span>
@@ -27,3 +30,4 @@ export function Task({ id, text, index, onMove, onClick, completed, onEdit, clas
     </div>
   );
 }
+

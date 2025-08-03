@@ -1,14 +1,13 @@
-export const dynamic = "force-dynamic";
 import { prisma } from "../../../../prisma/db";
-import { headers } from "next/headers";
+import { getUserIdFromCookies } from "../../../../lib/auth";
 import { getTasks } from "../../../../lib/db";
 import { validateUserId } from "../../../../lib/requests";
 
+export const dynamic = "force-dynamic";
+
 export async function PUT(request) {
   try {
-    const headersList = headers();
-    const userId = parseInt(headersList.get("userId"));
-
+    const userId = getUserIdFromCookies(request);
     const errorResponse = validateUserId(userId);
     if (errorResponse) return errorResponse;
 
@@ -42,9 +41,7 @@ export async function PUT(request) {
 
 export async function DELETE(request) {
   try {
-    const headersList = headers();
-    const userId = parseInt(headersList.get("userId"));
-
+    const userId = getUserIdFromCookies(request);
     const errorResponse = validateUserId(userId);
     if (errorResponse) return errorResponse;
 

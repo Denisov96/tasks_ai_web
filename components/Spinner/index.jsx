@@ -16,7 +16,7 @@ export default function Spinner() {
           width: 40px;
           height: 40px;
           border: 3px solid rgba(0, 0, 0, 0.1);
-          border-top: 3px solid #6366f1;
+          border-top: 3px solid #000;
           border-radius: 50%;
           animation: spin 1s ease-in-out infinite;
         }
