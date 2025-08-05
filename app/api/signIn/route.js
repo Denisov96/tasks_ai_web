@@ -1,5 +1,6 @@
 import { prisma } from "../../../prisma/db";
 import bcrypt from "bcrypt";
+import { createAccessToken } from "../../../lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -8,10 +9,9 @@ export async function POST(request) {
   try {
     body = await request.json();
   } catch {
-    return new Response(
-      JSON.stringify({ error: "Invalid JSON" }),
-      { status: 400 }
-    );
+    return new Response(JSON.stringify({ error: "Invalid JSON" }), {
+      status: 400,
+    });
   }
 
   const { username, password } = body;
@@ -28,20 +28,20 @@ export async function POST(request) {
   });
 
   if (!user) {
-    return new Response(
-      JSON.stringify({ error: "User not found" }),
-      { status: 404 }
-    );
+    return new Response(JSON.stringify({ error: "User not found" }), {
+      status: 404,
+    });
   }
 
   const isValid = await bcrypt.compare(password, user.password);
 
   if (!isValid) {
-    return new Response(
-      JSON.stringify({ error: "Incorrect password" }),
-      { status: 401 }
-    );
+    return new Response(JSON.stringify({ error: "Incorrect password" }), {
+      status: 401,
+    });
   }
+
+  const token = createAccessToken(user.id);
 
   return new Response(
     JSON.stringify({
@@ -50,9 +50,10 @@ export async function POST(request) {
     }),
     {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Set-Cookie": `accessToken=${token}; HttpOnly; Path=/; Max-Age=900; SameSite=Lax; Secure`,
+      },
     }
   );
 }
-
-

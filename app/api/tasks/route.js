@@ -1,14 +1,13 @@
-export const dynamic = "force-dynamic";
 import { prisma } from "../../../prisma/db";
-import { headers } from "next/headers";
-import { getTasks } from "../../../lib/db";
+import { getUserIdFromCookies } from "../../../lib/auth";
 import { validateUserId } from "../../../lib/requests";
+import { getTasks } from "../../../lib/db";
+
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const headersList = headers();
-    const userId = parseInt(headersList.get(`userId`));
-
+    const userId = getUserIdFromCookies();
     const errorResponse = validateUserId(userId);
     if (errorResponse) return errorResponse;
 
@@ -21,11 +20,8 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const headersList = headers();
-    const userId = parseInt(headersList.get(`userId`));
-
+    const userId = getUserIdFromCookies();
     const errorResponse = validateUserId(userId);
-
     if (errorResponse) return errorResponse;
 
     const { text } = await request.json();
@@ -37,7 +33,8 @@ export async function POST(request) {
       data: { text: text.trim(), userId },
     });
 
-    return Response.json({ data: await getTasks(userId) });
+    const tasks = await getTasks(userId);
+    return Response.json({ data: tasks });
   } catch (error) {
     return Response.json({ error: "Server Error" }, { status: 500 });
   }

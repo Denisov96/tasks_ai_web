@@ -1,24 +1,23 @@
 "use client";
-
 import { useState } from "react";
-import { deleteTask, fetchTasks, createTask } from "../lib/requests";
+import { createTask, deleteTask, fetchTasks } from "../lib/requests";
 
-export function useTaskInput({ tasks = [], userId, onChangeTasks }) {
+export function useTaskInput({ tasks = [], onChangeTasks }) {
   const [value, setValue] = useState("");
 
   const hasCompletedTasks = tasks.some((task) => task.completed);
 
-  const handleChange = (newValue) => {
+  const onChange = (newValue) => {
     setValue(newValue);
   };
 
-  const handleSubmit = async () => {
+  const onSubmit = async () => {
     const trimmed = value.trim();
     if (!trimmed) return;
 
     try {
-      await createTask(trimmed, userId);
-      const updatedTasks = await fetchTasks(userId);
+      await createTask(trimmed);
+      const updatedTasks = await fetchTasks();
       onChangeTasks && onChangeTasks(updatedTasks);
       setValue("");
     } catch (error) {
@@ -28,15 +27,13 @@ export function useTaskInput({ tasks = [], userId, onChangeTasks }) {
 
   const deleteCompletedTasks = async () => {
     const completedIds = tasks.filter((t) => t.completed).map((t) => t.id);
-
     if (!completedIds.length) return;
 
     try {
       for (const taskId of completedIds) {
-        await deleteTask(taskId, userId);
+        await deleteTask(taskId);
       }
-
-      const updatedTasks = await fetchTasks(userId);
+      const updatedTasks = await fetchTasks();
       onChangeTasks && onChangeTasks(updatedTasks);
     } catch (error) {
       console.error("Delete error:", error.message);
@@ -46,8 +43,8 @@ export function useTaskInput({ tasks = [], userId, onChangeTasks }) {
   return {
     value,
     hasCompletedTasks,
-    onChange: handleChange,
-    onSubmit: handleSubmit,
+    onChange,
+    onSubmit,
     deleteCompletedTasks,
   };
 }

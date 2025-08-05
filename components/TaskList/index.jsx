@@ -4,12 +4,12 @@ import { Task } from "../Task";
 import styles from "./styles.module.css";
 import { useTaskList } from "../../hooks/useTaskList";
 
-export function TaskList({ tasks = [], onChange, onEdit, userId }) {
+export function TaskList({ tasks = [], onChange, onEdit }) {
   const {
     sortedTasks,
     moveTask,
     toggleTaskCompleted,
-  } = useTaskList({ tasks, onChange, userId });
+  } = useTaskList({ tasks, onChange });
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -22,9 +22,7 @@ export function TaskList({ tasks = [], onChange, onEdit, userId }) {
             index={index}
             completed={task.completed}
             onMove={moveTask}
-            onClick={({ id, completed }) =>
-              toggleTaskCompleted(id, completed)
-            }
+            onClick={({ id, completed }) => toggleTaskCompleted(id, completed)}
             onEdit={onEdit}
           />
         ))}
@@ -32,3 +30,4 @@ export function TaskList({ tasks = [], onChange, onEdit, userId }) {
     </DndProvider>
   );
 }
+
