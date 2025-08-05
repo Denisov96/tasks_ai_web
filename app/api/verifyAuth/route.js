@@ -1,36 +1,39 @@
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
+import { createAccessToken } from "../../../lib/auth";
 
-export function GET() {
+export async function GET() {
   const cookieStore = cookies();
-  const accessToken = cookieStore.get("accessToken");
+  const refreshToken = cookieStore.get("refreshToken");
 
-  if (!accessToken) {
-    return new Response(JSON.stringify({ error: "No access token provided" }), {
-      status: 400,
+  if (!refreshToken?.value) {
+    return new Response(JSON.stringify({ error: "No refresh token" }), {
+      status: 401,
     });
   }
 
   try {
     const decoded = jwt.verify(
-      accessToken.value,
-      process.env.ACCESS_TOKEN_SIGNATURE
+      refreshToken.value,
+      process.env.REFRESH_TOKEN_SIGNATURE
     );
 
-    return new Response(JSON.stringify(decoded), {
+    const newAccessToken = createAccessToken(decoded.userId);
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append(
+      "Set-Cookie",
+      `accessToken=${newAccessToken}; HttpOnly; Path=/; Max-Age=900; SameSite=Lax; Secure`
+    );
+
+    return new Response(JSON.stringify({ success: true }), {
       status: 200,
+      headers,
     });
   } catch (err) {
-    if (err.name === "TokenExpiredError") {
-      return new Response(
-        JSON.stringify({ error: "Access token expired" }),
-        { status: 401 }
-      );
-    }
-    return new Response(
-      JSON.stringify({ error: "Invalid access token!" }),
-      { status: 401 }
-    );
+    return new Response(JSON.stringify({ error: "Invalid refresh token" }), {
+      status: 401,
+    });
   }
 }
-
