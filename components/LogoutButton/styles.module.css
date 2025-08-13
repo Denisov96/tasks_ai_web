@@ -4,7 +4,7 @@
   right: 16px;
 }
 
-.button {
+.logoutButton {
   width: 44px;
   height: 44px;
   border-radius: 8px;
@@ -14,9 +14,6 @@
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.25s ease, transform 0.2s ease;
-}
-
-.logoutButton {
   background-color: var(--muted);
   color: black;
 }
@@ -32,3 +29,4 @@
   opacity: 0.6;
   transform: none;
 }
+

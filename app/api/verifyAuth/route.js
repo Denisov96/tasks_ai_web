@@ -1,39 +1,29 @@
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import { createAccessToken } from "../../../lib/auth";
 
 export async function GET() {
   const cookieStore = cookies();
-  const refreshToken = cookieStore.get("refreshToken");
+  const accessToken = cookieStore.get("accessToken");
 
-  if (!refreshToken?.value) {
-    return new Response(JSON.stringify({ error: "No refresh token" }), {
+  if (!accessToken?.value) {
+    return new Response(JSON.stringify({ error: "No access token" }), {
       status: 401,
     });
   }
 
   try {
     const decoded = jwt.verify(
-      refreshToken.value,
-      process.env.REFRESH_TOKEN_SIGNATURE
-    );
-
-    const newAccessToken = createAccessToken(decoded.userId);
-
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append(
-      "Set-Cookie",
-      `accessToken=${newAccessToken}; HttpOnly; Path=/; Max-Age=900; SameSite=Lax; Secure`
+      accessToken.value,
+      process.env.ACCESS_TOKEN_SIGNATURE
     );
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
-      headers,
     });
-  } catch (err) {
-    return new Response(JSON.stringify({ error: "Invalid refresh token" }), {
+  } catch {
+    return new Response(JSON.stringify({ error: "Invalid access token" }), {
       status: 401,
     });
   }
 }
+

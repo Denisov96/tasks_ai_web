@@ -21,7 +21,7 @@ export default function LogoutButton() {
       <button
         onClick={handleLogout}
         disabled={loading}
-        className={`${styles.button} ${styles.logoutButton}`}
+        className={styles.logoutButton}
         title="Logout"
       >
         <LogoutIcon />
@@ -29,3 +29,4 @@ export default function LogoutButton() {
     </div>
   );
 }
+

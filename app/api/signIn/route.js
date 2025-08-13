@@ -1,6 +1,6 @@
 import { prisma } from "../../../prisma/db";
 import bcrypt from "bcrypt";
-import { createAccessToken, createRefreshToken } from "../../../lib/auth";
+import { createAccessToken } from "../../../lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -41,17 +41,12 @@ export async function POST(request) {
   }
 
   const accessToken = createAccessToken(user.id);
-  const refreshToken = createRefreshToken(user.id);
 
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append(
     "Set-Cookie",
     `accessToken=${accessToken}; HttpOnly; Path=/; Max-Age=900; SameSite=Lax; Secure`
-  );
-  headers.append(
-    "Set-Cookie",
-    `refreshToken=${refreshToken}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 7}; SameSite=Lax; Secure`
   );
 
   return new Response(
