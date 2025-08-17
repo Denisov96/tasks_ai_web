@@ -1,13 +1,13 @@
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 
-export function GET() {
+export async function GET() {
   const cookieStore = cookies();
   const accessToken = cookieStore.get("accessToken");
 
-  if (!accessToken) {
-    return new Response(JSON.stringify({ error: "No access token provided" }), {
-      status: 400,
+  if (!accessToken?.value) {
+    return new Response(JSON.stringify({ error: "No access token" }), {
+      status: 401,
     });
   }
 
@@ -17,20 +17,13 @@ export function GET() {
       process.env.ACCESS_TOKEN_SIGNATURE
     );
 
-    return new Response(JSON.stringify(decoded), {
+    return new Response(JSON.stringify({ success: true }), {
       status: 200,
     });
-  } catch (err) {
-    if (err.name === "TokenExpiredError") {
-      return new Response(
-        JSON.stringify({ error: "Access token expired" }),
-        { status: 401 }
-      );
-    }
-    return new Response(
-      JSON.stringify({ error: "Invalid access token!" }),
-      { status: 401 }
-    );
+  } catch {
+    return new Response(JSON.stringify({ error: "Invalid access token" }), {
+      status: 401,
+    });
   }
 }
 
