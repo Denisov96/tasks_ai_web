@@ -10,6 +10,8 @@
     "@prisma/client": "^5.21.1",
     "bcrypt": "^6.0.0",
     "D": "^1.0.0",
+    "extendable-media-recorder": "^9.2.29",
+    "extendable-media-recorder-wav-encoder": "^7.0.131",
     "jsonwebtoken": "^9.0.2",
     "next": "^14.2.5",
     "prisma": "^5.21.1",
