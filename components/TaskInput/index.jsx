@@ -118,14 +118,10 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
         <TrashIcon />
       </button>
       <button
-        className={styles.button}
-        style={{
-          backgroundColor: recording ? "white" : "black",
-          color: recording ? "black" : "white",
-        }}
+        className={`${styles.button} ${recording ? styles.recording : ""}`}
         onClick={handleRecord}
       >
-        <MicrophoneIcon size={32} color={recording ? "#000000" : "#ffffff"} />
+        <MicrophoneIcon size={32} color={recording ? "#ffffff" : "#ffffff"} />
       </button>
     </div>
   );
