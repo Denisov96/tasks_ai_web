@@ -60,3 +60,17 @@ export function LogoutIcon(props) {
     </svg>
   );
 }
+
+export function MicrophoneIcon({ size = 32, color = "#ffffff" }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      fill={color}
+      viewBox="0 0 256 256"
+    >
+      <path d="M128,176a48,48,0,0,0,48-48V64a48,48,0,0,0-96,0v64A48,48,0,0,0,128,176Zm64-48a8,8,0,0,0-16,0,48,48,0,0,1-96,0,8,8,0,0,0-16,0,64.07,64.07,0,0,0,56,63.49V216H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16H136V191.49A64.07,64.07,0,0,0,192,128Z" />
+    </svg>
+  );
+}
