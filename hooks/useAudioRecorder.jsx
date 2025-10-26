@@ -1,6 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { MediaRecorder, register } from "extendable-media-recorder";
-import { connect } from "extendable-media-recorder-wav-encoder";
 
 async function tryCatch(fn, fallback) {
   try {
@@ -25,7 +23,11 @@ export function useAudioRecorder({
   const langRef = useRef(initialLang);
   useEffect(() => {
     tryCatch(async () => {
+      const { register } = await import("extendable-media-recorder");
+      const { connect } = await import("extendable-media-recorder-wav-encoder");
+
       await register(await connect());
+
       console.log("🎤 WAV encoder ready");
     });
 
@@ -48,6 +50,8 @@ export function useAudioRecorder({
         null
       );
       if (!stream) return;
+
+      const { MediaRecorder } = await import("extendable-media-recorder");
 
       const mimeType = MediaRecorder.isTypeSupported("audio/wav")
         ? "audio/wav"
