@@ -17,3 +17,13 @@ body {
   margin: 0;
   padding: 0;
 }
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
