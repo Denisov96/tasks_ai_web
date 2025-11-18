@@ -28,7 +28,10 @@ export default function Page() {
       </button>
 
       <nav className={`${styles.sidebar} ${openMenu ? styles.open : ""}`}>
-        <button className={styles.close} onClick={() => setOpenMenu(false)}>
+        <button
+          className={styles.closeButton}
+          onClick={() => setOpenMenu(false)}
+        >
           ✕
         </button>
 
