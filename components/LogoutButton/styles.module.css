@@ -1,7 +1,10 @@
 .logoutContainer {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  bottom: 16px;
+  left: 16px;   
+  width: auto;  
+  display: flex;
+  justify-content: flex-start; 
 }
 
 .logoutButton {
