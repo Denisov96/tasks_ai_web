@@ -1,19 +1,8 @@
-.pageWrapper {
-  width: 100%;
-  min-height: 100vh;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  padding: 20px;
-
-  background: var(--background);
-}
-
 .loginContainer {
   max-width: 450px;
   margin: 0 auto;
+  margin-top: 40vh;
+  transform: translateY(-50%);
   padding: 2rem;
   background: white;
   border: 1px solid #000;
