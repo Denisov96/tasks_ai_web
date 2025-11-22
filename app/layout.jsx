@@ -1,8 +1,8 @@
-
 "use client";
+
 import { useState } from "react";
 import { Roboto } from "next/font/google";
-import "../vars.css";
+import "./global.css";
 import { UserContext } from "../context/userContext";
 
 const roboto = Roboto({
@@ -24,4 +24,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-
