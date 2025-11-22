@@ -36,29 +36,44 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
 
   return (
     <div className={styles.inputContainer}>
-      <input
-        type="text"
-        autoFocus
-        value={displayedValue}
-        onChange={(e) => {
-          if (!processing) onChange(e.target.value);
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && !processing) onSubmit();
-        }}
-        placeholder="Enter a new task..."
-        className={styles.input}
-        disabled={processing}
-        aria-busy={processing}
-      />
+      <div className={styles.inputWrapper}>
+        <input
+          type="text"
+          autoFocus
+          value={displayedValue}
+          onChange={(e) => {
+            if (!processing) onChange(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !processing) onSubmit();
+          }}
+          placeholder="Enter a new task..."
+          className={styles.input}
+          disabled={processing}
+          aria-busy={processing}
+        />
 
-      <button
-        className={`${styles.button} ${styles.addButton}`}
-        onClick={() => !processing && onSubmit()}
-        disabled={processing}
-      >
-        <PlusIcon />
-      </button>
+        <div className={styles.buttonsInside}>
+          <button
+            className={`${styles.iconButton} ${styles.addButton}`}
+            onClick={() => !processing && onSubmit()}
+            disabled={processing}
+            title="Add task"
+          >
+            <PlusIcon />
+          </button>
+
+          <button
+            className={`${styles.iconButton} ${
+              recording ? styles.recording : ""
+            }`}
+            onClick={toggleRecording}
+            title={recording ? "Stop recording" : "Start recording"}
+          >
+            <MicrophoneIcon size={20} color="#ffffff" />
+          </button>
+        </div>
+      </div>
 
       <button
         className={`${styles.button} ${styles.deleteButton}`}
@@ -66,14 +81,6 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
         disabled={!hasCompletedTasks || processing}
       >
         <TrashIcon />
-      </button>
-
-      <button
-        className={`${styles.button} ${recording ? styles.recording : ""}`}
-        onClick={() => toggleRecording()}
-        title={recording ? "Stop recording" : "Start recording"}
-      >
-        <MicrophoneIcon size={32} color="#ffffff" />
       </button>
     </div>
   );

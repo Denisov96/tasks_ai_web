@@ -9,44 +9,48 @@
   gap: 8px;
   padding: 16px;
   background-color: var(--background);
-  border-top: none;
-  box-shadow: none;
   z-index: 1000;
   box-sizing: border-box;
 }
 
-.input {
+.inputWrapper {
+  position: relative;
   width: 100%;
   max-width: 400px;
-  padding: 8px 16px;
+}
+
+.input {
+  width: 100%;
+  padding: 8px 100px 8px 16px; 
   border: 1px solid var(--border);
   border-radius: var(--radius);
   font-size: 14px;
   height: 50px;
-  box-sizing: border-box;
   background-color: var(--background);
   outline: none;
-  flex-grow: 1;
-  transition: border-color 0.3s ease;
+  box-sizing: border-box;
 }
 
-.button {
-  width: 44px;
-  height: 44px;
+.buttonsInside {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 8px; 
+}
+
+.iconButton {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: none;
-  color: white;
-  font-size: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  background-color: black;
-}
-
-.button:hover {
-  transform: scale(1.1);
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
 }
 
 .addButton {
@@ -58,25 +62,27 @@
   background-color: var(--primary);
 }
 
-.deleteButton {
-  background-color: var(--muted);
-  color: var(--muted-foreground);
+.iconButton.recording {
+  background-color: #e53935;
+  animation: pulse 1.5s infinite;
+  transform-origin: center; 
 }
 
-.deleteButton:hover {
-  background-color: var(--secondary);
+.button.deleteButton {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  color: white;
+  background-color: var(--muted);
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-.deleteButton:disabled {
-  background-color: var(--muted);
+.button.deleteButton:disabled {
   cursor: not-allowed;
   opacity: 0.6;
   transform: scale(1);
-}
-
-.recording {
-  background-color: #e53935;
-  animation: pulse 1.5s infinite;
 }
 
 @keyframes pulse {
