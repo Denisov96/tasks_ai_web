@@ -21,7 +21,7 @@
 
 .input {
   width: 100%;
-  padding: 8px 100px 8px 16px; 
+  padding: 8px 100px 8px 16px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   font-size: 14px;
@@ -37,10 +37,10 @@
   top: 50%;
   transform: translateY(-50%);
   display: flex;
-  gap: 8px; 
+  gap: 8px;
 }
 
-.iconButton {
+.icon-button {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -49,40 +49,52 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  flex-shrink: 0;
+  background: transparent;
+  padding: 0;
+  transition: all 0.25s ease;
 }
 
-.addButton {
+.add-button {
   background-color: var(--primary);
   color: var(--primary-foreground);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
-.addButton:hover {
-  background-color: var(--primary);
+.add-button.visible {
+  opacity: 1;
+  transform: scale(1);
 }
 
-.iconButton.recording {
+.mic-button {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.recording {
   background-color: #e53935;
   animation: pulse 1.5s infinite;
-  transform-origin: center; 
+  transform-origin: center;
+  color: #fff;
 }
 
-.button.deleteButton {
+.delete-button {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: none;
-  color: white;
   background-color: var(--muted);
-  cursor: pointer;
-  transition: transform 0.2s ease;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.button.deleteButton:disabled {
+.icon-button:disabled,
+.delete-button:disabled {
   cursor: not-allowed;
   opacity: 0.6;
-  transform: scale(1);
 }
 
 @keyframes pulse {

@@ -5,6 +5,7 @@ import styles from "./styles.module.css";
 import { TrashIcon, PlusIcon, MicrophoneIcon } from "../Icons/icons";
 import { useTaskInput } from "../../hooks/useTaskInput";
 import { useAudioRecorder } from "../../hooks/useAudioRecorder";
+import { IconButton } from "./iconButton";
 
 export function TaskInput({ tasks, userId, onChangeTasks }) {
   const { value, hasCompletedTasks, onChange, onSubmit, deleteCompletedTasks } =
@@ -33,6 +34,7 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
   }, [processing]);
 
   const displayedValue = processing ? `Waiting${".".repeat(dots)}` : value;
+  const hasText = !!value && value.trim().length > 0 && !processing;
 
   return (
     <div className={styles.inputContainer}>
@@ -45,7 +47,7 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
             if (!processing) onChange(e.target.value);
           }}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && !processing) onSubmit();
+            if (e.key === "Enter" && hasText) onSubmit();
           }}
           placeholder="Enter a new task..."
           className={styles.input}
@@ -54,34 +56,38 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
         />
 
         <div className={styles.buttonsInside}>
-          <button
-            className={`${styles.iconButton} ${styles.addButton}`}
-            onClick={() => !processing && onSubmit()}
-            disabled={processing}
+          <IconButton
+            className={`${styles["icon-button"]} ${styles["add-button"]} ${
+              hasText ? styles.visible : ""
+            }`}
+            onClick={onSubmit}
             title="Add task"
           >
             <PlusIcon />
-          </button>
+          </IconButton>
 
-          <button
-            className={`${styles.iconButton} ${
+          <IconButton
+            className={`${styles["icon-button"]} ${styles["mic-button"]} ${
               recording ? styles.recording : ""
             }`}
             onClick={toggleRecording}
             title={recording ? "Stop recording" : "Start recording"}
           >
             <MicrophoneIcon size={20} color="#ffffff" />
-          </button>
+          </IconButton>
         </div>
       </div>
 
-      <button
-        className={`${styles.button} ${styles.deleteButton}`}
-        onClick={() => !processing && deleteCompletedTasks()}
+      <IconButton
+        className={`${styles["delete-button"]}`}
+        onClick={deleteCompletedTasks}
         disabled={!hasCompletedTasks || processing}
+        title="Delete completed tasks"
       >
         <TrashIcon />
-      </button>
+      </IconButton>
     </div>
   );
 }
+
+export default TaskInput;
