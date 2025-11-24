@@ -1,13 +1,35 @@
+.pageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
+  background: white;
+}
+
 .loginContainer {
   max-width: 450px;
-  margin: 0 auto;
-  margin-top: 40vh;
-  transform: translateY(-50%);
+  width: 100%;
   padding: 2rem;
   background: white;
   border: 1px solid #000;
   border-radius: 8px;
-  font-family: "Helvetica Neue", Arial, sans-serif;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+@media (max-width: 480px) {
+  .pageContainer {
+    align-items: flex-start;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+  }
+
+  .loginContainer {
+    border: none;
+    border-radius: 0;
+  }
 }
 
 .loginTitle {
