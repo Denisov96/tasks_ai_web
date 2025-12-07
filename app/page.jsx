@@ -5,12 +5,12 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../hooks/useAuth";
 import { TasksView } from "../views/TaskView";
 import Spinner from "../components/Spinner";
+import LogoutButton from "../components/LogoutButton";
 import styles from "../styles.module.css";
 
 export default function Page() {
   const router = useRouter();
   const auth = useAuth();
-
   const [openMenu, setOpenMenu] = useState(false);
 
   useEffect(() => {
@@ -41,6 +41,8 @@ export default function Page() {
           <li>Categories</li>
           <li>Theme</li>
         </ul>
+
+        <LogoutButton />
       </nav>
 
       {openMenu && (

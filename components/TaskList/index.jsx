@@ -14,20 +14,29 @@ export function TaskList({ tasks = [], onChange, onEdit }) {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className={styles.taskListContainer}>
-        {sortedTasks.map((task, index) => (
-          <Task
-            key={task.id}
-            id={task.id}
-            text={task.text}
-            index={index}
-            completed={task.completed}
-            onMove={moveTask}
-            onClick={({ id, completed }) => toggleTaskCompleted(id, completed)}
-            onEdit={onEdit}
-          />
-        ))}
+        {sortedTasks.map((task, index) => {
+          const isFirstCompleted =
+            task.completed &&
+            sortedTasks[index - 1] &&
+            !sortedTasks[index - 1].completed;
+
+          return (
+            <Task
+              key={task.id}
+              id={task.id}
+              text={task.text}
+              index={index}
+              completed={task.completed}
+              onMove={moveTask}
+              onClick={({ id, completed }) => toggleTaskCompleted(id, completed)}
+              onEdit={onEdit}
+              className={isFirstCompleted ? styles.completedSeparator : ""}
+            />
+          );
+        })}
       </div>
     </DndProvider>
   );
 }
+
 
