@@ -1,17 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../hooks/useAuth";
 import { TasksView } from "../views/TaskView";
 import Spinner from "../components/Spinner";
-import LogoutButton from "../components/LogoutButton";
-import styles from "../styles.module.css";
 
 export default function Page() {
   const router = useRouter();
   const auth = useAuth();
-  const [openMenu, setOpenMenu] = useState(false);
 
   useEffect(() => {
     if (auth === false) {
@@ -21,35 +18,5 @@ export default function Page() {
 
   if (!auth) return auth === null ? <Spinner /> : null;
 
-  return (
-    <>
-      <button className={styles.hamburger} onClick={() => setOpenMenu(true)}>
-        ☰
-      </button>
-
-      <nav className={`${styles.sidebar} ${openMenu ? styles.open : ""}`}>
-        <button
-          className={styles.closeButton}
-          onClick={() => setOpenMenu(false)}
-        >
-          ✕
-        </button>
-
-        <ul className={styles.menu}>
-          <li>Task History</li>
-          <li>Priorities</li>
-          <li>Categories</li>
-          <li>Theme</li>
-        </ul>
-
-        <LogoutButton />
-      </nav>
-
-      {openMenu && (
-        <div className={styles.overlay} onClick={() => setOpenMenu(false)} />
-      )}
-
-      <TasksView currentUser={auth} />
-    </>
-  );
+  return <TasksView currentUser={auth} />;
 }
