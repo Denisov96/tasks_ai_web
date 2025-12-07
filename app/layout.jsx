@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { Roboto } from "next/font/google";
 import Link from "next/link";
+import { Roboto } from "next/font/google";
 import "./global.css";
 import styles from "../styles.module.css";
 import { UserContext } from "../context/userContext";
@@ -18,9 +18,23 @@ const roboto = Roboto({
 export default function RootLayout({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [openMenu, setOpenMenu] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const didMountRef = useRef(false);
+
   const pathname = usePathname();
 
   const hideMenu = pathname === "/sign-in" || pathname === "/sign-up";
+
+  useEffect(() => {
+    setIsMounted(true);
+    didMountRef.current = true;
+  }, []);
+
+  useEffect(() => {
+    setOpenMenu(false);
+  }, [pathname]);
+
+  if (!isMounted) return null;
 
   return (
     <html lang="en" className={roboto.className}>
@@ -30,7 +44,10 @@ export default function RootLayout({ children }) {
             <>
               <button
                 className={styles.hamburger}
-                onClick={() => setOpenMenu(true)}
+                onClick={() => {
+                  if (!didMountRef.current) return;
+                  setOpenMenu(true);
+                }}
               >
                 ☰
               </button>
