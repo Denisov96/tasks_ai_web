@@ -57,7 +57,7 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
 
         <div className={styles.buttonsInside}>
           <IconButton
-            className={`${styles["icon-button"]} ${styles["add-button"]} ${
+            className={`${styles["add-button"]} ${
               hasText ? styles.visible : ""
             }`}
             onClick={onSubmit}
@@ -67,7 +67,7 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
           </IconButton>
 
           <IconButton
-            className={`${styles["icon-button"]} ${styles["mic-button"]} ${
+            className={`${styles["mic-button"]} ${
               recording ? styles.recording : ""
             }`}
             onClick={toggleRecording}
@@ -79,7 +79,7 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
       </div>
 
       <IconButton
-        className={`${styles["delete-button"]}`}
+        className={styles["delete-button"]}
         onClick={deleteCompletedTasks}
         disabled={!hasCompletedTasks || processing}
         title="Delete completed tasks"

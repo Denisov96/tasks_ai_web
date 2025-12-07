@@ -1,3 +1,7 @@
+"use client";
+
+import styles from "./styles.module.css";
+
 export function IconButton({
   children,
   onClick,
@@ -9,7 +13,7 @@ export function IconButton({
     <button
       type="button"
       onClick={disabled ? undefined : onClick}
-      className={className}
+      className={`${styles["icon-button"]} ${className}`}
       disabled={disabled}
       title={title}
     >
@@ -17,3 +21,4 @@ export function IconButton({
     </button>
   );
 }
+
