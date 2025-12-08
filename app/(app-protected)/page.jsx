@@ -2,9 +2,9 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../hooks/useAuth";
-import { TasksView } from "../views/TaskView";
-import Spinner from "../components/Spinner";
+import { useAuth } from "../../hooks/useAuth";
+import { TasksView } from "../../views/TaskView";
+import Spinner from "../../components/Spinner";
 
 export default function Page() {
   const router = useRouter();
