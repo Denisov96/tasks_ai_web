@@ -1,10 +1,10 @@
 "use client";
+
 import { Logo } from "../components/Logo";
 import { TaskInput } from "../components/TaskInput";
 import { TaskList } from "../components/TaskList";
 import styles from "../styles.module.css";
 import { useTasks } from "../hooks/useTasks";
-import LogoutButton from "../components/LogoutButton"; 
 
 export function TasksView({ currentUser }) {
   const {
@@ -18,10 +18,8 @@ export function TasksView({ currentUser }) {
 
   return (
     <div className={styles.pageContainer}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Logo />
-        <LogoutButton />
-      </div>
+      <Logo />
+
       <TaskInput
         value={taskToEdit?.text || ""}
         onSubmit={handleSubmit}
@@ -35,7 +33,9 @@ export function TasksView({ currentUser }) {
         userId={currentUser.id}
         onChangeTasks={setTasks}
       />
+
       <hr />
+
       <TaskList
         tasks={tasks}
         onChange={setTasks}
