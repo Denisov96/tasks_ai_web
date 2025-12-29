@@ -1,12 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import styles from "../../styles.module.css";
 import LogoutButton from "../../components/LogoutButton";
+import Spinner from "../../components/Spinner";
+import { useAuth } from "../../hooks/useAuth";
+import { useUser } from "../../hooks/useUser";
 
 export default function ProtectedLayout({ children }) {
+  const router = useRouter();
+  const user = useAuth();
+  const { setCurrentUser } = useUser();
   const [openMenu, setOpenMenu] = useState(false);
+
+  useEffect(() => {
+    if (user === false) {
+      router.replace("/sign-in");
+    }
+
+    if (user) {
+      setCurrentUser(user);
+    }
+  }, [user, router, setCurrentUser]);
+
+  if (user === null) {
+    return <Spinner />;
+  }
+
+  if (user === false) {
+    return null;
+  }
 
   return (
     <>

@@ -1,12 +1,20 @@
 "use client";
 
-import { Logo } from "../components/Logo";
+import { useUser } from "../hooks/useUser";
 import { TaskInput } from "../components/TaskInput";
 import { TaskList } from "../components/TaskList";
+import { Logo } from "../components/Logo";
 import styles from "../styles.module.css";
 import { useTasks } from "../hooks/useTasks";
 
-export function TasksView({ currentUser }) {
+export function TasksView() {
+  const { currentUser } = useUser();
+
+  
+  if (!currentUser) {
+    return null; 
+  }
+
   const {
     tasks,
     setTasks,
@@ -33,8 +41,6 @@ export function TasksView({ currentUser }) {
         userId={currentUser.id}
         onChangeTasks={setTasks}
       />
-
-      <hr />
 
       <TaskList
         tasks={tasks}
