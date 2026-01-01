@@ -106,3 +106,21 @@
   background: rgba(0, 0, 0, 0.15);
   z-index: 3050;
 }
+
+.menuLink {
+  color: #000000 !important;      
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+.menuLink:hover {
+  transform: translateX(2px);     
+  opacity: 0.75;                  
+}
+
+.menuLink:active {
+  transform: translateX(1px) scale(0.98);
+}
