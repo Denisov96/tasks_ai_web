@@ -14,24 +14,28 @@ export default function ProtectedLayout({ children }) {
   const user = useAuth();
   const { setCurrentUser } = useUser();
   const [openMenu, setOpenMenu] = useState(false);
+  const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    if (user === false) {
-      router.replace("/sign-in");
-    }
+    const saved = localStorage.getItem("theme") || "light";
+    setTheme(saved);
+    document.documentElement.dataset.theme = saved;
+  }, []);
 
-    if (user) {
-      setCurrentUser(user);
-    }
+  function toggleTheme() {
+    const next = theme === "light" ? "dark" : "light";
+    setTheme(next);
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem("theme", next);
+  }
+
+  useEffect(() => {
+    if (user === false) router.replace("/sign-in");
+    if (user) setCurrentUser(user);
   }, [user, router, setCurrentUser]);
 
-  if (user === null) {
-    return <Spinner />;
-  }
-
-  if (user === false) {
-    return null;
-  }
+  if (user === null) return <Spinner />;
+  if (user === false) return null;
 
   return (
     <>
@@ -68,10 +72,15 @@ export default function ProtectedLayout({ children }) {
               Categories
             </Link>
           </li>
+
           <li>
-            <Link href="/theme" className={styles.menuLink}>
-              Theme
-            </Link>
+            <button
+              onClick={toggleTheme}
+              className={styles.menuLink}
+              style={{ background: "none", border: "none", padding: 0 }}
+            >
+              {theme === "light" ? "🌙 Dark mode" : "☀️ Light mode"}
+            </button>
           </li>
         </ul>
 
