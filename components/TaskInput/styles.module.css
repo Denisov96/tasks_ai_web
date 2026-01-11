@@ -27,8 +27,21 @@
   font-size: 14px;
   height: 50px;
   background-color: var(--background);
+  color: var(--foreground);
   outline: none;
   box-sizing: border-box;
+}
+
+.input::placeholder {
+  color: var(--muted-foreground);
+}
+
+.input:focus {
+  border-color: var(--primary);
+}
+
+html[data-theme="dark"] .input:focus {
+  border-color: #ffffff;
 }
 
 .buttonsInside {
@@ -67,16 +80,33 @@
   transform: scale(1);
 }
 
-.mic-button {
-  background-color: #000000;
-  color: #ffffff;
+html[data-theme="dark"] .add-button {
+  background-color: #ffffff;
+  color: #000000;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
 }
 
-.recording {
+.mic-button {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+html[data-theme="dark"] .mic-button {
+  background-color: #ffffff;
+  color: #000000;
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+}
+
+.mic-button.recording {
   background-color: #e53935;
+  color: #ffffff;
   animation: pulse 1.5s infinite;
   transform-origin: center;
-  color: #fff;
+}
+
+html[data-theme="dark"] .mic-button.recording {
+  background-color: #ef4444;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
 }
 
 .delete-button {
@@ -84,17 +114,34 @@
   height: 44px;
   border-radius: 50%;
   background-color: var(--muted);
-  color: white;
+  color: var(--muted-foreground);
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+html[data-theme="dark"] .delete-button {
+  background-color: #27272a;
+  color: #ffffff;
+  border: 1px solid #3f3f46;
+}
+
+.icon-button:hover:not(:disabled),
+.delete-button:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
 .icon-button:disabled,
 .delete-button:disabled {
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+.icon-button svg,
+.delete-button svg {
+  fill: currentColor;
+  transition: fill 0.3s ease;
 }
 
 @keyframes pulse {

@@ -62,6 +62,7 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
             }`}
             onClick={onSubmit}
             title="Add task"
+            style={{ color: "white" }}
           >
             <PlusIcon />
           </IconButton>
@@ -72,8 +73,9 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
             }`}
             onClick={toggleRecording}
             title={recording ? "Stop recording" : "Start recording"}
+            style={{ color: "white" }}
           >
-            <MicrophoneIcon size={20} color="#ffffff" />
+            <MicrophoneIcon size={20} />
           </IconButton>
         </div>
       </div>
