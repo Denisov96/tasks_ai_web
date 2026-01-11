@@ -204,18 +204,4 @@
   z-index: 3050;
 }
 
-.toggleButton {
-  position: fixed;
-  top: 20px;
-  right: 20px;
 
-  background: var(--primary);
-  color: var(--primary-foreground);
-
-  border: none;
-  padding: 10px 20px;
-  border-radius: var(--radius);
-
-  font-size: 14px;
-  cursor: pointer;
-}

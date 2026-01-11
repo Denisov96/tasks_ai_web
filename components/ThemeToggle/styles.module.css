@@ -1,0 +1,165 @@
+.themeToggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.themeToggle:hover {
+  background-color: var(--muted);
+}
+
+.themeToggle:active {
+  transform: scale(0.98);
+}
+
+.themeToggle.animating .toggleThumb {
+  animation: toggleSlide 0.3s ease;
+}
+
+.toggleTrack {
+  position: relative;
+  width: 44px;
+  height: 22px;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  background: #e5e5e5;
+  border: 1px solid #d4d4d4;
+}
+
+.themeToggle[data-theme="dark"] .toggleTrack {
+  background: #404040;
+  border-color: #525252;
+}
+
+.toggleThumb {
+  position: absolute;
+  top: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 1px solid #d4d4d4;
+}
+
+.themeToggle[data-theme="light"] .toggleThumb {
+  left: 2px;
+  background: #ffffff;
+  border-color: #a3a3a3;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.themeToggle[data-theme="dark"] .toggleThumb {
+  left: calc(100% - 20px);
+  background: #000000;
+  border-color: #404040;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.icon {
+  stroke: currentColor;
+  transition: all 0.3s ease;
+}
+
+.themeToggle[data-theme="light"] .icon {
+  color: #737373;
+}
+
+.themeToggle[data-theme="dark"] .icon {
+  color: #ffffff;
+}
+
+.toggleText {
+  flex: 1;
+  text-align: left;
+  transition: color 0.3s ease;
+  font-weight: 400;
+  letter-spacing: -0.2px;
+}
+
+@keyframes toggleSlide {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.themeToggle[data-theme="dark"].animating .toggleThumb {
+  animation: toggleSlideDark 0.3s ease;
+}
+
+@keyframes toggleSlideDark {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-4px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.themeToggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .themeToggle {
+    padding: 10px 12px;
+    font-size: 13px;
+    gap: 10px;
+  }
+
+  .toggleTrack {
+    width: 40px;
+    height: 20px;
+  }
+
+  .toggleThumb {
+    width: 16px;
+    height: 16px;
+    top: 2px;
+  }
+
+  .themeToggle[data-theme="dark"] .toggleThumb {
+    left: calc(100% - 18px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .themeToggle,
+  .themeToggle:hover,
+  .themeToggle:active,
+  .toggleTrack,
+  .toggleThumb,
+  .icon {
+    transition: none;
+    animation: none;
+  }
+
+  .themeToggle:active {
+    transform: none;
+  }
+}

@@ -6,15 +6,14 @@ import Link from "next/link";
 import styles from "../../styles.module.css";
 import LogoutButton from "../../components/LogoutButton";
 import Spinner from "../../components/Spinner";
+import ThemeToggle from "../../components/ThemeToggle"; 
 import { useAuth } from "../../hooks/useAuth";
 import { useUser } from "../../hooks/useUser";
-import { useTheme } from "../../context/themeContext";
 
 export default function ProtectedLayout({ children }) {
   const router = useRouter();
   const user = useAuth();
   const { setCurrentUser } = useUser();
-  const { theme, toggleTheme } = useTheme();
 
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -63,13 +62,7 @@ export default function ProtectedLayout({ children }) {
           </li>
 
           <li>
-            <button
-              onClick={toggleTheme}
-              className={styles.menuLink}
-              style={{ background: "none", border: "none", padding: 0 }}
-            >
-              {theme === "light" ? "🌙 Dark mode" : "☀️ Light mode"}
-            </button>
+            <ThemeToggle />
           </li>
         </ul>
 
