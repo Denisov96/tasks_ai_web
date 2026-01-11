@@ -8,26 +8,15 @@ import LogoutButton from "../../components/LogoutButton";
 import Spinner from "../../components/Spinner";
 import { useAuth } from "../../hooks/useAuth";
 import { useUser } from "../../hooks/useUser";
+import { useTheme } from "../../context/themeContext";
 
 export default function ProtectedLayout({ children }) {
   const router = useRouter();
   const user = useAuth();
   const { setCurrentUser } = useUser();
+  const { theme, toggleTheme } = useTheme();
+
   const [openMenu, setOpenMenu] = useState(false);
-  const [theme, setTheme] = useState("light");
-
-  useEffect(() => {
-    const saved = localStorage.getItem("theme") || "light";
-    setTheme(saved);
-    document.documentElement.dataset.theme = saved;
-  }, []);
-
-  function toggleTheme() {
-    const next = theme === "light" ? "dark" : "light";
-    setTheme(next);
-    document.documentElement.dataset.theme = next;
-    localStorage.setItem("theme", next);
-  }
 
   useEffect(() => {
     if (user === false) router.replace("/sign-in");
