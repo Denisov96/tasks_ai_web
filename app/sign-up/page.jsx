@@ -2,6 +2,8 @@
 
 import styles from "./styles.module.css";
 import { useSignUp } from "../../hooks/useSignUp";
+import { useState } from "react";
+import { EyeIcon, EyeSlashIcon } from "../../components/Icons/icons"; 
 
 export default function SignUpPage() {
   const {
@@ -12,6 +14,9 @@ export default function SignUpPage() {
     isLoading,
     handleSubmit,
   } = useSignUp();
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return (
     <div className={styles.pageContainer}>
@@ -39,28 +44,50 @@ export default function SignUpPage() {
             <label htmlFor="password" className={styles.formLabel}>
               Password
             </label>
-            <input
-              id="password"
-              type="password"
-              ref={passwordRef}
-              className={styles.formInput}
-              placeholder="Enter your password"
-              disabled={isLoading}
-            />
+            <div className={styles.passwordWrapper}>
+              <input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                ref={passwordRef}
+                className={styles.formInput}
+                placeholder="Enter your password"
+                disabled={isLoading}
+              />
+              <button
+                type="button"
+                className={styles.passwordToggle}
+                onClick={() => setShowPassword(!showPassword)}
+                disabled={isLoading}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
+              </button>
+            </div>
           </div>
 
           <div className={styles.formGroup}>
             <label htmlFor="confirm" className={styles.formLabel}>
               Confirm Password
             </label>
-            <input
-              id="confirm"
-              type="password"
-              ref={confirmRef}
-              className={styles.formInput}
-              placeholder="Repeat your password"
-              disabled={isLoading}
-            />
+            <div className={styles.passwordWrapper}>
+              <input
+                id="confirm"
+                type={showConfirmPassword ? "text" : "password"}
+                ref={confirmRef}
+                className={styles.formInput}
+                placeholder="Repeat your password"
+                disabled={isLoading}
+              />
+              <button
+                type="button"
+                className={styles.passwordToggle}
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                disabled={isLoading}
+                aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+              >
+                {showConfirmPassword ? <EyeSlashIcon /> : <EyeIcon />}
+              </button>
+            </div>
           </div>
 
           <button

@@ -62,12 +62,15 @@
 }
 
 .formInput {
-  padding: 0.75rem;
+  padding: 0.75rem 50px 0.75rem 0.75rem;
   border: 1px solid #000;
   border-radius: 4px;
   font-size: 1rem;
   background: transparent;
   transition: all 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+  height: 48px;
 }
 
 .formInput:focus {
@@ -87,6 +90,7 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   transition: all 0.2s;
+  width: 100%;
 }
 
 .loginButton:hover {
@@ -96,6 +100,27 @@
 .loginButton:disabled {
   background: #999;
   cursor: not-allowed;
+}
+
+.loginFooter {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #000;
+  letter-spacing: 0.05em;
+}
+
+.signupLink {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: #000;
+  text-decoration: underline;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: inherit;
 }
 
 .errorMessage {
@@ -109,4 +134,44 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   font-weight: 600;
+}
+
+.passwordWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.passwordToggle:hover:not(:disabled) {
+  color: #000;
+  background: #f0f0f0;
+}
+
+.passwordToggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.passwordToggle svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
 }
