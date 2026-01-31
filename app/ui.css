@@ -1,0 +1,126 @@
+.ui-page {
+  min-height: 100vh;
+  padding: 1rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ui-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+
+  animation: cardFade 0.4s ease-out;
+}
+
+@keyframes cardFade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ui-title {
+  margin-bottom: 2rem;
+  text-align: center;
+
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.ui-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ui-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ui-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+.ui-input {
+  height: var(--input-height);
+  padding: 0 1rem;
+
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+
+  background: var(--muted);
+  color: var(--foreground);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.ui-input:hover {
+  border-color: var(--border-hover);
+}
+
+.ui-input:focus {
+  outline: none;
+  background: var(--background);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(24, 24, 27, 0.08);
+}
+
+.ui-button {
+  height: 48px;
+  border-radius: 0.5rem;
+  border: none;
+
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.ui-button--primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.ui-button--primary:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.ui-button--primary:active {
+  transform: translateY(1px);
+}
+
+.ui-error {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+
+  background: rgba(229, 57, 53, 0.08);
+  color: var(--danger);
+
+  font-size: 0.75rem;
+  font-weight: 500;
+}
