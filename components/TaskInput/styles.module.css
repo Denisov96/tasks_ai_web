@@ -1,16 +1,18 @@
 .inputContainer {
   position: fixed;
   bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 400px;
   padding: 16px;
   background-color: var(--background);
   z-index: 1000;
   box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .inputWrapper {
@@ -21,27 +23,18 @@
 
 .input {
   width: 100%;
-  padding: 8px 100px 8px 16px;
+  height: 50px;
+  padding: 0 104px 0 16px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  font-size: 14px;
-  height: 50px;
-  background-color: var(--background);
+  background: var(--background);
   color: var(--foreground);
-  outline: none;
-  box-sizing: border-box;
-}
-
-.input::placeholder {
-  color: var(--muted-foreground);
+  font-size: 14px;
 }
 
 .input:focus {
+  outline: none;
   border-color: var(--primary);
-}
-
-html[data-theme="dark"] .input:focus {
-  border-color: #ffffff;
 }
 
 .buttonsInside {
@@ -58,21 +51,36 @@ html[data-theme="dark"] .input:focus {
   height: 36px;
   border-radius: 50%;
   border: none;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background: transparent;
-  padding: 0;
-  transition: all 0.25s ease;
+  transition: transform 0.2s ease;
+}
+
+.icon-button:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.icon-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.icon-button svg,
+.delete-button svg {
+  display: block;
 }
 
 .add-button {
-  background-color: var(--primary);
+  background: var(--primary);
   color: var(--primary-foreground);
   opacity: 0;
   transform: scale(0.8);
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .add-button.visible {
@@ -80,40 +88,21 @@ html[data-theme="dark"] .input:focus {
   transform: scale(1);
 }
 
-html[data-theme="dark"] .add-button {
-  background-color: #ffffff;
-  color: #000000;
-  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
-}
-
 .mic-button {
-  background-color: var(--primary);
+  background: var(--primary);
   color: var(--primary-foreground);
 }
 
-html[data-theme="dark"] .mic-button {
-  background-color: #ffffff;
-  color: #000000;
-  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
-}
-
 .mic-button.recording {
-  background-color: #e53935;
-  color: #ffffff;
+  background: #e53935;
   animation: pulse 1.5s infinite;
-  transform-origin: center;
-}
-
-html[data-theme="dark"] .mic-button.recording {
-  background-color: #ef4444;
-  box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
 }
 
 .delete-button {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background-color: var(--muted);
+  background: var(--muted);
   color: var(--muted-foreground);
   border: none;
   display: flex;
@@ -121,40 +110,16 @@ html[data-theme="dark"] .mic-button.recording {
   justify-content: center;
 }
 
-html[data-theme="dark"] .delete-button {
-  background-color: #27272a;
-  color: #ffffff;
-  border: 1px solid #3f3f46;
-}
-
-.icon-button:hover:not(:disabled),
-.delete-button:hover:not(:disabled) {
-  transform: scale(1.05);
-}
-
-.icon-button:disabled,
-.delete-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.icon-button svg,
-.delete-button svg {
-  fill: currentColor;
-  transition: fill 0.3s ease;
-}
-
 @keyframes pulse {
   0% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.7);
+    box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.6);
   }
   70% {
     transform: scale(1.1);
-    box-shadow: 0 0 0 15px rgba(229, 57, 53, 0);
+    box-shadow: 0 0 0 14px rgba(229, 57, 53, 0);
   }
   100% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(229, 57, 53, 0);
   }
 }

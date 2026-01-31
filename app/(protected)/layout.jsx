@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import styles from "../../styles.module.css";
+import styles from "../sidebar.module.css";
 import LogoutButton from "../../components/LogoutButton";
 import Spinner from "../../components/Spinner";
 import ThemeToggle from "../../components/ThemeToggle"; 

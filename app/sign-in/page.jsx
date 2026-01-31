@@ -1,6 +1,5 @@
 "use client";
 
-import styles from "./styles.module.css";
 import Link from "next/link";
 import { useSignIn } from "../../hooks/useSignIn";
 
@@ -14,36 +13,36 @@ export default function SignInPage() {
   } = useSignIn();
 
   return (
-    <div className={styles.pageContainer}>
-      <div className={styles.loginContainer}>
-        <h1 className={styles.loginTitle}>Sign in to your account</h1>
+    <div className="ui-page">
+      <div className="ui-card">
+        <h1 className="ui-title">Sign in to your account</h1>
 
-        {error && <div className={styles.errorMessage}>{error}</div>}
+        {error && <div className="ui-error">{error}</div>}
 
-        <form className={styles.loginForm} onSubmit={handleSubmit}>
-          <div className={styles.formGroup}>
-            <label htmlFor="username" className={styles.formLabel}>
+        <form className="ui-form" onSubmit={handleSubmit}>
+          <div className="ui-form-group">
+            <label htmlFor="username" className="ui-label">
               Username
             </label>
             <input
               id="username"
               type="text"
               ref={userNameRef}
-              className={styles.formInput}
+              className="ui-input"
               placeholder="Enter your username"
               disabled={isLoading}
             />
           </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="password" className={styles.formLabel}>
+          <div className="ui-form-group">
+            <label htmlFor="password" className="ui-label">
               Password
             </label>
             <input
               id="password"
               type="password"
               ref={passwordRef}
-              className={styles.formInput}
+              className="ui-input"
               placeholder="Enter your password"
               disabled={isLoading}
             />
@@ -51,21 +50,17 @@ export default function SignInPage() {
 
           <button
             type="submit"
-            className={styles.loginButton}
+            className="ui-button ui-button--primary"
             disabled={isLoading}
           >
             {isLoading ? "Signing in..." : "Sign in"}
           </button>
         </form>
 
-        <div className={styles.loginFooter}>
-          <p>
-            Don&apos;t have an account?{" "}
-            <Link className={styles.signupLink} href="/sign-up">
-              Sign Up
-            </Link>
-          </p>
-        </div>
+        <p style={{ marginTop: "1.5rem", textAlign: "center" }}>
+          Don&apos;t have an account?{" "}
+          <Link href="/sign-up">Sign Up</Link>
+        </p>
       </div>
     </div>
   );

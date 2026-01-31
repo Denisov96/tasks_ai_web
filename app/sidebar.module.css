@@ -1,0 +1,91 @@
+.pageContainer {
+  min-height: 100vh;
+  padding: 0 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hamburger {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 3000;
+
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: var(--foreground);
+
+  cursor: pointer;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -240px;
+
+  width: 240px;
+  height: 100vh;
+  padding: 20px;
+
+  background: var(--background);
+  border-right: 1px solid var(--border);
+
+  transition: left 0.25s ease;
+  z-index: 3100;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.open {
+  left: 0;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: var(--foreground);
+
+  cursor: pointer;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.menuLink {
+  color: var(--foreground);
+  font-weight: 500;
+  text-decoration: none;
+
+  transition:
+    transform 0.12s ease,
+    opacity 0.12s ease;
+}
+
+.menuLink:hover {
+  transform: translateX(2px);
+  opacity: 0.75;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 3050;
+}

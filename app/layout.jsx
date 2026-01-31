@@ -1,8 +1,8 @@
 "use client";
-
 import { useState } from "react";
 import { Roboto } from "next/font/google";
 import "./global.css";
+import "./ui.css";
 import { UserContext } from "../context/userContext";
 import { ThemeProvider } from "../context/themeContext";
 

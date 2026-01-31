@@ -4,7 +4,7 @@ import { useUser } from "../hooks/useUser";
 import { TaskInput } from "../components/TaskInput";
 import { TaskList } from "../components/TaskList";
 import { Logo } from "../components/Logo";
-import styles from "../styles.module.css";
+import styles from "../app/sidebar.module.css";
 import { useTasks } from "../hooks/useTasks";
 
 export function TasksView() {

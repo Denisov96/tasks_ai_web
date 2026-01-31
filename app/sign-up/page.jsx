@@ -1,9 +1,6 @@
 "use client";
 
-import styles from "./styles.module.css";
 import { useSignUp } from "../../hooks/useSignUp";
-import { useState } from "react";
-import { EyeIcon, EyeSlashIcon } from "../../components/Icons/icons"; 
 
 export default function SignUpPage() {
   const {
@@ -15,84 +12,59 @@ export default function SignUpPage() {
     handleSubmit,
   } = useSignUp();
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   return (
-    <div className={styles.pageContainer}>
-      <div className={styles.loginContainer}>
-        <h1 className={styles.loginTitle}>Create an account</h1>
+    <div className="ui-page">
+      <div className="ui-card">
+        <h1 className="ui-title">Create an account</h1>
 
-        {error && <div className={styles.errorMessage}>{error}</div>}
+        {error && <div className="ui-error">{error}</div>}
 
-        <form className={styles.loginForm} onSubmit={handleSubmit}>
-          <div className={styles.formGroup}>
-            <label htmlFor="username" className={styles.formLabel}>
+        <form className="ui-form" onSubmit={handleSubmit}>
+          <div className="ui-form-group">
+            <label htmlFor="username" className="ui-label">
               Username
             </label>
             <input
               id="username"
               type="text"
               ref={userNameRef}
-              className={styles.formInput}
+              className="ui-input"
               placeholder="Enter your username"
               disabled={isLoading}
             />
           </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="password" className={styles.formLabel}>
+          <div className="ui-form-group">
+            <label htmlFor="password" className="ui-label">
               Password
             </label>
-            <div className={styles.passwordWrapper}>
-              <input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                ref={passwordRef}
-                className={styles.formInput}
-                placeholder="Enter your password"
-                disabled={isLoading}
-              />
-              <button
-                type="button"
-                className={styles.passwordToggle}
-                onClick={() => setShowPassword(!showPassword)}
-                disabled={isLoading}
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
-              </button>
-            </div>
+            <input
+              id="password"
+              type="password"
+              ref={passwordRef}
+              className="ui-input"
+              placeholder="Enter your password"
+              disabled={isLoading}
+            />
           </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="confirm" className={styles.formLabel}>
+          <div className="ui-form-group">
+            <label htmlFor="confirm" className="ui-label">
               Confirm Password
             </label>
-            <div className={styles.passwordWrapper}>
-              <input
-                id="confirm"
-                type={showConfirmPassword ? "text" : "password"}
-                ref={confirmRef}
-                className={styles.formInput}
-                placeholder="Repeat your password"
-                disabled={isLoading}
-              />
-              <button
-                type="button"
-                className={styles.passwordToggle}
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                disabled={isLoading}
-                aria-label={showConfirmPassword ? "Hide password" : "Show password"}
-              >
-                {showConfirmPassword ? <EyeSlashIcon /> : <EyeIcon />}
-              </button>
-            </div>
+            <input
+              id="confirm"
+              type="password"
+              ref={confirmRef}
+              className="ui-input"
+              placeholder="Repeat your password"
+              disabled={isLoading}
+            />
           </div>
 
           <button
             type="submit"
-            className={styles.loginButton}
+            className="ui-button ui-button--primary"
             disabled={isLoading}
           >
             {isLoading ? "Signing up..." : "Sign up"}
