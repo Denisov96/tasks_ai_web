@@ -4,20 +4,6 @@
   --thumb-size: 18px;
   --thumb-offset: 2px;
 
-  --track-bg-light: #e5e5e5;
-  --track-bg-dark: #404040;
-
-  --thumb-bg-light: #ffffff;
-  --thumb-bg-dark: #000000;
-
-  --icon-light: #737373;
-  --icon-dark: #ffffff;
-
-  --track-bg: var(--track-bg-light);
-  --thumb-bg: var(--thumb-bg-light);
-  --icon-color: var(--icon-light);
-  --thumb-left: var(--thumb-offset);
-
   display: flex;
   align-items: center;
   gap: 12px;
@@ -34,16 +20,9 @@
   font-weight: 500;
   text-align: left;
 
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.themeToggle[data-theme="dark"] {
-  --track-bg: var(--track-bg-dark);
-  --thumb-bg: var(--thumb-bg-dark);
-  --icon-color: var(--icon-dark);
-  --thumb-left: calc(
-    var(--track-width) - var(--thumb-size) - var(--thumb-offset)
-  );
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
 
 .themeToggle:hover {
@@ -56,7 +35,7 @@
 
 .themeToggle:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 0 2px rgba(var(--neutral-rgb), 0.15);
 }
 
 .toggleTrack {
@@ -66,16 +45,20 @@
   border-radius: 999px;
   flex-shrink: 0;
 
-  background: var(--track-bg);
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: var(--toggle-track-light);
+  border: 1px solid rgba(var(--neutral-rgb), 0.15);
 
   transition: background-color 0.3s ease;
+}
+
+.themeToggle[data-theme="dark"] .toggleTrack {
+  background: var(--toggle-track-dark);
 }
 
 .toggleThumb {
   position: absolute;
   top: var(--thumb-offset);
-  left: var(--thumb-left);
+  left: var(--thumb-offset);
 
   width: var(--thumb-size);
   height: var(--thumb-size);
@@ -85,13 +68,19 @@
   align-items: center;
   justify-content: center;
 
-  background: var(--thumb-bg);
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  background: var(--toggle-thumb-light);
+  border: 1px solid rgba(var(--neutral-rgb), 0.15);
+  box-shadow: 0 1px 3px rgba(var(--neutral-rgb), 0.15);
 
-  will-change: left, transform;
-  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease,
+  transition:
+    left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.3s ease,
     transform 0.15s ease;
+}
+
+.themeToggle[data-theme="dark"] .toggleThumb {
+  left: calc(var(--track-width) - var(--thumb-size) - var(--thumb-offset));
+  background: var(--toggle-thumb-dark);
 }
 
 .themeToggle:active .toggleThumb {
@@ -100,7 +89,7 @@
 
 .icon {
   stroke: currentColor;
-  color: var(--icon-color);
+  color: var(--foreground);
   transition: color 0.3s ease;
 }
 
