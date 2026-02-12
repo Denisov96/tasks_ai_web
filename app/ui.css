@@ -38,7 +38,6 @@
   font-size: 1.4rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  text-transform: none;
 }
 
 .ui-form {
@@ -63,7 +62,7 @@
   height: var(--input-height);
   padding: 0 1rem;
 
-  border-radius: 0.5rem;
+  border-radius: var(--radius);
   border: 1px solid var(--border);
 
   background: var(--muted);
@@ -83,12 +82,14 @@
   outline: none;
   background: var(--background);
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(24, 24, 27, 0.08);
+  box-shadow: 0 0 0 4px rgba(var(--neutral-rgb), 0.08);
 }
 
+
+
 .ui-button {
-  height: 48px;
-  border-radius: 0.5rem;
+  height: var(--input-height);
+  border-radius: var(--radius);
   border: none;
 
   font-size: 0.85rem;
@@ -107,18 +108,20 @@
 }
 
 .ui-button--primary:hover {
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-md);
 }
 
 .ui-button--primary:active {
   transform: translateY(1px);
 }
 
+
+
 .ui-error {
   padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius);
 
-  background: rgba(229, 57, 53, 0.08);
+  background: rgba(var(--danger-rgb), 0.08);
   color: var(--danger);
 
   font-size: 0.75rem;
