@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useSignIn } from "../../hooks/useSignIn";
+import { useSignIn } from "../../../hooks/useSignIn";
+import styles from "../ui.module.css";
 
 export default function SignInPage() {
   const {
@@ -13,36 +14,49 @@ export default function SignInPage() {
   } = useSignIn();
 
   return (
-    <div className="ui-page">
-      <div className="ui-card">
-        <h1 className="ui-title">Sign in to your account</h1>
+    <div className={styles.uiPage}>
+      <div className={styles.uiCard}>
+        <h1 className={styles.uiTitle}>
+          Sign in to your account
+        </h1>
 
-        {error && <div className="ui-error">{error}</div>}
+        {error && (
+          <div className={styles.uiError}>{error}</div>
+        )}
 
-        <form className="ui-form" onSubmit={handleSubmit}>
-          <div className="ui-form-group">
-            <label htmlFor="username" className="ui-label">
+        <form
+          className={styles.uiForm}
+          onSubmit={handleSubmit}
+        >
+          <div className={styles.uiFormGroup}>
+            <label
+              htmlFor="username"
+              className={styles.uiLabel}
+            >
               Username
             </label>
             <input
               id="username"
               type="text"
               ref={userNameRef}
-              className="ui-input"
+              className={styles.uiInput}
               placeholder="Enter your username"
               disabled={isLoading}
             />
           </div>
 
-          <div className="ui-form-group">
-            <label htmlFor="password" className="ui-label">
+          <div className={styles.uiFormGroup}>
+            <label
+              htmlFor="password"
+              className={styles.uiLabel}
+            >
               Password
             </label>
             <input
               id="password"
               type="password"
               ref={passwordRef}
-              className="ui-input"
+              className={styles.uiInput}
               placeholder="Enter your password"
               disabled={isLoading}
             />
@@ -50,14 +64,14 @@ export default function SignInPage() {
 
           <button
             type="submit"
-            className="ui-button ui-button--primary"
+            className={`${styles.uiButton} ${styles.uiButtonPrimary}`}
             disabled={isLoading}
           >
             {isLoading ? "Signing in..." : "Sign in"}
           </button>
         </form>
 
-        <p style={{ marginTop: "1.5rem", textAlign: "center" }}>
+        <p className={styles.uiFooter}>
           Don&apos;t have an account?{" "}
           <Link href="/sign-up">Sign Up</Link>
         </p>
