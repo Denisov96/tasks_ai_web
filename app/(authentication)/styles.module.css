@@ -1,4 +1,4 @@
-.uiPage {
+.page {
   min-height: 100vh;
   padding: 1rem;
 
@@ -7,7 +7,7 @@
   align-items: center;
 }
 
-.uiCard {
+.card {
   width: 100%;
   max-width: 420px;
   padding: 2.5rem;
@@ -31,7 +31,7 @@
   }
 }
 
-.uiTitle {
+.title {
   margin-bottom: 2rem;
   text-align: center;
 
@@ -40,25 +40,25 @@
   letter-spacing: 0.02em;
 }
 
-.uiForm {
+.form {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 }
 
-.uiFormGroup {
+.formGroup {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 }
 
-.uiLabel {
+.label {
   font-size: 0.7rem;
   font-weight: 500;
   color: var(--muted-foreground);
 }
 
-.uiInput {
+.input {
   height: var(--input-height);
   padding: 0 1rem;
 
@@ -74,18 +74,18 @@
     background 0.2s ease;
 }
 
-.uiInput:hover {
+.input:hover {
   border-color: var(--border-hover);
 }
 
-.uiInput:focus {
+.input:focus {
   outline: none;
   background: var(--background);
   border-color: var(--primary);
   box-shadow: 0 0 0 4px rgba(var(--neutral-rgb), 0.08);
 }
 
-.uiButton {
+.button {
   height: var(--input-height);
   border-radius: var(--radius);
   border: none;
@@ -101,20 +101,20 @@
     opacity 0.15s ease;
 }
 
-.uiButtonPrimary {
+.primaryButton {
   background: var(--primary);
   color: var(--primary-foreground);
 }
 
-.uiButtonPrimary:hover {
+.primaryButton:hover {
   box-shadow: var(--shadow-md);
 }
 
-.uiButtonPrimary:active {
+.primaryButton:active {
   transform: translateY(1px);
 }
 
-.uiError {
+.error {
   padding: 0.75rem 1rem;
   border-radius: var(--radius);
 
@@ -125,7 +125,7 @@
   font-weight: 500;
 }
 
-.uiFooter {
+.footer {
   margin-top: 1.5rem;
   text-align: center;
 }
