@@ -1,35 +1,54 @@
 .logoutContainer {
   position: absolute;
   bottom: 16px;
-  left: 16px;   
-  width: auto;  
+  left: 16px;
   display: flex;
-  justify-content: flex-start; 
 }
 
 .logoutButton {
   width: 44px;
   height: 44px;
-  border-radius: 8px;
+  border-radius: 12px;
   border: none;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   cursor: pointer;
-  transition: background-color 0.25s ease, transform 0.2s ease;
-  background-color: var(--muted);
-  color: black;
+
+  background: var(--icon-button-bg);
+  color: var(--icon-button-fg);
+  box-shadow: var(--icon-button-shadow);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
 }
 
-.logoutButton:hover {
-  background-color: var(--secondary);
-  transform: scale(1.05);
+.logoutButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--icon-button-shadow-hover);
+}
+
+.logoutButton:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .logoutButton:disabled {
-  background-color: var(--muted);
+  opacity: 0.5;
   cursor: not-allowed;
-  opacity: 0.6;
-  transform: none;
+  box-shadow: none;
 }
 
+.logoutButton svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  transition: stroke-width 0.2s ease;
+}
+
+.logoutButton:hover:not(:disabled) svg {
+  stroke-width: 2;
+}

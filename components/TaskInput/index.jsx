@@ -19,47 +19,37 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
   const [dots, setDots] = useState(0);
 
   useEffect(() => {
-    let interval = null;
-    if (processing) {
+    if (!processing) {
       setDots(0);
-      interval = setInterval(() => {
-        setDots((d) => (d + 1) % 4);
-      }, 500);
-    } else {
-      setDots(0);
+      return;
     }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
+
+    const interval = setInterval(() => {
+      setDots((d) => (d + 1) % 4);
+    }, 500);
+
+    return () => clearInterval(interval);
   }, [processing]);
 
   const displayedValue = processing ? `Waiting${".".repeat(dots)}` : value;
-  const hasText = !!value && value.trim().length > 0 && !processing;
+  const hasText = value.trim().length > 0 && !processing;
 
   return (
     <div className={styles.inputContainer}>
       <div className={styles.inputWrapper}>
         <input
           type="text"
-          autoFocus
           value={displayedValue}
-          onChange={(e) => {
-            if (!processing) onChange(e.target.value);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && hasText) onSubmit();
-          }}
+          onChange={(e) => !processing && onChange(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && hasText && onSubmit()}
           placeholder="Enter a new task..."
           className={styles.input}
           disabled={processing}
-          aria-busy={processing}
         />
 
         <div className={styles.buttonsInside}>
           <IconButton
-            className={`${styles["add-button"]} ${
-              hasText ? styles.visible : ""
-            }`}
+            className={`${styles["add-button"]} ${hasText ? styles.visible : ""}`}
             onClick={onSubmit}
             title="Add task"
           >
@@ -73,7 +63,7 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
             onClick={toggleRecording}
             title={recording ? "Stop recording" : "Start recording"}
           >
-            <MicrophoneIcon size={20} color="#ffffff" />
+            <MicrophoneIcon />
           </IconButton>
         </div>
       </div>

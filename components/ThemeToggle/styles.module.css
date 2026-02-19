@@ -1,0 +1,125 @@
+.themeToggle {
+  --track-width: 44px;
+  --track-height: 22px;
+  --thumb-size: 18px;
+  --thumb-offset: 2px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+
+  background: none;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
+}
+
+.themeToggle:hover {
+  background-color: var(--muted);
+}
+
+.themeToggle:active {
+  transform: scale(0.98);
+}
+
+.themeToggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--neutral-rgb), 0.15);
+}
+
+.toggleTrack {
+  position: relative;
+  width: var(--track-width);
+  height: var(--track-height);
+  border-radius: 999px;
+  flex-shrink: 0;
+
+  background: var(--toggle-track-light);
+  border: 1px solid rgba(var(--neutral-rgb), 0.15);
+
+  transition: background-color 0.3s ease;
+}
+
+.themeToggle[data-theme="dark"] .toggleTrack {
+  background: var(--toggle-track-dark);
+}
+
+.toggleThumb {
+  position: absolute;
+  top: var(--thumb-offset);
+  left: var(--thumb-offset);
+
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--toggle-thumb-light);
+  border: 1px solid rgba(var(--neutral-rgb), 0.15);
+  box-shadow: 0 1px 3px rgba(var(--neutral-rgb), 0.15);
+
+  transition:
+    left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.3s ease,
+    transform 0.15s ease;
+}
+
+.themeToggle[data-theme="dark"] .toggleThumb {
+  left: calc(var(--track-width) - var(--thumb-size) - var(--thumb-offset));
+  background: var(--toggle-thumb-dark);
+}
+
+.themeToggle:active .toggleThumb {
+  transform: scale(0.9);
+}
+
+.icon {
+  stroke: currentColor;
+  color: var(--foreground);
+  transition: color 0.3s ease;
+}
+
+.toggleText {
+  flex: 1;
+  font-weight: 400;
+  letter-spacing: -0.2px;
+}
+
+@media (max-width: 768px) {
+  .themeToggle {
+    --track-width: 40px;
+    --track-height: 20px;
+    --thumb-size: 16px;
+
+    padding: 10px 12px;
+    font-size: 13px;
+    gap: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .themeToggle,
+  .toggleTrack,
+  .toggleThumb,
+  .icon {
+    transition: none;
+  }
+
+  .themeToggle:active {
+    transform: none;
+  }
+}

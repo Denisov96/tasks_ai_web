@@ -1,7 +1,7 @@
 "use client";
 
-import styles from "./styles.module.css";
-import { useSignUp } from "../../hooks/useSignUp";
+import { useSignUp } from "../../../hooks/useSignUp";
+import styles from "../styles.module.css";
 
 export default function SignUpPage() {
   const {
@@ -14,50 +14,50 @@ export default function SignUpPage() {
   } = useSignUp();
 
   return (
-    <div className={styles.pageContainer}>
-      <div className={styles.loginContainer}>
-        <h1 className={styles.loginTitle}>Create an account</h1>
+    <div className={styles.page}>
+      <div className={styles.card}>
+        <h1 className={styles.title}>Create an account</h1>
 
-        {error && <div className={styles.errorMessage}>{error}</div>}
+        {error && <div className={styles.error}>{error}</div>}
 
-        <form className={styles.loginForm} onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
-            <label htmlFor="username" className={styles.formLabel}>
+            <label htmlFor="username" className={styles.label}>
               Username
             </label>
             <input
               id="username"
               type="text"
               ref={userNameRef}
-              className={styles.formInput}
+              className={styles.input}
               placeholder="Enter your username"
               disabled={isLoading}
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="password" className={styles.formLabel}>
+            <label htmlFor="password" className={styles.label}>
               Password
             </label>
             <input
               id="password"
               type="password"
               ref={passwordRef}
-              className={styles.formInput}
+              className={styles.input}
               placeholder="Enter your password"
               disabled={isLoading}
             />
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="confirm" className={styles.formLabel}>
+            <label htmlFor="confirm" className={styles.label}>
               Confirm Password
             </label>
             <input
               id="confirm"
               type="password"
               ref={confirmRef}
-              className={styles.formInput}
+              className={styles.input}
               placeholder="Repeat your password"
               disabled={isLoading}
             />
@@ -65,7 +65,7 @@ export default function SignUpPage() {
 
           <button
             type="submit"
-            className={styles.loginButton}
+            className={`${styles.button} ${styles.primaryButton}`}
             disabled={isLoading}
           >
             {isLoading ? "Signing up..." : "Sign up"}

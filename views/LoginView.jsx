@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import styles from "./styles.module.css";
 
 export function LoginView(props) {
   const userNameRef = useRef();
@@ -46,10 +45,7 @@ export function LoginView(props) {
       });
 
       const result = await res.json();
-
-      if (!res.ok) {
-        throw new Error(result.error || "Something went wrong");
-      }
+      if (!res.ok) throw new Error(result.error || "Something went wrong");
 
       props.onSuccess(result.data);
     } catch (err) {
@@ -60,101 +56,95 @@ export function LoginView(props) {
   }
 
   return (
-    <div className={styles.loginContainer}>
-      <h1 className={styles.loginTitle}>
-        {isSignUp ? "Create an account" : "Sign in to your account"}
-      </h1>
+    <div className="ui-page">
+      <div className="ui-card">
+        <h1 className="ui-title">
+          {isSignUp ? "Create an account" : "Sign in to your account"}
+        </h1>
 
-      {error && <div className={styles.errorMessage}>{error}</div>}
+        {error && <div className="ui-error">{error}</div>}
 
-      <form className={styles.loginForm} onSubmit={handleSubmit}>
-        <div className={styles.formGroup}>
-          <label htmlFor="username" className={styles.formLabel}>
-            Username
-          </label>
-          <input
-            id="username"
-            type="text"
-            ref={userNameRef}
-            className={styles.formInput}
-            placeholder="Enter your username"
-            disabled={isLoading}
-          />
-        </div>
-
-        <div className={styles.formGroup}>
-          <label htmlFor="password" className={styles.formLabel}>
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            ref={passwordRef}
-            className={styles.formInput}
-            placeholder="Enter your password"
-            disabled={isLoading}
-          />
-        </div>
-
-        {isSignUp && (
-          <div className={styles.formGroup}>
-            <label htmlFor="confirm" className={styles.formLabel}>
-              Confirm Password
-            </label>
+        <form className="ui-form" onSubmit={handleSubmit}>
+          <div className="ui-form-group">
+            <label className="ui-label">Username</label>
             <input
-              id="confirm"
-              type="password"
-              ref={confirmRef}
-              className={styles.formInput}
-              placeholder="Repeat your password"
+              ref={userNameRef}
+              className="ui-input"
+              placeholder="Enter your username"
               disabled={isLoading}
             />
           </div>
-        )}
 
-        <button type="submit" className={styles.loginButton} disabled={isLoading}>
-          {isLoading
-            ? isSignUp
-              ? "Signing up..."
-              : "Signing in..."
-            : isSignUp
-            ? "Sign up"
-            : "Sign in"}
-        </button>
-      </form>
+          <div className="ui-form-group">
+            <label className="ui-label">Password</label>
+            <input
+              type="password"
+              ref={passwordRef}
+              className="ui-input"
+              placeholder="Enter your password"
+              disabled={isLoading}
+            />
+          </div>
 
-      <div className={styles.loginFooter}>
-        {isSignUp ? (
-          <>
-            Already have an account?{" "}
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                setIsSignUp(false);
-                setError(null);
-              }}
-              className={styles.signupLink}
-            >
-              Sign in
-            </a>
-          </>
-        ) : (
-          <>
-            Don’t have an account?{" "}
-            <a
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                setIsSignUp(true);
-                setError(null);
-              }}
-              className={styles.signupLink}
-            >
-              Sign up
-            </a>
-          </>
-        )}
+          {isSignUp && (
+            <div className="ui-form-group">
+              <label className="ui-label">Confirm password</label>
+              <input
+                type="password"
+                ref={confirmRef}
+                className="ui-input"
+                placeholder="Repeat your password"
+                disabled={isLoading}
+              />
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="ui-button ui-button--primary"
+            disabled={isLoading}
+          >
+            {isLoading
+              ? isSignUp
+                ? "Signing up..."
+                : "Signing in..."
+              : isSignUp
+              ? "Sign up"
+              : "Sign in"}
+          </button>
+        </form>
+
+        <div style={{ marginTop: "2rem", textAlign: "center", fontSize: "0.75rem" }}>
+          {isSignUp ? (
+            <>
+              Already have an account?{" "}
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsSignUp(false);
+                  setError(null);
+                }}
+              >
+                Sign in
+              </a>
+            </>
+          ) : (
+            <>
+              Don’t have an account?{" "}
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsSignUp(true);
+                  setError(null);
+                }}
+              >
+                Sign up
+              </a>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
