@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export async function PUT(request) {
   try {
-    const userId = getUserIdFromCookies(request);
+    const userId = getUserIdFromCookies();
     const errorResponse = validateUserId(userId);
     if (errorResponse) return errorResponse;
 
@@ -23,8 +23,15 @@ export async function PUT(request) {
     }
 
     const updateData = {};
-    if (completed !== undefined) updateData.completed = completed;
-    if (text) updateData.text = text.trim();
+
+    if (completed !== undefined) {
+      updateData.completed = completed;
+      updateData.completedAt = completed ? new Date() : null;
+    }
+
+    if (text) {
+      updateData.text = text.trim();
+    }
 
     await prisma.task.update({
       where: { id: taskId },
