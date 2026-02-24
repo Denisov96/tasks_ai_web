@@ -9,12 +9,13 @@ datasource db {
 
 
 model Task {
-  id        Int      @id @default(autoincrement())
-  text      String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
-  completed Boolean  @default(false)
-  createdAt DateTime @default(now())
+  id          Int       @id @default(autoincrement())
+  text        String
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int
+  completed   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
 }
 
 model User {

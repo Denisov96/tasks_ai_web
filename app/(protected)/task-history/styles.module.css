@@ -1,0 +1,66 @@
+.wrapper {
+  min-height: 100vh;
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+  background: var(--background);
+}
+
+.card {
+  width: 100%;
+  max-width: 720px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  padding: 40px;
+}
+
+.title {
+  margin: 0 0 30px 0;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.completedDay {
+  background: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  border-radius: 12px !important;
+}
+
+.section {
+  margin-top: 40px;
+}
+
+.dateTitle {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.taskItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--muted);
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+}
+
+.taskItem:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-sm);
+}
+
+.check {
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.empty {
+  color: var(--muted-foreground);
+}
