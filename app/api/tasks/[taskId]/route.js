@@ -17,20 +17,32 @@ export async function PUT(request) {
       return Response.json({ error: "Invalid Task ID" }, { status: 400 });
     }
 
-    const task = await prisma.task.findUnique({ where: { id: taskId } });
+    const task = await prisma.task.findUnique({
+      where: { id: taskId },
+    });
+
     if (!task || task.userId !== userId) {
       return Response.json({ error: "Task not found" }, { status: 404 });
     }
 
     const updateData = {};
 
-    if (completed !== undefined) {
+    if (typeof completed === "boolean" && completed !== task.completed) {
       updateData.completed = completed;
-      updateData.completedAt = completed ? new Date() : null;
+
+      if (completed) {
+        updateData.completedAt = new Date();
+      } else {
+        updateData.completedAt = null;
+      }
     }
 
-    if (text) {
+    if (typeof text === "string") {
       updateData.text = text.trim();
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      return Response.json({ data: await getTasks(userId) });
     }
 
     await prisma.task.update({
