@@ -1,84 +1,150 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./styles.module.css";
-import { isSameDay, formatDate } from "../../../lib/date";
+import { getLocalDateKey } from "../../../lib/date";
+
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 export default function TaskHistoryPage() {
   const [tasks, setTasks] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(null);
   const [error, setError] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const today = new Date();
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+  const year = today.getFullYear();
 
   useEffect(() => {
-    async function loadHistory() {
+    async function load() {
       try {
         const res = await fetch("/api/task-history", {
           credentials: "include",
         });
 
-        if (!res.ok) {
-          throw new Error(`Server error: ${res.status}`);
-        }
+        if (!res.ok) throw new Error("Failed to load");
 
         const data = await res.json();
-
-        if (!Array.isArray(data)) {
-          throw new Error("Invalid response format");
-        }
+        if (!Array.isArray(data)) throw new Error("Invalid data");
 
         setTasks(data);
-      } catch (err) {
-        console.error(err);
-        setError("Failed to load task history");
+      } catch {
+        setError("Failed to load activity");
       }
     }
 
-    loadHistory();
+    load();
   }, []);
 
-  const tasksForSelectedDate = selectedDate
-    ? tasks.filter(task =>
-        isSameDay(task.completedAt, selectedDate)
+  const activityMap = useMemo(() => {
+    const map = {};
+    tasks.forEach((task) => {
+      if (!task.completedAt) return;
+      const key = getLocalDateKey(task.completedAt);
+      map[key] = (map[key] || 0) + 1;
+    });
+    return map;
+  }, [tasks]);
+
+  const days = useMemo(() => {
+    const result = [];
+    const lastDay = new Date(year, currentMonth + 1, 0);
+
+    for (let d = 1; d <= lastDay.getDate(); d++) {
+      result.push(new Date(year, currentMonth, d));
+    }
+
+    return result;
+  }, [year, currentMonth]);
+
+  const getIntensity = (count) => {
+    if (!count) return styles.level0;
+    if (count === 1) return styles.level1;
+    if (count === 2) return styles.level2;
+    return styles.level3;
+  };
+
+  const tasksForSelectedDay = selectedDate
+    ? tasks.filter(
+        (task) =>
+          task.completedAt &&
+          getLocalDateKey(task.completedAt) === selectedDate,
       )
     : [];
+
+  const prevMonth = () => {
+    setSelectedDate(null);
+    setCurrentMonth((m) => (m === 0 ? 11 : m - 1));
+  };
+
+  const nextMonth = () => {
+    setSelectedDate(null);
+    setCurrentMonth((m) => (m === 11 ? 0 : m + 1));
+  };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.card}>
-        <h1 className={styles.title}>Task Activity</h1>
+        <div className={styles.header}>
+          <button onClick={prevMonth} className={styles.navBtn}>
+            ‹
+          </button>
+          <h2 className={styles.title}>
+            {MONTHS[currentMonth]} {year}
+          </h2>
+          <button onClick={nextMonth} className={styles.navBtn}>
+            ›
+          </button>
+        </div>
 
-        {error && (
-          <p className={styles.error}>{error}</p>
-        )}
+        {error && <p className={styles.error}>{error}</p>}
 
-        <Calendar
-          onClickDay={setSelectedDate}
-          tileClassName={({ date }) =>
-            tasks.some(task =>
-              isSameDay(task.completedAt, date)
-            )
-              ? styles.completedDay
-              : null
-          }
-        />
+        <div className={styles.daysGrid}>
+          {days.map((date) => {
+            const key = getLocalDateKey(date);
+            const count = activityMap[key] || 0;
+            const isActive = selectedDate === key;
+
+            return (
+              <div
+                key={key}
+                onClick={() => setSelectedDate(key)}
+                className={`
+                  ${styles.day}
+                  ${getIntensity(count)}
+                  ${isActive ? styles.selected : ""}
+                `}
+                title={`${key} — ${count} tasks`}
+              >
+                <span className={styles.dayNumber}>{date.getDate()}</span>
+              </div>
+            );
+          })}
+        </div>
 
         {selectedDate && (
-          <div className={styles.section}>
-            <h2 className={styles.dateTitle}>
-              {formatDate(selectedDate)}
-            </h2>
+          <div className={styles.details}>
+            <h3 className={styles.detailsTitle}>{selectedDate}</h3>
 
-            {tasksForSelectedDate.length === 0 ? (
-              <p className={styles.empty}>
-                No completed tasks
-              </p>
+            {tasksForSelectedDay.length === 0 ? (
+              <p className={styles.empty}>No completed tasks</p>
             ) : (
-              tasksForSelectedDate.map(task => (
+              tasksForSelectedDay.map((task) => (
                 <div key={task.id} className={styles.taskItem}>
-                  <span className={styles.check}>✓</span>
-                  <span>{task.text}</span>
+                  ✓ {task.text}
                 </div>
               ))
             )}
