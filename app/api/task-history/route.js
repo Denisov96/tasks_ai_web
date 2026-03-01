@@ -1,23 +1,20 @@
 import { prisma } from "../../../prisma/db";
 import { getUserIdFromCookies } from "../../../lib/auth";
 
-export async function GET() {
+export const dynamic = "force-dynamic";
+
+export async function GET(request) {
   try {
-    const userId = getUserIdFromCookies();
+    const userId = getUserIdFromCookies(request);
 
     if (!userId) {
-      return new Response(
-        JSON.stringify({ error: "Unauthorized" }),
-        { status: 401 }
-      );
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+      });
     }
 
-    const tasks = await prisma.task.findMany({
-      where: {
-        userId,
-        completed: true,
-        NOT: { completedAt: null },
-      },
+    const history = await prisma.taskHistory.findMany({
+      where: { userId },
       select: {
         id: true,
         text: true,
@@ -28,15 +25,11 @@ export async function GET() {
       },
     });
 
-    return new Response(
-      JSON.stringify(tasks),
-      { status: 200 }
-    );
+    return new Response(JSON.stringify(history), { status: 200 });
   } catch (error) {
     console.error("Task history error:", error);
-    return new Response(
-      JSON.stringify({ error: "Server error" }),
-      { status: 500 }
-    );
+    return new Response(JSON.stringify({ error: "Server error" }), {
+      status: 500,
+    });
   }
 }
