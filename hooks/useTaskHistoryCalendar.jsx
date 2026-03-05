@@ -8,9 +8,11 @@ export function useTaskHistoryCalendar() {
 
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
+
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
+
+  const [selectedDate, setSelectedDate] = useState(getLocalDateKey(today));
 
   useEffect(() => {
     async function load() {
@@ -35,11 +37,15 @@ export function useTaskHistoryCalendar() {
 
   const activityMap = useMemo(() => {
     const map = {};
+
     tasks.forEach((task) => {
       if (!task.completedAt) return;
+
       const key = getLocalDateKey(task.completedAt);
+
       map[key] = (map[key] || 0) + 1;
     });
+
     return map;
   }, [tasks]);
 
@@ -55,7 +61,6 @@ export function useTaskHistoryCalendar() {
   }, [currentMonth, currentYear]);
 
   const tasksForSelectedDay = useMemo(() => {
-    if (!selectedDate) return [];
     return tasks.filter(
       (task) =>
         task.completedAt && getLocalDateKey(task.completedAt) === selectedDate,
@@ -63,8 +68,6 @@ export function useTaskHistoryCalendar() {
   }, [selectedDate, tasks]);
 
   const prevMonth = () => {
-    setSelectedDate(null);
-
     if (currentMonth === 0) {
       setCurrentMonth(11);
       setCurrentYear((y) => y - 1);
@@ -74,8 +77,6 @@ export function useTaskHistoryCalendar() {
   };
 
   const nextMonth = () => {
-    setSelectedDate(null);
-
     if (currentMonth === 11) {
       setCurrentMonth(0);
       setCurrentYear((y) => y + 1);
