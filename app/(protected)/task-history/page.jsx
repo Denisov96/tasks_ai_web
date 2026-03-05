@@ -19,6 +19,8 @@ const MONTHS = [
   "December",
 ];
 
+const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
 export default function TaskHistoryPage() {
   const {
     days,
@@ -57,8 +59,20 @@ export default function TaskHistoryPage() {
 
         {error && <p className={styles.error}>{error}</p>}
 
+        <div className={styles.weekdays}>
+          {WEEKDAYS.map((day) => (
+            <div key={day} className={styles.weekday}>
+              {day}
+            </div>
+          ))}
+        </div>
+
         <div className={styles.daysGrid}>
-          {days.map((date) => {
+          {days.map((date, i) => {
+            if (!date) {
+              return <div key={i} className={styles.emptyCell} />;
+            }
+
             const key = getLocalDateKey(date);
             const count = activityMap[key] || 0;
             const isActive = selectedDate === key;
@@ -72,7 +86,6 @@ export default function TaskHistoryPage() {
                   ${getIntensity(count)}
                   ${isActive ? styles.selected : ""}
                 `}
-                title={`${key} — ${count} tasks`}
               >
                 <span className={styles.dayNumber}>{date.getDate()}</span>
               </div>
