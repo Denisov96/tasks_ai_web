@@ -6,8 +6,11 @@
   margin: 0 auto;
   background-color: transparent;
   border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .completedSeparator {
-  margin-top: 30px; 
+  margin-top: 30px;
 }
