@@ -56,11 +56,11 @@
   border-radius: 8px;
   position: relative;
   cursor: pointer;
-  transition: 0.15s ease;
+  transition: transform 0.15s ease, background 0.2s ease;
 }
 
 .day:hover {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .dayNumber {
