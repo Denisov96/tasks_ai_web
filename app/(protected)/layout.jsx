@@ -1,17 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import styles from "../sidebar.module.css";
 import LogoutButton from "../../components/LogoutButton";
 import Spinner from "../../components/Spinner";
-import ThemeToggle from "../../components/ThemeToggle"; 
+import ThemeToggle from "../../components/ThemeToggle";
 import { useAuth } from "../../hooks/useAuth";
 import { useUser } from "../../hooks/useUser";
 
 export default function ProtectedLayout({ children }) {
   const router = useRouter();
+  const pathname = usePathname();
+
   const user = useAuth();
   const { setCurrentUser } = useUser();
 
@@ -21,6 +23,10 @@ export default function ProtectedLayout({ children }) {
     if (user === false) router.replace("/sign-in");
     if (user) setCurrentUser(user);
   }, [user, router, setCurrentUser]);
+
+  useEffect(() => {
+    setOpenMenu(false);
+  }, [pathname]);
 
   if (user === null) return <Spinner />;
   if (user === false) return null;
@@ -45,16 +51,19 @@ export default function ProtectedLayout({ children }) {
               Tasks
             </Link>
           </li>
+
           <li>
             <Link href="/task-history" className={styles.menuLink}>
               Task History
             </Link>
           </li>
+
           <li>
             <Link href="/priorities" className={styles.menuLink}>
               Priorities
             </Link>
           </li>
+
           <li>
             <Link href="/categories" className={styles.menuLink}>
               Categories
