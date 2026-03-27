@@ -8,34 +8,26 @@
   padding: 16px;
   background-color: var(--background);
   z-index: 1000;
-  box-sizing: border-box;
-
   display: flex;
   align-items: center;
   gap: 8px;
 }
-
 .inputWrapper {
   position: relative;
   width: 100%;
   max-width: 400px;
 }
-
 .input {
   width: 100%;
   height: var(--input-height);
   padding: 0 104px 0 16px;
-
   border: 1px solid var(--border);
   border-radius: var(--radius);
-
   background: var(--background);
   color: var(--foreground);
   font-size: 14px;
-
   transition: border-color 0.2s ease;
 }
-
 .input:focus {
   outline: none;
   border-color: var(--primary);
@@ -53,46 +45,32 @@
 .icon-button {
   width: 36px;
   height: 36px;
-
   border-radius: 50%;
   border: none;
-
   background: transparent;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
   transition: transform 0.2s ease;
 }
-
 .icon-button:hover:not(:disabled) {
   transform: scale(1.05);
 }
-
 .icon-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.icon-button svg,
-.delete-button svg {
-  display: block;
-}
-
 .add-button {
   background: var(--primary);
   color: var(--primary-foreground);
-
   opacity: 0;
   transform: scale(0.8);
-
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
 }
-
 .add-button.visible {
   opacity: 1;
   transform: scale(1);
@@ -102,7 +80,6 @@
   background: var(--primary);
   color: var(--primary-foreground);
 }
-
 .mic-button.recording {
   background: var(--danger);
   animation: pulse 1.5s infinite;
@@ -111,20 +88,15 @@
 .delete-button {
   width: 44px;
   height: 44px;
-
   border-radius: 50%;
   border: none;
-
   background: var(--muted);
   color: var(--muted-foreground);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   transition: background-color 0.2s ease;
 }
-
 .delete-button:hover:not(:disabled) {
   background: var(--border-hover);
 }
@@ -132,11 +104,11 @@
 @keyframes pulse {
   0% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(var(--danger-rgb), 0.6);
+    box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.6);
   }
   70% {
     transform: scale(1.1);
-    box-shadow: 0 0 0 14px rgba(var(--danger-rgb), 0);
+    box-shadow: 0 0 0 14px rgba(229, 57, 53, 0);
   }
   100% {
     transform: scale(1);
