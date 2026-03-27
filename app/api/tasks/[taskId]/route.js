@@ -44,12 +44,25 @@ export async function DELETE(request) {
 
     const { taskId } = await request.json();
 
-    const task = await prisma.task.findUnique({ where: { id: taskId } });
+    const task = await prisma.task.findUnique({
+      where: { id: taskId },
+    });
+
     if (!task || task.userId !== userId) {
       return Response.json({ error: "Task not found" }, { status: 404 });
     }
 
-    await prisma.task.delete({ where: { id: taskId } });
+    await prisma.taskHistory.create({
+      data: {
+        text: task.text,
+        completedAt: new Date(),
+        userId,
+      },
+    });
+
+    await prisma.task.delete({
+      where: { id: taskId },
+    });
 
     const tasks = await getTasks(userId);
     return Response.json({ data: tasks });
