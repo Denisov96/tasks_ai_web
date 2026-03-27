@@ -1,15 +1,29 @@
+"use client";
+
+import { useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Task } from "../Task";
-import styles from "./styles.module.css";
 import { useTaskList } from "../../hooks/useTaskList";
+import styles from "./styles.module.css";
 
-export function TaskList({ tasks = [], onChange, onEdit }) {
+export function TaskList({ tasks, onChange, onEdit, userId }) {
   const {
     sortedTasks,
     moveTask,
     toggleTaskCompleted,
-  } = useTaskList({ tasks, onChange });
+    changeTaskPriority, 
+  } = useTaskList({ tasks, onChange, userId });
+
+  const [openTaskIds, setOpenTaskIds] = useState(new Set());
+
+  const toggleDropdown = (id) => {
+    setOpenTaskIds(prev => {
+      const newSet = new Set(prev);
+      newSet.has(id) ? newSet.delete(id) : newSet.add(id);
+      return newSet;
+    });
+  };
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -27,10 +41,18 @@ export function TaskList({ tasks = [], onChange, onEdit }) {
               text={task.text}
               index={index}
               completed={task.completed}
+              priority={task.priority}
               onMove={moveTask}
-              onClick={({ id, completed }) => toggleTaskCompleted(id, completed)}
+              onClick={({ id, completed }) =>
+                toggleTaskCompleted(id, completed)
+              }
               onEdit={onEdit}
-              className={isFirstCompleted ? styles.completedSeparator : ""}
+              onPriorityChange={changeTaskPriority} 
+              className={
+                isFirstCompleted ? styles.completedSeparator : ""
+              }
+              isOpen={openTaskIds.has(task.id)}
+              onToggleOpen={toggleDropdown}
             />
           );
         })}
@@ -38,5 +60,3 @@ export function TaskList({ tasks = [], onChange, onEdit }) {
     </DndProvider>
   );
 }
-
-

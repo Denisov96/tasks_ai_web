@@ -10,10 +10,7 @@ import { useTasks } from "../hooks/useTasks";
 export function TasksView() {
   const { currentUser } = useUser();
 
-  
-  if (!currentUser) {
-    return null; 
-  }
+  if (!currentUser) return null;
 
   const {
     tasks,
@@ -29,15 +26,7 @@ export function TasksView() {
       <Logo />
 
       <TaskInput
-        value={taskToEdit?.text || ""}
-        onSubmit={handleSubmit}
-        onChange={(value) =>
-          taskToEdit
-            ? setTaskToEdit({ ...taskToEdit, text: value })
-            : setTaskToEdit({ text: value })
-        }
         tasks={tasks}
-        deleteTasks={handleDeleteTasks}
         userId={currentUser.id}
         onChangeTasks={setTasks}
       />
