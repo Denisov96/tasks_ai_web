@@ -11,59 +11,31 @@ export async function PUT(request) {
     const errorResponse = validateUserId(userId);
     if (errorResponse) return errorResponse;
 
-    const { taskId, completed, text } = await request.json();
+    const { taskId, completed, text, priority, order } = await request.json();
 
-    const task = await prisma.task.findUnique({
-      where: { id: taskId },
-    });
-
+    const task = await prisma.task.findUnique({ where: { id: taskId } });
     if (!task || task.userId !== userId) {
       return Response.json({ error: "Task not found" }, { status: 404 });
     }
 
     const updateData = {};
+    if (typeof completed === "boolean") updateData.completed = completed;
+    if (typeof text === "string") updateData.text = text.trim();
+    if (priority && ["LOW", "MEDIUM", "HIGH"].includes(priority))
+      updateData.priority = priority;
+    if (typeof order === "number") updateData.order = order;
 
-    if (typeof completed === "boolean" && completed !== task.completed) {
-      updateData.completed = completed;
+    const updatedTask = await prisma.task.update({
+      where: { id: taskId },
+      data: updateData,
+    });
 
-      if (completed === true) {
-        const completionDate = new Date();
-        updateData.completedAt = completionDate;
-
-        
-        await prisma.taskHistory.create({
-          data: {
-            text: task.text,
-            completedAt: completionDate,
-            userId,
-          },
-        });
-
-      } else {
-        updateData.completedAt = null;
-      }
-    }
-
-    if (typeof text === "string") {
-      updateData.text = text.trim();
-    }
-
-    if (Object.keys(updateData).length > 0) {
-      await prisma.task.update({
-        where: { id: taskId },
-        data: updateData,
-      });
-    }
-
-    const tasks = await getTasks(userId);
-    return Response.json({ data: tasks });
-
+    return Response.json({ data: updatedTask });
   } catch (error) {
     console.error("PUT error:", error);
     return Response.json({ error: "Server Error" }, { status: 500 });
   }
 }
-
 export async function DELETE(request) {
   try {
     const userId = getUserIdFromCookies(request);
@@ -72,22 +44,15 @@ export async function DELETE(request) {
 
     const { taskId } = await request.json();
 
-    const task = await prisma.task.findUnique({
-      where: { id: taskId },
-    });
-
+    const task = await prisma.task.findUnique({ where: { id: taskId } });
     if (!task || task.userId !== userId) {
       return Response.json({ error: "Task not found" }, { status: 404 });
     }
 
-    
-    await prisma.task.delete({
-      where: { id: taskId },
-    });
+    await prisma.task.delete({ where: { id: taskId } });
 
     const tasks = await getTasks(userId);
     return Response.json({ data: tasks });
-
   } catch (error) {
     console.error("DELETE error:", error);
     return Response.json({ error: "Server Error" }, { status: 500 });
