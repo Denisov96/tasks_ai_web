@@ -8,21 +8,17 @@ import { useTaskList } from "../../hooks/useTaskList";
 import styles from "./styles.module.css";
 
 export function TaskList({ tasks, onChange, onEdit, userId }) {
-  const {
-    sortedTasks,
-    moveTask,
-    toggleTaskCompleted,
-    changeTaskPriority,
-  } = useTaskList({ tasks, onChange, userId });
+  const { sortedTasks, moveTask, toggleTaskCompleted, changeTaskPriority } =
+    useTaskList({ tasks, onChange, userId });
 
-  const [openTaskIds, setOpenTaskIds] = useState(new Set());
+  const [openTaskId, setOpenTaskId] = useState(null);
 
-  const toggleDropdown = (id) => {
-    setOpenTaskIds((prev) => {
-      const newSet = new Set(prev);
-      newSet.has(id) ? newSet.delete(id) : newSet.add(id);
-      return newSet;
-    });
+  const handleToggle = (id) => {
+    setOpenTaskId((prev) => (prev === id ? null : id));
+  };
+
+  const handleClose = () => {
+    setOpenTaskId(null);
   };
 
   return (
@@ -48,11 +44,10 @@ export function TaskList({ tasks, onChange, onEdit, userId }) {
               }
               onEdit={onEdit}
               onPriorityChange={changeTaskPriority}
-              className={
-                isFirstCompleted ? styles.completedSeparator : ""
-              }
-              isOpen={openTaskIds.has(task.id)}
-              onToggleOpen={toggleDropdown}
+              className={isFirstCompleted ? styles.completedSeparator : ""}
+              isOpen={openTaskId === task.id}
+              onToggleOpen={handleToggle}
+              onClose={handleClose}
             />
           );
         })}
