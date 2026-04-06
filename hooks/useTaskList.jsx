@@ -2,15 +2,17 @@
 
 import { useMemo } from "react";
 import { updateTask } from "../lib/requests";
-
-const priorityWeight = { HIGH: 3, MEDIUM: 2, LOW: 1 };
+import { getPriorityWeight } from "../components/Priorities";
 
 export function useTaskList({ tasks = [], onChange, userId }) {
   const sortedTasks = useMemo(() => {
     return [...tasks].sort((a, b) => {
       if (a.completed !== b.completed) return a.completed ? 1 : -1;
-      if (a.priority !== b.priority)
-        return priorityWeight[b.priority] - priorityWeight[a.priority];
+
+      if (a.priority !== b.priority) {
+        return getPriorityWeight(b.priority) - getPriorityWeight(a.priority);
+      }
+
       return (a.order || 0) - (b.order || 0);
     });
   }, [tasks]);

@@ -12,13 +12,13 @@ export function TaskList({ tasks, onChange, onEdit, userId }) {
     sortedTasks,
     moveTask,
     toggleTaskCompleted,
-    changeTaskPriority, 
+    changeTaskPriority,
   } = useTaskList({ tasks, onChange, userId });
 
   const [openTaskIds, setOpenTaskIds] = useState(new Set());
 
   const toggleDropdown = (id) => {
-    setOpenTaskIds(prev => {
+    setOpenTaskIds((prev) => {
       const newSet = new Set(prev);
       newSet.has(id) ? newSet.delete(id) : newSet.add(id);
       return newSet;
@@ -47,7 +47,7 @@ export function TaskList({ tasks, onChange, onEdit, userId }) {
                 toggleTaskCompleted(id, completed)
               }
               onEdit={onEdit}
-              onPriorityChange={changeTaskPriority} 
+              onPriorityChange={changeTaskPriority}
               className={
                 isFirstCompleted ? styles.completedSeparator : ""
               }
