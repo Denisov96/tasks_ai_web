@@ -2,19 +2,11 @@
 
 import { useMemo } from "react";
 import { updateTask } from "../lib/requests";
-import { getPriorityWeight } from "../components/Priorities";
+import { sortTasks } from "../lib/utils";
 
 export function useTaskList({ tasks = [], onChange, userId }) {
   const sortedTasks = useMemo(() => {
-    return [...tasks].sort((a, b) => {
-      if (a.completed !== b.completed) return a.completed ? 1 : -1;
-
-      if (a.priority !== b.priority) {
-        return getPriorityWeight(b.priority) - getPriorityWeight(a.priority);
-      }
-
-      return (a.order || 0) - (b.order || 0);
-    });
+    return sortTasks(tasks);
   }, [tasks]);
 
   const moveTask = (fromIndex, toIndex) => {
@@ -40,7 +32,9 @@ export function useTaskList({ tasks = [], onChange, userId }) {
   };
 
   const toggleTaskCompleted = async (id, completed) => {
-    onChange(tasks.map((t) => (t.id === id ? { ...t, completed } : t)));
+    onChange((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, completed } : t))
+    );
 
     try {
       const updatedTask = await updateTask({ id, completed });
@@ -54,7 +48,9 @@ export function useTaskList({ tasks = [], onChange, userId }) {
   };
 
   const changeTaskPriority = async (id, priority) => {
-    onChange(tasks.map((t) => (t.id === id ? { ...t, priority } : t)));
+    onChange((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, priority } : t))
+    );
 
     try {
       const updatedTask = await updateTask({ id, priority });
