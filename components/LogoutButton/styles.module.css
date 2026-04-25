@@ -2,31 +2,65 @@
   position: absolute;
   bottom: 16px;
   left: 16px;
+
   display: flex;
+  width: calc(100% - 32px);
 }
 
 .logoutButton {
-  width: 44px;
+  width: 100%;
   height: 44px;
+
   border-radius: 12px;
-  border: none;
+  border: 1px solid var(--border);
 
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 
   cursor: pointer;
 
-  background: var(--icon-button-bg);
-  color: var(--icon-button-fg);
-  box-shadow: var(--icon-button-shadow);
+  background: var(--surface);
+  color: var(--foreground);
+
+  box-shadow: var(--shadow-sm);
 
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background-color 0.2s ease;
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease;
 }
 
+.logoutButton:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-hover);
+}
+
+.logoutButton:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+.logoutButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.logoutButton svg {
+  width: 18px;
+  height: 18px;
+}
+
+.logoutButton.danger {
+  color: var(--danger);
+}
+
+.logoutButton.danger:hover {
+  background: rgba(229, 57, 53, 0.06);
+  border-color: rgba(229, 57, 53, 0.3);
+}
 .logoutButton:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: var(--icon-button-shadow-hover);
