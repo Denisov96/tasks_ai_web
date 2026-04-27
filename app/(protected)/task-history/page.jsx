@@ -35,6 +35,18 @@ export default function TaskHistoryPage() {
     error,
   } = useTaskHistoryCalendar();
 
+  const formatSelectedDate = (dateString) => {
+    const [year, month, day] = dateString.split("-");
+    const date = new Date(year, month - 1, day);
+    
+    return date.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   const getIntensity = (count) => {
     if (!count) return styles.level0;
     if (count === 1) return styles.level1;
@@ -95,14 +107,16 @@ export default function TaskHistoryPage() {
 
         {selectedDate && (
           <div className={styles.details}>
-            <h3 className={styles.detailsTitle}>{selectedDate}</h3>
+            <h3 className={styles.detailsTitle}>
+              {formatSelectedDate(selectedDate)}
+            </h3>
 
             {tasksForSelectedDay.length === 0 ? (
               <p className={styles.empty}>No completed tasks</p>
             ) : (
               tasksForSelectedDay.map((task) => (
                 <div key={task.id} className={styles.taskItem}>
-                  ✓ {task.text}
+                  {task.text}
                 </div>
               ))
             )}

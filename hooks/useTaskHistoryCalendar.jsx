@@ -9,9 +9,7 @@ export function useTaskHistoryCalendar() {
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(null);
 
-  const [selectedDate, setSelectedDate] = useState(
-    getLocalDateKey(today)
-  );
+  const [selectedDate, setSelectedDate] = useState(getLocalDateKey(today));
 
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
@@ -28,7 +26,12 @@ export function useTaskHistoryCalendar() {
         const data = await res.json();
         if (!Array.isArray(data)) throw new Error();
 
-        setTasks(data);
+        const cleanedData = data.map((task) => ({
+          ...task,
+          text: cleanTaskText(task.text),
+        }));
+
+        setTasks(cleanedData);
       } catch {
         setError("Failed to load activity");
       }
@@ -36,6 +39,16 @@ export function useTaskHistoryCalendar() {
 
     load();
   }, []);
+
+  const cleanTaskText = (text) => {
+    if (!text) return text;
+    return text
+      .replace(/^[✓✔√☑]\s*/, "")
+      .replace(/^\[x\]\s*/i, "")
+      .replace(/^\[✓\]\s*/, "")
+      .replace(/^\[\√\]\s*/, "")
+      .trim();
+  };
 
   const activityMap = useMemo(() => {
     const map = {};
@@ -75,8 +88,7 @@ export function useTaskHistoryCalendar() {
 
     return tasks.filter(
       (task) =>
-        task.completedAt &&
-        getLocalDateKey(task.completedAt) === selectedDate
+        task.completedAt && getLocalDateKey(task.completedAt) === selectedDate,
     );
   }, [selectedDate, tasks]);
 
