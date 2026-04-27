@@ -34,6 +34,17 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
   const displayedValue = processing ? `Waiting${".".repeat(dots)}` : value;
   const hasText = value.trim().length > 0 && !processing;
 
+  const handleSubmit = async () => {
+    if (!hasText) return;
+
+    try {
+      await onSubmit(value); 
+      onChange(""); 
+    } catch (error) {
+      console.error("Add task error:", error);
+    }
+  };
+
   return (
     <div className={styles.inputContainer}>
       <div className={styles.inputWrapper}>
@@ -41,7 +52,7 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
           type="text"
           value={displayedValue}
           onChange={(e) => !processing && onChange(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && hasText && onSubmit()}
+          onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
           placeholder="Enter a new task..."
           className={styles.input}
           disabled={processing}
@@ -50,16 +61,14 @@ export function TaskInput({ tasks, userId, onChangeTasks }) {
         <div className={styles.buttonsInside}>
           <IconButton
             className={`${styles["add-button"]} ${hasText ? styles.visible : ""}`}
-            onClick={onSubmit}
+            onClick={handleSubmit}
             title="Add task"
           >
             <PlusIcon />
           </IconButton>
 
           <IconButton
-            className={`${styles["mic-button"]} ${
-              recording ? styles.recording : ""
-            }`}
+            className={`${styles["mic-button"]} ${recording ? styles.recording : ""}`}
             onClick={toggleRecording}
             title={recording ? "Stop recording" : "Start recording"}
           >

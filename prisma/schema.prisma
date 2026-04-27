@@ -7,6 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
 
 model Task {
   id          Int       @id @default(autoincrement())
@@ -14,6 +19,10 @@ model Task {
   userId      Int
   user        User      @relation(fields: [userId], references: [id])
   completed   Boolean   @default(false)
+
+  priority    Priority  @default(MEDIUM)
+  order       Float     @default(0)
+
   createdAt   DateTime  @default(now())
   completedAt DateTime?
 }

@@ -38,13 +38,6 @@ export default function ProtectedLayout({ children }) {
       </button>
 
       <nav className={`${styles.sidebar} ${openMenu ? styles.open : ""}`}>
-        <button
-          className={styles.closeButton}
-          onClick={() => setOpenMenu(false)}
-        >
-          ✕
-        </button>
-
         <ul className={styles.menu}>
           <li>
             <Link href="/" className={styles.menuLink}>
@@ -55,18 +48,6 @@ export default function ProtectedLayout({ children }) {
           <li>
             <Link href="/task-history" className={styles.menuLink}>
               Task History
-            </Link>
-          </li>
-
-          <li>
-            <Link href="/priorities" className={styles.menuLink}>
-              Priorities
-            </Link>
-          </li>
-
-          <li>
-            <Link href="/categories" className={styles.menuLink}>
-              Categories
             </Link>
           </li>
 

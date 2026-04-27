@@ -1,14 +1,25 @@
 .inputContainer {
   position: fixed;
-  bottom: 0;
+  bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
+
   width: 100%;
   max-width: 400px;
-  padding: 16px;
-  background-color: var(--background);
+
+  padding: 8px 10px;
+
+  background: var(--surface);
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.15),
+    0 2px 6px rgba(0, 0, 0, 0.1);
+
+  border: 1px solid var(--border);
+
   z-index: 1000;
-  box-sizing: border-box;
 
   display: flex;
   align-items: center;
@@ -18,27 +29,29 @@
 .inputWrapper {
   position: relative;
   width: 100%;
-  max-width: 400px;
 }
 
 .input {
   width: 100%;
   height: var(--input-height);
+
   padding: 0 104px 0 16px;
 
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 999px;
 
   background: var(--background);
   color: var(--foreground);
+
   font-size: 14px;
 
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .input:focus {
   outline: none;
   border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(100, 100, 255, 0.15);
 }
 
 .buttonsInside {
@@ -64,21 +77,20 @@
   justify-content: center;
 
   cursor: pointer;
-  transition: transform 0.2s ease;
+
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .icon-button:hover:not(:disabled) {
   transform: scale(1.05);
+  background: var(--muted);
 }
 
 .icon-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.icon-button svg,
-.delete-button svg {
-  display: block;
 }
 
 .add-button {
@@ -109,12 +121,12 @@
 }
 
 .delete-button {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
 
   border-radius: 50%;
-  border: none;
 
+  border: none;
   background: var(--muted);
   color: var(--muted-foreground);
 
@@ -132,11 +144,11 @@
 @keyframes pulse {
   0% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(var(--danger-rgb), 0.6);
+    box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.6);
   }
   70% {
     transform: scale(1.1);
-    box-shadow: 0 0 0 14px rgba(var(--danger-rgb), 0);
+    box-shadow: 0 0 0 14px rgba(229, 57, 53, 0);
   }
   100% {
     transform: scale(1);
