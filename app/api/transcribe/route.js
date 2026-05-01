@@ -1,90 +1,65 @@
 export async function POST(req) {
   try {
-    console.log("✅ POST /api/transcribe called");
+    console.log("✅ POST /api/transcribe (Deepgram auto language)");
 
     const formData = await req.formData();
-    const createResponse = await fetch(
-      "https://api.speechflow.io/asr/file/v1/create",
+    const file = formData.get("file");
+
+    if (!file) {
+      return new Response(
+        JSON.stringify({ error: "No file provided" }),
+        { status: 400 }
+      );
+    }
+
+    const arrayBuffer = await file.arrayBuffer();
+
+    const response = await fetch(
+      "https://api.deepgram.com/v1/listen?detect_language=true&punctuate=true",
       {
         method: "POST",
         headers: {
-          keyId: process.env.SPEECHFLOW_KEY_ID,
-          keySecret: process.env.SPEECHFLOW_KEY_SECRET,
+          Authorization: `Token ${process.env.DEEPGRAM_API_KEY}`,
+          "Content-Type": file.type || "audio/webm",
         },
-        body: formData,
+        body: Buffer.from(arrayBuffer),
       }
     );
-    const createResult = await createResponse.json();
-    console.log("📩 createResult:", createResult);
 
-    if (!createResult.taskId) {
+    const data = await response.json();
+    console.log("📩 Deepgram response:", data);
+
+    const transcript =
+      data?.results?.channels?.[0]?.alternatives?.[0]?.transcript;
+
+    const detectedLanguage =
+      data?.results?.channels?.[0]?.detected_language;
+
+    if (!transcript) {
       return new Response(
         JSON.stringify({
-          error: "Failed to create task",
-          details: createResult,
+          error: "No transcript returned",
+          details: data,
         }),
         { status: 400 }
       );
     }
 
-    const taskId = createResult.taskId;
-    let result = null;
-    let attempts = 0;
-    const maxAttempts = 20;
-
-    while (!result && attempts < maxAttempts) {
-      attempts++;
-      const queryResponse = await fetch(
-        `https://api.speechflow.io/asr/file/v1/query?taskId=${taskId}`,
-        {
-          method: "GET",
-          headers: {
-            keyId: process.env.SPEECHFLOW_KEY_ID,
-            keySecret: process.env.SPEECHFLOW_KEY_SECRET,
-          },
-        }
-      );
-
-      const queryResult = await queryResponse.json();
-      console.log("⏳ queryResult:", queryResult);
-
-      if (queryResult.code === 11000 && queryResult.result) {
-        result = queryResult.result;
-        break;
-      }
-
-      if (queryResult.code === 11001) {
-        await new Promise((res) => setTimeout(res, 3000));
-        continue;
-      }
-
-      if (queryResult.code === 11405 || queryResult.code === 11499) {
-        return new Response(
-          JSON.stringify({
-            error: "Audio read error or unknown error",
-            details: queryResult,
-          }),
-          { status: 400 }
-        );
-      }
-
-      await new Promise((res) => setTimeout(res, 3000));
-    }
-
-    if (!result) {
-      return new Response(
-        JSON.stringify({ error: "Timeout or no result received" }),
-        { status: 408 }
-      );
-    }
-
-    return new Response(JSON.stringify({ transcript: result }), {
-      status: 200,
-    });
+    return new Response(
+      JSON.stringify({
+        transcript,
+        language: detectedLanguage || "unknown",
+      }),
+      { status: 200 }
+    );
   } catch (err) {
     console.error("❌ Server error:", err);
+
     return new Response(
-      JSON.stringify({ error: "Internal server error", details: err.message }),
+      JSON.stringify({
+        error: "Internal server error",
+        details: err.message,
+      }),
       { status: 500 }
     );
   }
