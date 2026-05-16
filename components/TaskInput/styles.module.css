@@ -5,19 +5,19 @@
   transform: translateX(-50%);
 
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
 
-  padding: 8px 10px;
+  padding: 8px;
 
   background: var(--surface);
 
-  border-radius: 28px;
-
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.15),
-    0 2px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 999px;
 
   border: 1px solid var(--border);
+
+  box-shadow: var(--shadow-lg);
+
+  backdrop-filter: blur(10px);
 
   z-index: 1000;
 
@@ -25,6 +25,8 @@
   align-items: center;
   gap: 8px;
 }
+
+/* ---------- INPUT ---------- */
 
 .inputWrapper {
   position: relative;
@@ -35,42 +37,62 @@
   width: 100%;
   height: var(--input-height);
 
-  padding: 0 104px 0 16px;
+  padding: 0 110px 0 16px;
 
-  border: 1px solid var(--border);
   border-radius: 999px;
+  border: 1px solid transparent;
 
   background: var(--background);
   color: var(--foreground);
 
   font-size: 14px;
 
-  transition: all 0.2s ease;
+  transition:
+    border var(--transition-base),
+    box-shadow var(--transition-base),
+    background var(--transition-base);
 }
 
+/* hover */
+.input:hover {
+  border-color: var(--border-hover);
+}
+
+/* focus */
 .input:focus {
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(100, 100, 255, 0.15);
+  border-color: var(--accent);
+  box-shadow: var(--focus-ring);
 }
+
+/* placeholder */
+.input::placeholder {
+  color: var(--muted-foreground);
+}
+
+/* ---------- BUTTONS INSIDE ---------- */
 
 .buttonsInside {
   position: absolute;
-  right: 8px;
+  right: 6px;
   top: 50%;
   transform: translateY(-50%);
+
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
+
+/* ---------- BASE BUTTON ---------- */
 
 .icon-button {
   width: 36px;
   height: 36px;
 
   border-radius: 50%;
-  border: none;
+  border: 1px solid var(--border);
 
-  background: transparent;
+  background: var(--surface-2);
+  color: var(--foreground);
 
   display: flex;
   align-items: center;
@@ -79,26 +101,53 @@
   cursor: pointer;
 
   transition:
-    transform 0.2s ease,
-    background-color 0.2s ease;
+    transform var(--transition-fast),
+    background var(--transition-base),
+    border var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
+/* hover */
 .icon-button:hover:not(:disabled) {
-  transform: scale(1.05);
   background: var(--muted);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
+/* active */
+.icon-button:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+/* disabled */
 .icon-button:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
+/* svg */
+.icon-button svg {
+  width: 18px;
+  height: 18px;
+  opacity: 0.9;
+  transition: opacity 0.15s ease;
+}
+
+.icon-button:hover svg {
+  opacity: 1;
+}
+
+/* ---------- ADD BUTTON ---------- */
+
 .add-button {
-  background: var(--primary);
-  color: var(--primary-foreground);
+  background: var(--accent);
+  color: var(--accent-foreground);
+  border: none;
 
   opacity: 0;
-  transform: scale(0.8);
+  transform: scale(0.7);
+  pointer-events: none;
 
   transition:
     opacity 0.2s ease,
@@ -108,38 +157,51 @@
 .add-button.visible {
   opacity: 1;
   transform: scale(1);
+  pointer-events: auto;
 }
+
+.add-button:hover {
+  opacity: 0.9;
+}
+
+/* ---------- MIC BUTTON ---------- */
 
 .mic-button {
   background: var(--primary);
   color: var(--primary-foreground);
+  border: none;
 }
 
 .mic-button.recording {
   background: var(--danger);
-  animation: pulse 1.5s infinite;
+  animation: pulse 1.4s infinite;
 }
+
+/* ---------- DELETE BUTTON ---------- */
 
 .delete-button {
   width: 40px;
   height: 40px;
 
   border-radius: 50%;
+  border: 1px solid var(--border);
 
-  border: none;
-  background: var(--muted);
+  background: var(--surface-2);
   color: var(--muted-foreground);
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  transition: background-color 0.2s ease;
+  transition: all var(--transition-base);
 }
 
 .delete-button:hover:not(:disabled) {
-  background: var(--border-hover);
+  background: var(--muted);
+  color: var(--foreground);
 }
+
+/* ---------- ANIMATION ---------- */
 
 @keyframes pulse {
   0% {
@@ -148,7 +210,7 @@
   }
   70% {
     transform: scale(1.1);
-    box-shadow: 0 0 0 14px rgba(229, 57, 53, 0);
+    box-shadow: 0 0 0 12px rgba(229, 57, 53, 0);
   }
   100% {
     transform: scale(1);

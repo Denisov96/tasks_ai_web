@@ -1,91 +1,73 @@
 export async function POST(req) {
   try {
-    console.log("✅ POST /api/transcribe called");
+    console.log("✅ POST /api/transcribe");
 
     const formData = await req.formData();
-    const createResponse = await fetch(
-      "https://api.speechflow.io/asr/file/v1/create",
-      {
-        method: "POST",
-        headers: {
-          keyId: process.env.SPEECHFLOW_KEY_ID,
-          keySecret: process.env.SPEECHFLOW_KEY_SECRET,
-        },
-        body: formData,
-      }
-    );
-    const createResult = await createResponse.json();
-    console.log("📩 createResult:", createResult);
+    const file = formData.get("file");
 
-    if (!createResult.taskId) {
-      return new Response(
-        JSON.stringify({
-          error: "Failed to create task",
-          details: createResult,
-        }),
-        { status: 400 }
-      );
+    if (!file) {
+      return Response.json({ error: "No file provided" }, { status: 400 });
     }
 
-    const taskId = createResult.taskId;
-    let result = null;
-    let attempts = 0;
-    const maxAttempts = 20;
+    const arrayBuffer = await file.arrayBuffer();
+    const audioBuffer = Buffer.from(arrayBuffer);
 
-    while (!result && attempts < maxAttempts) {
-      attempts++;
-      const queryResponse = await fetch(
-        `https://api.speechflow.io/asr/file/v1/query?taskId=${taskId}`,
+    const BASE_URL = "https://api.deepgram.com/v1/listen";
+
+    async function transcribe(language) {
+      const res = await fetch(
+        `${BASE_URL}?model=nova-2-general&language=${language}&punctuate=true&smart_format=true`,
         {
-          method: "GET",
+          method: "POST",
           headers: {
-            keyId: process.env.SPEECHFLOW_KEY_ID,
-            keySecret: process.env.SPEECHFLOW_KEY_SECRET,
+            Authorization: `Token ${process.env.DEEPGRAM_API_KEY}`,
+            "Content-Type": "audio/webm",
           },
-        }
+          body: audioBuffer,
+        },
       );
 
-      const queryResult = await queryResponse.json();
-      console.log("⏳ queryResult:", queryResult);
-
-      if (queryResult.code === 11000 && queryResult.result) {
-        result = queryResult.result;
-        break;
-      }
-
-      if (queryResult.code === 11001) {
-        await new Promise((res) => setTimeout(res, 3000));
-        continue;
-      }
-
-      if (queryResult.code === 11405 || queryResult.code === 11499) {
-        return new Response(
-          JSON.stringify({
-            error: "Audio read error or unknown error",
-            details: queryResult,
-          }),
-          { status: 400 }
-        );
-      }
-
-      await new Promise((res) => setTimeout(res, 3000));
+      return res.json();
     }
 
-    if (!result) {
-      return new Response(
-        JSON.stringify({ error: "Timeout or no result received" }),
-        { status: 408 }
+    let data = await transcribe("en");
+
+    let transcript =
+      data?.results?.channels?.[0]?.alternatives?.[0]?.transcript?.trim();
+
+    let language = "en";
+
+    console.log("🧠 EN result:", transcript);
+
+    if (!transcript || transcript.length < 2) {
+      console.log("🔄 Switching to Russian...");
+
+      data = await transcribe("ru");
+
+      transcript =
+        data?.results?.channels?.[0]?.alternatives?.[0]?.transcript?.trim();
+
+      language = "ru";
+    }
+
+    if (!transcript) {
+      return Response.json(
+        { error: "Speech not recognized", details: data },
+        { status: 400 },
       );
     }
 
-    return new Response(JSON.stringify({ transcript: result }), {
-      status: 200,
+    return Response.json({
+      success: true,
+      transcript,
+      language,
     });
   } catch (err) {
-    console.error("❌ Server error:", err);
-    return new Response(
-      JSON.stringify({ error: "Internal server error", details: err.message }),
-      { status: 500 }
+    console.error("❌ Error:", err);
+
+    return Response.json(
+      { error: "Internal server error", details: err.message },
+      { status: 500 },
     );
   }
 }
