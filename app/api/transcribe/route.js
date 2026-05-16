@@ -1,66 +1,73 @@
 export async function POST(req) {
   try {
-    console.log("✅ POST /api/transcribe (Deepgram auto language)");
+    console.log("✅ POST /api/transcribe");
 
     const formData = await req.formData();
     const file = formData.get("file");
 
     if (!file) {
-      return new Response(
-        JSON.stringify({ error: "No file provided" }),
-        { status: 400 }
-      );
+      return Response.json({ error: "No file provided" }, { status: 400 });
     }
 
     const arrayBuffer = await file.arrayBuffer();
+    const audioBuffer = Buffer.from(arrayBuffer);
 
-    const response = await fetch(
-      "https://api.deepgram.com/v1/listen?detect_language=true&punctuate=true",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Token ${process.env.DEEPGRAM_API_KEY}`,
-          "Content-Type": file.type || "audio/webm",
+    const BASE_URL = "https://api.deepgram.com/v1/listen";
+
+    async function transcribe(language) {
+      const res = await fetch(
+        `${BASE_URL}?model=nova-2-general&language=${language}&punctuate=true&smart_format=true`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Token ${process.env.DEEPGRAM_API_KEY}`,
+            "Content-Type": "audio/webm",
+          },
+          body: audioBuffer,
         },
-        body: Buffer.from(arrayBuffer),
-      }
-    );
+      );
 
-    const data = await response.json();
-    console.log("📩 Deepgram response:", data);
+      return res.json();
+    }
 
-    const transcript =
-      data?.results?.channels?.[0]?.alternatives?.[0]?.transcript;
+    let data = await transcribe("en");
 
-    const detectedLanguage =
-      data?.results?.channels?.[0]?.detected_language;
+    let transcript =
+      data?.results?.channels?.[0]?.alternatives?.[0]?.transcript?.trim();
+
+    let language = "en";
+
+    console.log("🧠 EN result:", transcript);
+
+    if (!transcript || transcript.length < 2) {
+      console.log("🔄 Switching to Russian...");
+
+      data = await transcribe("ru");
+
+      transcript =
+        data?.results?.channels?.[0]?.alternatives?.[0]?.transcript?.trim();
+
+      language = "ru";
+    }
 
     if (!transcript) {
-      return new Response(
-        JSON.stringify({
-          error: "No transcript returned",
-          details: data,
-        }),
-        { status: 400 }
+      return Response.json(
+        { error: "Speech not recognized", details: data },
+        { status: 400 },
       );
     }
 
-    return new Response(
-      JSON.stringify({
-        transcript,
-        language: detectedLanguage || "unknown",
-      }),
-      { status: 200 }
-    );
+    return Response.json({
+      success: true,
+      transcript,
+      language,
+    });
   } catch (err) {
-    console.error("❌ Server error:", err);
+    console.error("❌ Error:", err);
 
-    return new Response(
-      JSON.stringify({
-        error: "Internal server error",
-        details: err.message,
-      }),
-      { status: 500 }
+    return Response.json(
+      { error: "Internal server error", details: err.message },
+      { status: 500 },
     );
   }
 }

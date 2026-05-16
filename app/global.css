@@ -8,7 +8,13 @@
   --accent: #4f46e5;
   --accent-foreground: #ffffff;
   --accent-soft: rgba(79, 70, 229, 0.12);
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
 
+  --hover-opacity: 0.85;
+  --active-scale: 0.96;
+
+  --focus-ring: 0 0 0 3px var(--accent-soft);
   --surface: #ffffff;
   --surface-2: #f1f1f3;
 
